@@ -1,1 +1,0 @@
-{"minFilter": "Trilinear", "wrapU": "Repeat", "name": "stripes_101", "flipY": true, "url": "images/stripeSpec_101.jpg", "anisotropy": 1, "wrapV": "Repeat", "fileName": "stripes_101.jpg", "repeat": [1, 1], "offset": [0, 0], "ref": "textures/stripes_102.texture", "magFilter": "Bilinear"}

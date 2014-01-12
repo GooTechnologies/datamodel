@@ -1,1 +1,0 @@
-{"minFilter": "Trilinear", "wrapU": "Repeat", "name": "stripes_101_NRM", "flipY": true, "url": "images/stripes_101_NRM.png", "anisotropy": 1, "wrapV": "Repeat", "fileName": "stripes_101_NRM.png", "repeat": [1, 1], "offset": [0, 0], "ref": "textures/stripes_101_NRM.texture", "magFilter": "Bilinear"}

@@ -1,1 +1,0 @@
-{"states": [{"machineRefs": [], "transitions": [], "id": "NzgzNTQ4OTI1", "actions": [{"options": {"relative": true, "everyFrame": true, "transitions": {}, "rotation": [0, 0, -60]}, "type": "Rotate", "id": "MjcwMDcxMDE5", "name": "Rotate"}], "name": "Default"}], "ref": "states/Machine_0.machine", "id": "LTg3NzczNzA1Mg==", "name": "Behavior 0", "initialState": "NzgzNTQ4OTI1"}

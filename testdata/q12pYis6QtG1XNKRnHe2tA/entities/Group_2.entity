@@ -1,1 +1,0 @@
-{"ref": "entities/Group_2.entity", "name": "Zantha Flight", "components": {"transform": {"rotation": [0, 0, 0], "scale": [1, 1, 1], "translation": [0, 0, 0]}, "stateMachine": {"machineRefs": ["states/Machine_2.machine"]}}}

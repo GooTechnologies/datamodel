@@ -1,1 +1,0 @@
-{"states": [{"machineRefs": [], "transitions": [], "id": "MjczMDE0NzQ4", "actions": [], "name": "Default"}], "ref": "states/Machine_1.machine", "id": "MTYwOTc3NTc4MQ==", "name": "Behavior 0", "initialState": "MjczMDE0NzQ4"}

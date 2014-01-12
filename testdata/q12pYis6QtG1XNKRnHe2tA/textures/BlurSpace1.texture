@@ -1,1 +1,0 @@
-{"minFilter": "Trilinear", "wrapU": "Repeat", "name": "BlurSpace1", "flipY": true, "url": "images/BlurSpace1.jpg", "anisotropy": 1, "wrapV": "Repeat", "fileName": "BlurSpace1.jpg", "repeat": [1, 1], "offset": [0, 0], "ref": "textures/BlurSpace1.texture", "magFilter": "Bilinear"}

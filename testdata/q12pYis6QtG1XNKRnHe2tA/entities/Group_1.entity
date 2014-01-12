@@ -1,1 +1,0 @@
-{"ref": "entities/Group_1.entity", "name": "JetPack", "components": {"transform": {"rotation": [0, 0, 0], "scale": [1, 1, 1], "translation": [0, 0, 0], "parentRef": "entities/Group.entity"}}}

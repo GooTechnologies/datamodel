@@ -1,1 +1,0 @@
-{"ref": "entities/Group.entity", "name": "Zantha", "components": {"sound": {"soundRefs": ["sounds/merrychristmas.sound"]}, "transform": {"rotation": [0, 0, 0], "scale": [1, 1, 1], "translation": [-21.743919372558594, 0, 0], "parentRef": "entities/Group_2.entity"}, "stateMachine": {"machineRefs": ["states/Machine_5.machine", "states/Machine_7.machine"]}}}

@@ -1,1 +1,0 @@
-{"minFilter": "Trilinear", "wrapU": "Repeat", "name": "Tree_Spec_001", "flipY": true, "url": "images/Tree_Spec_001.png", "anisotropy": 1, "wrapV": "Repeat", "fileName": "Tree_Spec_001.png", "repeat": [1, 1], "offset": [0, 0], "ref": "textures/Tree_Spec_1.texture", "magFilter": "Bilinear"}
