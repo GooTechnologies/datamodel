@@ -1,0 +1,9 @@
+{
+  "name": "datamodel",
+  "version": "0.0.0",
+  "author": "Goo Technologies AB <info@gootechnologies.com>",
+  "description": "Data model documentation & validation for Goo Engine",
+  "engines": {
+    "node": ">=0.8.2"
+  }
+}
