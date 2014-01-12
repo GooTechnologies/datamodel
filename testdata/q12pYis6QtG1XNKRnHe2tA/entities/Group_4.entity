@@ -1,0 +1,1 @@
+{"hidden": false, "ref": "entities/Group_4.entity", "name": "Tree", "components": {"transform": {"rotation": [-48.277501676415554, 17.454493782454225, 16.281980820847522], "scale": [1.7213013172149658, 1.7213013172149658, 1.7213013172149658], "translation": [-35.671592712402344, -11.489816665649414, -15.34334945678711], "parentRef": "entities/Group_8.entity"}}}

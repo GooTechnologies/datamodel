@@ -1,0 +1,1 @@
+{"minFilter": "Trilinear", "wrapU": "Repeat", "name": "TestGrad1", "flipY": true, "url": "images/TestGrad1.jpg", "anisotropy": 1, "wrapV": "Repeat", "fileName": "TestGrad1.jpg", "repeat": [1, 1], "offset": [0, 0], "ref": "textures/TestGrad1.texture", "magFilter": "Bilinear"}

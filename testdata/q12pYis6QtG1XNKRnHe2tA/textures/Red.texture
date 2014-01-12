@@ -1,0 +1,1 @@
+{"minFilter": "Trilinear", "wrapU": "Repeat", "name": "Red_001", "flipY": true, "url": "images/Red_001.png", "anisotropy": 1, "wrapV": "Repeat", "fileName": "Red_001.png", "repeat": [1, 4], "offset": [0, 0], "ref": "textures/Red.texture", "magFilter": "Bilinear"}
