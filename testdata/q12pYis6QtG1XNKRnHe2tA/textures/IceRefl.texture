@@ -1,0 +1,1 @@
+{"minFilter": "Trilinear", "wrapU": "Repeat", "name": "IceRefl_101", "flipY": true, "url": "images/IceRefl_101.jpg", "anisotropy": 1, "wrapV": "Repeat", "fileName": "IceRefl_101.jpg", "repeat": [1, 1], "offset": [0, 0], "ref": "textures/IceRefl.texture", "magFilter": "Bilinear"}

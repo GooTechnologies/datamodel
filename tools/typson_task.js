@@ -23,6 +23,8 @@ module.exports = function(grunt) {
 		var typson = require('typson/typson-schema');
 		var done = this.async();
 		// Iterate over all specified file groups.
+		var togo = this.files.length;
+
 		this.files.forEach(function(f) {
 
 			grunt.log.writeln("Found file: " + f.src[0]);
@@ -32,6 +34,10 @@ module.exports = function(grunt) {
 				grunt.log.writeln("Writing schema " + tree + " for " + f.dest);
 				var schema = JSON.stringify(tree, undefined, 2);
 				grunt.file.write(f.dest, schema);
+				togo--;
+				if (togo===0) {
+					done();
+				}
 			})
 			
 			.catch(function(e){

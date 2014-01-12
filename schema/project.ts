@@ -1,3 +1,4 @@
+/// <reference path="common.ts"/>
 
 enum LicenseType {
 	'CC0', 
@@ -19,7 +20,7 @@ interface SkyBox {
 	/**
 	 * @additionalProperties true
 	 */
-	attribution: {
+	attribution?: {
 		name: string;
 		link: URI;
 	};
@@ -50,7 +51,7 @@ interface project {
 
 	name: string;
 	public: boolean;
-	description: string;
+	description?: string;
 	deleted: boolean;
 
 	created: DateTime;
@@ -67,13 +68,13 @@ interface project {
 	view: string[];
 
 	entityRefs: EntityRef[];
-	posteffectRefs: PosteffectRef[];
+	posteffectRefs?: PosteffectRef[];
 	groupRefs: GroupRef[];
 
 	backgroundColor: Color;
 	globalAmbient: Color;
-	skybox: SkyBox;
-	screenshot: ImageRef;
+	skybox?: SkyBox;
+	screenshot?: ImageRef;
 	
 	useFog: boolean;
 	fogColor: Color;
@@ -82,7 +83,7 @@ interface project {
 
 	ref?: string;
 
-	weather: Weather;
+	weather?: Weather;
 
 	publishedURL?: URI;
 }

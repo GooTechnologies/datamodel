@@ -1,0 +1,1 @@
+{"ref": "entities/Box.entity", "name": "Box", "components": {"transform": {"rotation": [0, 0, 0], "scale": [1, 1, 1], "translation": [0, 0, 0]}, "meshRenderer": {"materialRefs": [], "hidden": false, "receiveShadows": true, "cullMode": "Dynamic", "castShadows": true}, "meshData": {"meshRef": null, "shape": "Box"}}}

@@ -6,14 +6,27 @@ module.exports = function (grunt) {
 					expand: true,
 					flatten: false,
 					cwd: 'schema',
-					src: ['{,**/}*.ts'],
-					dest: 'output',
+					src: [
+						'{,**/}*.ts',
+						'!common.ts'
+					],
+					dest: 'schema_json',
 					ext: '.json',
 				}]
 			}
+		},
+		shell: {
+      validate: {
+        options: {
+            stdout: true
+        },
+        command: 'python validation/validate.py project'
+      }
 		}
 	});
 
 	grunt.loadTasks('tools');
-	grunt.registerTask('default', ['typson']);
+	grunt.loadNpmTasks('grunt-shell')	
+	grunt.registerTask('validate', ['shell:validate']);
+	grunt.registerTask('default', ['typson', 'shell:validate']);
 }

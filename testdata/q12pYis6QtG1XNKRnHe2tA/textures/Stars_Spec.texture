@@ -1,0 +1,1 @@
+{"minFilter": "Trilinear", "wrapU": "Repeat", "name": "Stars_Spec_001", "flipY": true, "url": "images/Stars_Spec_001.png", "anisotropy": 1, "wrapV": "Repeat", "fileName": "Stars_Spec_001.png", "repeat": [6, 13], "offset": [0.15, 0.09], "ref": "textures/Stars_Spec.texture", "magFilter": "Bilinear"}

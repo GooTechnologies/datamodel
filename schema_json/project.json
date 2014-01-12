@@ -1,0 +1,282 @@
+{
+  "SkyBox": {
+    "additionalProperties": false,
+    "id": "SkyBox",
+    "properties": {
+      "ref": {
+        "type": "string"
+      },
+      "attribution": {
+        "additionalProperties": true,
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "link": {
+            "$ref": "URI"
+          }
+        },
+        "required": [
+          "name",
+          "link"
+        ]
+      },
+      "environmentType": {
+        "type": "number"
+      },
+      "shape": {
+        "enum": [
+          "Sphere",
+          "Box"
+        ]
+      },
+      "rotation": {
+        "type": "number"
+      },
+      "imageUrls": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "required": [
+      "environmentType",
+      "shape",
+      "rotation",
+      "imageUrls"
+    ]
+  },
+  "Weather": {
+    "additionalProperties": false,
+    "id": "Weather",
+    "properties": {
+      "snow": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "velocity": {
+            "type": "number"
+          },
+          "rate": {
+            "type": "number"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "height": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "velocity",
+          "rate",
+          "enabled",
+          "height"
+        ]
+      }
+    }
+  },
+  "project": {
+    "additionalProperties": false,
+    "id": "project",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "licenseType": {
+        "enum": [
+          "CC0",
+          "CC BY",
+          "CC BY-SA",
+          "CC BY-NC",
+          "CC BY-NC-SA",
+          "PRIVATE"
+        ]
+      },
+      "originalLicenseType": {
+        "enum": [
+          "CC0",
+          "CC BY",
+          "CC BY-SA",
+          "CC BY-NC",
+          "CC BY-NC-SA",
+          "PRIVATE"
+        ]
+      },
+      "name": {
+        "type": "string"
+      },
+      "public": {
+        "type": "boolean"
+      },
+      "description": {
+        "type": "string"
+      },
+      "deleted": {
+        "type": "boolean"
+      },
+      "created": {
+        "$ref": "DateTime"
+      },
+      "modified": {
+        "$ref": "DateTime"
+      },
+      "parent": {
+        "type": "string"
+      },
+      "own": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "edit": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "view": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "entityRefs": {
+        "type": "array",
+        "items": {
+          "$ref": "EntityRef"
+        }
+      },
+      "posteffectRefs": {
+        "type": "array",
+        "items": {
+          "$ref": "PosteffectRef"
+        }
+      },
+      "groupRefs": {
+        "type": "array",
+        "items": {
+          "$ref": "GroupRef"
+        }
+      },
+      "backgroundColor": {
+        "$ref": "Color"
+      },
+      "globalAmbient": {
+        "$ref": "Color"
+      },
+      "skybox": {
+        "$ref": "SkyBox"
+      },
+      "screenshot": {
+        "$ref": "ImageRef"
+      },
+      "useFog": {
+        "type": "boolean"
+      },
+      "fogColor": {
+        "$ref": "Color"
+      },
+      "fogNear": {
+        "type": "number"
+      },
+      "fogFar": {
+        "type": "number"
+      },
+      "ref": {
+        "type": "string"
+      },
+      "weather": {
+        "$ref": "Weather"
+      },
+      "publishedURL": {
+        "$ref": "URI"
+      }
+    },
+    "required": [
+      "id",
+      "licenseType",
+      "name",
+      "public",
+      "deleted",
+      "created",
+      "modified",
+      "own",
+      "edit",
+      "view",
+      "entityRefs",
+      "groupRefs",
+      "backgroundColor",
+      "globalAmbient",
+      "useFog",
+      "fogColor",
+      "fogNear",
+      "fogFar"
+    ]
+  },
+  "DateTime": {
+    "additionalProperties": false,
+    "id": "DateTime",
+    "description": "Matches an ISO8601 datetime, e.g. 2014-01-11T13:29:12.42423",
+    "type": "string",
+    "format": "date-time",
+    "properties": {}
+  },
+  "Color": {
+    "additionalProperties": false,
+    "id": "Color",
+    "description": "Matches an array of 3-4 numeric elements between [0,1]",
+    "type": "array",
+    "items": {
+      "type": "number",
+      "maximum": 1,
+      "minimum": 0
+    },
+    "minItems": 3,
+    "maxItems": 4,
+    "properties": {}
+  },
+  "URI": {
+    "additionalProperties": false,
+    "id": "URI",
+    "description": "Matches rfc3987 URI",
+    "type": "string",
+    "format": "uri",
+    "properties": {}
+  },
+  "EntityRef": {
+    "additionalProperties": false,
+    "id": "EntityRef",
+    "description": "Matches id ending with .entity",
+    "type": "string",
+    "pattern": "\\.entity$",
+    "properties": {}
+  },
+  "GroupRef": {
+    "additionalProperties": false,
+    "id": "GroupRef",
+    "description": "Matches id ending with .group",
+    "type": "string",
+    "pattern": "\\.group$",
+    "properties": {}
+  },
+  "ImageRef": {
+    "additionalProperties": false,
+    "id": "ImageRef",
+    "description": "Matches id ending with one of .jpg, .jpeg, .gif, .png, .tga, .dds, .crn\n(case sensitive, must be lowercase)",
+    "type": "string",
+    "pattern": "\\.(jpe?g|png|gif|tga|dds|crn)$",
+    "properties": {}
+  },
+  "PosteffectRef": {
+    "additionalProperties": false,
+    "id": "PosteffectRef",
+    "description": "Matches id ending with .posteffect",
+    "type": "string",
+    "pattern": "\\.posteffect$",
+    "properties": {}
+  }
+}

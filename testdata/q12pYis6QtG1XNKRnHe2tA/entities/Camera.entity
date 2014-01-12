@@ -1,0 +1,1 @@
+{"ref": "entities/Camera.entity", "name": "Camera", "components": {"camera": {"far": 1000, "fov": 38, "near": 1}, "transform": {"rotation": [0.17091027613649523, -66.78828762910683, 1.5294924784123005], "scale": [1, 1, 1], "translation": [-61.71443176269531, -0.5897336602210999, 17.741579055786133], "parentRef": "entities/Group_2.entity"}}}

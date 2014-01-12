@@ -1,0 +1,14 @@
+{
+    "libraryRefs": [
+        "entities/ToolCamera.entity",
+        "scripts/ToolCameraScript.script",
+        "entities/Box.entity",
+        "sounds/ack_jam_4.mp3.sound",
+        "audio/ack_jam_4.mp3",
+        "entities/Box_0.entity",
+        "states/Machine.machine",
+        "states/Machine_0.machine"
+    ],
+    "name": "root",
+    "ref": "root.group"
+}
