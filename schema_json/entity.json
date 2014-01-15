@@ -420,6 +420,14 @@
     "pattern": "\\.group$",
     "properties": {}
   },
+  "AudioRef": {
+    "additionalProperties": false,
+    "id": "AudioRef",
+    "description": "Matches id ending with one of .mp3, .wav\n(case sensitive, must be lowercase)",
+    "type": "string",
+    "pattern": "\\.(mp3|wav)$",
+    "properties": {}
+  },
   "ImageRef": {
     "additionalProperties": false,
     "id": "ImageRef",
@@ -498,6 +506,14 @@
     "description": "Matches id ending with .sound",
     "type": "string",
     "pattern": "\\.texture$",
+    "properties": {}
+  },
+  "AnimationStateRef": {
+    "additionalProperties": false,
+    "id": "AnimationStateRef",
+    "description": "Matches id ending with .animstate",
+    "type": "string",
+    "pattern": "\\.animstate$",
     "properties": {}
   }
 }

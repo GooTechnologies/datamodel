@@ -1,220 +1,25 @@
 {
-  "SkyBox": {
+  "script": {
     "additionalProperties": false,
-    "id": "SkyBox",
+    "id": "script",
     "properties": {
-      "ref": {
+      "className": {
         "type": "string"
-      },
-      "attribution": {
-        "additionalProperties": true,
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "link": {
-            "$ref": "URI"
-          }
-        },
-        "required": [
-          "name",
-          "link"
-        ]
-      },
-      "environmentType": {
-        "type": "number"
-      },
-      "shape": {
-        "enum": [
-          "Sphere",
-          "Box"
-        ]
-      },
-      "rotation": {
-        "type": "number"
-      },
-      "imageUrls": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      }
-    },
-    "required": [
-      "environmentType",
-      "shape",
-      "rotation",
-      "imageUrls"
-    ]
-  },
-  "Weather": {
-    "additionalProperties": false,
-    "id": "Weather",
-    "properties": {
-      "snow": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "velocity": {
-            "type": "number"
-          },
-          "rate": {
-            "type": "number"
-          },
-          "enabled": {
-            "type": "boolean"
-          },
-          "height": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "velocity",
-          "rate",
-          "enabled",
-          "height"
-        ]
-      }
-    }
-  },
-  "project": {
-    "additionalProperties": false,
-    "id": "project",
-    "properties": {
-      "id": {
-        "type": "string"
-      },
-      "licenseType": {
-        "enum": [
-          "CC0",
-          "CC BY",
-          "CC BY-SA",
-          "CC BY-NC",
-          "CC BY-NC-SA",
-          "PRIVATE"
-        ]
-      },
-      "originalLicenseType": {
-        "enum": [
-          "CC0",
-          "CC BY",
-          "CC BY-SA",
-          "CC BY-NC",
-          "CC BY-NC-SA",
-          "PRIVATE"
-        ]
       },
       "name": {
         "type": "string"
       },
-      "public": {
-        "type": "boolean"
-      },
-      "description": {
-        "type": "string"
-      },
-      "deleted": {
-        "type": "boolean"
-      },
-      "created": {
-        "$ref": "DateTime"
-      },
-      "modified": {
-        "$ref": "DateTime"
-      },
-      "parent": {
-        "type": "string"
-      },
-      "own": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "edit": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "view": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "entityRefs": {
-        "type": "array",
-        "items": {
-          "$ref": "EntityRef"
-        }
-      },
-      "posteffectRefs": {
-        "type": "array",
-        "items": {
-          "$ref": "PosteffectRef"
-        }
-      },
-      "groupRefs": {
-        "type": "array",
-        "items": {
-          "$ref": "GroupRef"
-        }
-      },
-      "backgroundColor": {
-        "$ref": "Color"
-      },
-      "globalAmbient": {
-        "$ref": "Color"
-      },
-      "skybox": {
-        "$ref": "SkyBox"
-      },
-      "screenshot": {
-        "$ref": "ImageRef"
-      },
-      "useFog": {
-        "type": "boolean"
-      },
-      "fogColor": {
-        "$ref": "Color"
-      },
-      "fogNear": {
-        "type": "number"
-      },
-      "fogFar": {
-        "type": "number"
-      },
       "ref": {
         "type": "string"
       },
-      "weather": {
-        "$ref": "Weather"
-      },
-      "publishedURL": {
-        "$ref": "URI"
+      "options": {
+        "type": "object",
+        "additionalProperties": {}
       }
     },
     "required": [
-      "id",
-      "licenseType",
-      "name",
-      "public",
-      "deleted",
-      "created",
-      "modified",
-      "own",
-      "edit",
-      "view",
-      "entityRefs",
-      "groupRefs",
-      "backgroundColor",
-      "globalAmbient",
-      "useFog",
-      "fogColor",
-      "fogNear",
-      "fogFar"
+      "className",
+      "name"
     ]
   },
   "DateTime": {

@@ -63,6 +63,16 @@ interface EntityRef {}
 interface GroupRef {}
 
 /**
+ * Matches id ending with one of .mp3, .wav
+ * (case sensitive, must be lowercase)
+ *
+ * @type string
+ * @pattern \.(mp3|wav)$
+ */
+interface AudioRef {}
+
+
+/**
  * Matches id ending with one of .jpg, .jpeg, .gif, .png, .tga, .dds, .crn
  * (case sensitive, must be lowercase)
  *
@@ -145,3 +155,11 @@ interface SoundRef {}
  * @pattern \.texture$
  */
 interface TextureRef {}
+
+/**
+ * Matches id ending with .animstate
+ *
+ * @type string
+ * @pattern \.animstate$
+ */
+interface AnimationStateRef {}

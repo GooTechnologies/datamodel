@@ -4,7 +4,7 @@ interface sound {
 	name: string;
 	ref?: string;
 
-	urls: URI[];
+	urls: AudioRef[];
 	loop: boolean;
 	volume: number;
 
