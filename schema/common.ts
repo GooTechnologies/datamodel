@@ -214,5 +214,13 @@ interface ClipRef {}
  */
 interface BinaryRef {}
 
+/**
+ * Matches id ending with .shader
+ *
+ * @type string
+ * @pattern (\.shader|GOO_ENGINE_SHADERS/\w+)$
+ */
+interface ShaderRef {}
+
 
 
