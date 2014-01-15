@@ -1,0 +1,1 @@
+{"minFilter": "Trilinear", "wrapU": "Repeat", "name": "goon_glow", "flipY": true, "url": "GOO_ASSET_LIBRARY/goon_bind/images/goon_glow.jpg", "anisotropy": 1, "wrapV": "Repeat", "fileName": "GOO_ASSET_LIBRARY/goon_bind/images/goon_glow.jpg", "repeat": [1, 1], "offset": [0, 0], "ref": "goon_bind/textures/goon_glow.texture", "magFilter": "Bilinear"}

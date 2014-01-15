@@ -1,0 +1,96 @@
+{
+    "backgroundColor": [
+        0.75,
+        0.76,
+        0.78,
+        1
+    ],
+    "created": "2013-11-21T17:13:57.567491",
+    "deleted": false,
+    "description": "A Goon running around :)",
+    "edit": [],
+    "entityRefs": [
+        "goo_lab/entities/lab_platform_mesh_0.entity",
+        "goo_lab/entities/lab_platformmetal_mesh_0.entity",
+        "goo_lab/entities/lab_dome_mesh1_0.entity",
+        "goo_lab/entities/RootNode.entity",
+        "goo_lab/entities/lab_floor_mesh_0.entity",
+        "goo_lab/entities/lab_track_mesh_0.entity",
+        "goo_lab/entities/lab_windows_mesh_0.entity",
+        "goo_lab/entities/lab_domemetal_mesh_0.entity",
+        "goon_bind/entities/joints01.entity",
+        "goon_bind/entities/globalMove01.entity",
+        "goon_bind/entities/goon_mesh_0.entity",
+        "goon_bind/entities/goon_grp.entity",
+        "goon_bind/entities/charNode01.entity",
+        "goon_bind/entities/RootNode.entity",
+        "goo_lab/entities/SpotLight.entity",
+        "crate/entities/RootNode.entity",
+        "crate/entities/Crate_001_Mesh_0.entity",
+        "goon_bind/entities/SpotLight.entity",
+        "crate/entities/Crate_001_Mesh.entity",
+        "crate/entities/RootNode_0.entity",
+        "crate/entities/Crate_001_Mesh_1.entity",
+        "crate/entities/RootNode_1.entity",
+        "crate/entities/Crate_001_Mesh_2.entity",
+        "crate/entities/RootNode_2.entity",
+        "entities/ToolCamera.entity"
+    ],
+    "fogColor": [
+        1,
+        1,
+        1
+    ],
+    "fogFar": 1000,
+    "fogNear": 0,
+    "globalAmbient": [
+        0.1,
+        0.1,
+        0.1
+    ],
+    "groupRefs": [
+        "goo_lab/goo_lab.group",
+        "goon_bind/goon_bind.group",
+        "root.group",
+        "crate/crate.group"
+    ],
+    "id": "7WF1IdBZSOSHcdSZ0PyKCA",
+    "licenseType": "CC0",
+    "modified": "2013-11-21T15:44:57.728180",
+    "name": "Creating a Goon",
+    "originalLicenseType": null,
+    "own": [
+        "IRmI-GxoTg2VqF5CpDhPSA",
+        "IRmI-GxoTg2VqF5CpDhPSA",
+        "IRmI-GxoTg2VqF5CpDhPSA"
+    ],
+    "parent": null,
+    "posteffectRefs": [
+        "posteffects/Sepia.posteffect",
+        "posteffects/Bloom.posteffect",
+        "posteffects/Grain.posteffect",
+        "posteffects/Contrast.posteffect",
+        "posteffects/RgbShift.posteffect",
+        "posteffects/Vignette.posteffect",
+        "posteffects/Bleach.posteffect"
+    ],
+    "public": true,
+    "ref": "project.project",
+    "screenshot": "images/screenshot.png",
+    "skybox": {
+        "environmentType": 1,
+        "imageUrls": [
+            "GOO_ASSET_LIBRARY/images/goo/goo_lab/lab_cm_right.jpg",
+            "GOO_ASSET_LIBRARY/images/goo/goo_lab/lab_cm_left.jpg",
+            "GOO_ASSET_LIBRARY/images/goo/goo_lab/lab_cm_top.jpg",
+            "GOO_ASSET_LIBRARY/images/goo/goo_lab/lab_cm_bottom.jpg",
+            "GOO_ASSET_LIBRARY/images/goo/goo_lab/lab_cm_front.jpg",
+            "GOO_ASSET_LIBRARY/images/goo/goo_lab/lab_cm_back.jpg"
+        ],
+        "ref": "environment/goo_lab.skybox",
+        "rotation": 0,
+        "shape": "Box"
+    },
+    "useFog": false,
+    "view": []
+}

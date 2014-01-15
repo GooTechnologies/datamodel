@@ -1,0 +1,24 @@
+{
+    "className": "OrbitNPanControlScript",
+    "name": "ToolCameraScript",
+    "options": {
+        "baseDistance": 5,
+        "drag": 5,
+        "interpolationSpeed": 100,
+        "lookAtPoint": [
+            -3.4892513751983643,
+            1.4092249870300293,
+            4.406639099121094
+        ],
+        "maxZoomDistance": 6000,
+        "minZoomDistance": 0.1,
+        "releaseVelocity": false,
+        "spherical": [
+            1,
+            2.2057945728302,
+            0.054999981075525284
+        ],
+        "zoomSpeed": 0.3
+    },
+    "ref": "scripts/ToolCameraScript.script"
+}

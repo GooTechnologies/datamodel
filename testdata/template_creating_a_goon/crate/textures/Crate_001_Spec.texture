@@ -1,0 +1,1 @@
+{"minFilter": "Trilinear", "wrapU": "Repeat", "name": "Crate_001_Spec", "flipY": true, "url": "GOO_ASSET_LIBRARY/crate/images/Crate_001_Spec.jpg", "anisotropy": 1, "wrapV": "Repeat", "fileName": "Crate_001_Spec.jpg", "repeat": [1, 1], "offset": [0, 0], "ref": "crate/textures/Crate_001_Spec.texture", "magFilter": "Bilinear"}

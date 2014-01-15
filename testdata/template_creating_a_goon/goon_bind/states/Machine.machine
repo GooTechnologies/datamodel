@@ -1,0 +1,1 @@
+{"states": [{"machineRefs": ["goon_bind/states/Machine_0.machine"], "transitions": [], "id": "NzYxMzQzODYw", "actions": [], "name": "Moving"}], "ref": "goon_bind/states/Machine.machine", "id": "MjExNzA2MDEwOQ==", "name": "Goon Mover", "initialState": "NzYxMzQzODYw"}

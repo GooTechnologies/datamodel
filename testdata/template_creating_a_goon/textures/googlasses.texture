@@ -1,0 +1,1 @@
+{"minFilter": "Trilinear", "wrapU": "Repeat", "name": "googlasses", "flipY": true, "url": "images/googlasses.jpg", "anisotropy": 1, "wrapV": "Repeat", "fileName": "googlasses.jpg", "repeat": [1, 1], "offset": [0, 0], "ref": "textures/googlasses.texture", "magFilter": "Bilinear"}

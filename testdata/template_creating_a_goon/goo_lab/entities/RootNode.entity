@@ -1,0 +1,24 @@
+{
+    "components": {
+        "transform": {
+            "rotation": [
+                0,
+                0,
+                0
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "translation": [
+                0,
+                -0.03640878200531006,
+                0
+            ]
+        }
+    },
+    "name": "goo_lab",
+    "nodeType": "Null",
+    "ref": "goo_lab/entities/RootNode.entity"
+}

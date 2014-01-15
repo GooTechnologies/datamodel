@@ -1,0 +1,1 @@
+{"ref": "goon_bind/entities/globalMove01.entity", "nodeType": "Null", "name": "globalMove01", "components": {"transform": {"rotation": [0, 0, 0], "scale": [0.014000000000000002, 0.014000000000000002, 0.014000000000000002], "translation": [0, 0, 0], "parentRef": "goon_bind/entities/charNode01.entity"}}}

@@ -1,0 +1,1 @@
+{"ref": "goon_bind/entities/goon_grp.entity", "nodeType": "Null", "name": "goon_grp", "components": {"transform": {"rotation": [0, 0, 0], "scale": [0.01, 0.01, 0.01], "translation": [5.127091640133585e-09, -0.060845375061035156, -1.769149449160068e-08], "parentRef": "goon_bind/entities/RootNode.entity"}}}

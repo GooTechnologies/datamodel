@@ -1,0 +1,1 @@
+{"states": [{"machineRefs": [], "transitions": [], "id": "LTM4MjQ0MTMwOQ==", "actions": [], "name": "Idle"}], "ref": "goon_bind/states/Machine_0.machine", "id": "MTkxMTU1MDkxMA==", "name": "Run", "initialState": "LTM4MjQ0MTMwOQ=="}
