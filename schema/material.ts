@@ -94,7 +94,10 @@ interface material {
 	uniforms: {
 		materialAmbient?: ColorUniform;
 		materialDiffuse?: ColorUniform;
-		materialEmissive?: ColorUniform;
+		materialEmissive?: {
+			enabled: boolean;
+			value: HyperColor;
+		};
 		materialSpecular?: ColorUniform;
 		materialSpecularPower?: NumberUniform;
 		fresnel?: NumberUniform;

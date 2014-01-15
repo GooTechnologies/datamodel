@@ -26,6 +26,17 @@ interface DateTime {}
  */
 interface Color {}
 
+
+/**
+ * Array of r,g,b[,a] unlimited values
+ *
+ * @type array
+ * @items.type number
+ * @minItems 3
+ * @maxItems 4
+ */
+interface HyperColor {}
+
 /**
  * @type array
  * @items.type number
