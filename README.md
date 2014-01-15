@@ -14,6 +14,7 @@ Terminology
 
 
 
+
 - Binaries
  - Immutable
  - Potentially stored in S3, or sliced
@@ -38,6 +39,8 @@ Terminology
   - Store in JSON or in metadata (Jon Research)
    - JSON: data is naturally transferred to the front end
    - Metadata: Backend can do a HEAD request to check access on write
+
+- Include data model version in all json files
 
  - Levels
   ? User Asset Library

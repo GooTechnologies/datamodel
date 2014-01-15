@@ -18,6 +18,27 @@ interface DateTime {}
 interface Color {}
 
 /**
+ * Matches an array of 3 values
+ *
+ * @type array
+ * @items.type number
+ * @minItems 3
+ * @maxItems 3
+ */
+interface Vector3 {}
+
+
+/**
+ * Matches an array of 2 values
+ *
+ * @type array
+ * @items.type number
+ * @minItems 2
+ * @maxItems 2
+ */
+interface Vector2 {}
+
+/**
  * Matches rfc3987 URI
  *
  * @type string
@@ -58,3 +79,69 @@ interface ImageRef {}
  * @pattern \.posteffect$
  */
 interface PosteffectRef {}
+
+/**
+ * Matches id ending with .animation
+ *
+ * @type string
+ * @pattern \.animation$
+ */
+interface LayersRef {}
+
+/**
+ * Matches id ending with .skeleton
+ *
+ * @type string
+ * @pattern \.skeleton$
+ */
+interface PoseRef {}
+
+/**
+ * Matches id ending with .material
+ *
+ * @type string
+ * @pattern \.material$
+ */
+interface MaterialRef {}
+
+
+/**
+ * Matches id ending with .script
+ *
+ * @type string
+ * @pattern \.script$
+ */
+interface ScriptRef {}
+
+/**
+ * Matches id ending with .mesh
+ *
+ * @type string
+ * @pattern \.mesh$
+ */
+interface MeshRef {}
+
+
+/**
+ * Matches id ending with .machine
+ *
+ * @type string
+ * @pattern \.machine$
+ */
+interface MachineRef {}
+
+/**
+ * Matches id ending with .sound
+ *
+ * @type string
+ * @pattern \.sound$
+ */
+interface SoundRef {}
+
+/**
+ * Matches id ending with .sound
+ *
+ * @type string
+ * @pattern \.texture$
+ */
+interface TextureRef {}

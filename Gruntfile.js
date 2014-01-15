@@ -20,7 +20,7 @@ module.exports = function (grunt) {
         options: {
             stdout: true
         },
-        command: 'python validation/validate.py project'
+        command: 'python validation/validate.py'
       }
 		}
 	});
