@@ -94,7 +94,7 @@ def clear_null_properties(obj):
 	"""
 	keys_to_delete = []
 	for key, value in obj.iteritems():
-		if value is None:
+		if value is None or value == []:
 			keys_to_delete.append(key)
 		elif type(value) == dict:
 			clear_null_properties(value)

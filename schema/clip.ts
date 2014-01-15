@@ -13,7 +13,7 @@ enum ClipType {
 
 interface ClipChannel {
 	blendType: BlendType;
-	jointIndex: number;
+	jointIndex: int;
 	jointName: string;
 	name: string;
 

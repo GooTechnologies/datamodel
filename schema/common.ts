@@ -1,12 +1,21 @@
+
 /**
- * Matches an ISO8601 datetime, e.g. 2014-01-11T13:29:12.42423
+ * Integer
+ * @type number
+ * @multipleOf 1
+ */
+interface int {}
+
+
+/**
+ * ISO8601 datetime, e.g. 2014-01-11T13:29:12.42423
  * @type string
  * @format date-time
  */
 interface DateTime {}
 
 /**
- * Matches an array of 3-4 numeric elements between [0,1]
+ * Array of r,g,b[,a] values in the range [0,1]
  *
  * @type array
  * @items.type number
@@ -18,19 +27,6 @@ interface DateTime {}
 interface Color {}
 
 /**
- * Matches an array of 3 values
- *
- * @type array
- * @items.type number
- * @minItems 3
- * @maxItems 3
- */
-interface Vector3 {}
-
-
-/**
- * Array of 2 values
- *
  * @type array
  * @items.type number
  * @minItems 2
@@ -39,7 +35,35 @@ interface Vector3 {}
 interface Vector2 {}
 
 /**
- * Matches rfc3987 URI
+ * @type array
+ * @items.type number
+ * @minItems 3
+ * @maxItems 3
+ */
+interface Vector3 {}
+
+/**
+ * @type array
+ * @items.type number
+ * @minItems 4
+ * @maxItems 4
+ */
+interface Vector4 {}
+
+
+/**
+ * Represented as an array of 16 numbers
+ *
+ * @type array
+ * @items.type number
+ * @minItems 16
+ * @maxItems 16
+ */
+interface Matrix4x4 {}
+
+
+/**
+ * rfc3987 URI
  *
  * @type string
  * @format uri

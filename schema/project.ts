@@ -64,8 +64,8 @@ interface project {
 
 	// Array of user ids to users who own this project
 	own: string[];
-	edit: string[];
-	view: string[];
+	edit?: string[];
+	view?: string[];
 
 	entityRefs: EntityRef[];
 	posteffectRefs?: PosteffectRef[];

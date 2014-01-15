@@ -1,6 +1,7 @@
 node_modules
 output
 npm-debug.log
+schema_json
 testdata/**/*.jpg
 testdata/**/*.png
 testdata/**/*.mp3

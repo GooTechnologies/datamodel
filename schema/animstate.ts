@@ -54,7 +54,7 @@ interface ClipSource {
 	/**
 	 * -1 means loop infinitely
 	 */
-	loopCount: number;
+	loopCount: int;
 
 	/**
 	 * Higher means faster

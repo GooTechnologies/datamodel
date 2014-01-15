@@ -83,7 +83,7 @@ enum CullMode {
 
 interface MeshRendererComponent {
 	hidden?: boolean;
-	materialRefs: MaterialRef[];
+	materialRefs?: MaterialRef[]; // If missing, renders a default material
 	cullMode: CullMode;
 	castShadows: boolean;
 	receiveShadows: boolean;
