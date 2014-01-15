@@ -1,220 +1,85 @@
 {
-  "SkyBox": {
+  "ClipSource": {
     "additionalProperties": false,
-    "id": "SkyBox",
+    "id": "ClipSource",
     "properties": {
-      "ref": {
-        "type": "string"
-      },
-      "attribution": {
-        "additionalProperties": true,
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "link": {
-            "$ref": "URI"
-          }
-        },
-        "required": [
-          "name",
-          "link"
-        ]
-      },
-      "environmentType": {
-        "type": "number"
-      },
-      "shape": {
+      "type": {
         "enum": [
-          "Sphere",
-          "Box"
+          "Clip",
+          "Managed",
+          "Lerp",
+          "Frozen"
         ]
       },
-      "rotation": {
+      "blendWeight": {
+        "description": "Type Lerp only",
         "type": "number"
       },
-      "imageUrls": {
+      "clipRef": {
+        "$ref": "ClipRef"
+      },
+      "clipSource": {
+        "description": "For type Frozen",
+        "$ref": "ClipSource"
+      },
+      "clipSourceA": {
+        "description": "For type Lerp",
+        "$ref": "ClipSource"
+      },
+      "clipSourceB": {
+        "$ref": "ClipSource"
+      },
+      "frozenTime": {
+        "description": "Type Frozen only",
+        "type": "number"
+      },
+      "filter": {
+        "description": "Type clip",
+        "enum": [
+          "Exclude",
+          "Include"
+        ]
+      },
+      "channels": {
+        "description": "Names of channels(joints) to use\nUse with types Clip and Managed and filter to include or exclude specific joints",
         "type": "array",
         "items": {
           "type": "string"
         }
+      },
+      "loopCount": {
+        "description": "-1 means loop infinitely",
+        "type": "number"
+      },
+      "timeScale": {
+        "description": "Higher means faster",
+        "type": "number"
       }
     },
     "required": [
-      "environmentType",
-      "shape",
-      "rotation",
-      "imageUrls"
+      "type",
+      "clipRef",
+      "loopCount",
+      "timeScale"
     ]
   },
-  "Weather": {
+  "animstate": {
     "additionalProperties": false,
-    "id": "Weather",
+    "id": "animstate",
     "properties": {
-      "snow": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "velocity": {
-            "type": "number"
-          },
-          "rate": {
-            "type": "number"
-          },
-          "enabled": {
-            "type": "boolean"
-          },
-          "height": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "velocity",
-          "rate",
-          "enabled",
-          "height"
-        ]
-      }
-    }
-  },
-  "project": {
-    "additionalProperties": false,
-    "id": "project",
-    "properties": {
-      "id": {
+      "ref": {
         "type": "string"
-      },
-      "licenseType": {
-        "enum": [
-          "CC0",
-          "CC BY",
-          "CC BY-SA",
-          "CC BY-NC",
-          "CC BY-NC-SA",
-          "PRIVATE"
-        ]
-      },
-      "originalLicenseType": {
-        "enum": [
-          "CC0",
-          "CC BY",
-          "CC BY-SA",
-          "CC BY-NC",
-          "CC BY-NC-SA",
-          "PRIVATE"
-        ]
       },
       "name": {
         "type": "string"
       },
-      "public": {
-        "type": "boolean"
-      },
-      "description": {
-        "type": "string"
-      },
-      "deleted": {
-        "type": "boolean"
-      },
-      "created": {
-        "$ref": "DateTime"
-      },
-      "modified": {
-        "$ref": "DateTime"
-      },
-      "parent": {
-        "type": "string"
-      },
-      "own": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "edit": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "view": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "entityRefs": {
-        "type": "array",
-        "items": {
-          "$ref": "EntityRef"
-        }
-      },
-      "posteffectRefs": {
-        "type": "array",
-        "items": {
-          "$ref": "PosteffectRef"
-        }
-      },
-      "groupRefs": {
-        "type": "array",
-        "items": {
-          "$ref": "GroupRef"
-        }
-      },
-      "backgroundColor": {
-        "$ref": "Color"
-      },
-      "globalAmbient": {
-        "$ref": "Color"
-      },
-      "skybox": {
-        "$ref": "SkyBox"
-      },
-      "screenshot": {
-        "$ref": "ImageRef"
-      },
-      "useFog": {
-        "type": "boolean"
-      },
-      "fogColor": {
-        "$ref": "Color"
-      },
-      "fogNear": {
-        "type": "number"
-      },
-      "fogFar": {
-        "type": "number"
-      },
-      "ref": {
-        "type": "string"
-      },
-      "weather": {
-        "$ref": "Weather"
-      },
-      "publishedURL": {
-        "$ref": "URI"
+      "clipSource": {
+        "$ref": "ClipSource"
       }
     },
     "required": [
-      "id",
-      "licenseType",
       "name",
-      "public",
-      "deleted",
-      "created",
-      "modified",
-      "own",
-      "edit",
-      "view",
-      "entityRefs",
-      "groupRefs",
-      "backgroundColor",
-      "globalAmbient",
-      "useFog",
-      "fogColor",
-      "fogNear",
-      "fogFar"
+      "clipSource"
     ]
   },
   "DateTime": {

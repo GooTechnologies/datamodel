@@ -1,220 +1,83 @@
 {
-  "SkyBox": {
+  "ClipChannel": {
     "additionalProperties": false,
-    "id": "SkyBox",
+    "id": "ClipChannel",
     "properties": {
-      "ref": {
-        "type": "string"
-      },
-      "attribution": {
-        "additionalProperties": true,
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "link": {
-            "$ref": "URI"
-          }
-        },
-        "required": [
-          "name",
-          "link"
+      "blendType": {
+        "enum": [
+          "Linear"
         ]
       },
-      "environmentType": {
+      "jointIndex": {
         "type": "number"
       },
-      "shape": {
-        "enum": [
-          "Sphere",
-          "Box"
-        ]
-      },
-      "rotation": {
-        "type": "number"
-      },
-      "imageUrls": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      }
-    },
-    "required": [
-      "environmentType",
-      "shape",
-      "rotation",
-      "imageUrls"
-    ]
-  },
-  "Weather": {
-    "additionalProperties": false,
-    "id": "Weather",
-    "properties": {
-      "snow": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "velocity": {
-            "type": "number"
-          },
-          "rate": {
-            "type": "number"
-          },
-          "enabled": {
-            "type": "boolean"
-          },
-          "height": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "velocity",
-          "rate",
-          "enabled",
-          "height"
-        ]
-      }
-    }
-  },
-  "project": {
-    "additionalProperties": false,
-    "id": "project",
-    "properties": {
-      "id": {
+      "jointName": {
         "type": "string"
-      },
-      "licenseType": {
-        "enum": [
-          "CC0",
-          "CC BY",
-          "CC BY-SA",
-          "CC BY-NC",
-          "CC BY-NC-SA",
-          "PRIVATE"
-        ]
-      },
-      "originalLicenseType": {
-        "enum": [
-          "CC0",
-          "CC BY",
-          "CC BY-SA",
-          "CC BY-NC",
-          "CC BY-NC-SA",
-          "PRIVATE"
-        ]
       },
       "name": {
         "type": "string"
       },
-      "public": {
-        "type": "boolean"
+      "translationSamples": {
+        "$ref": "BinaryPointer"
       },
-      "description": {
+      "times": {
+        "$ref": "BinaryPointer"
+      },
+      "rotationSamples": {
+        "$ref": "BinaryPointer"
+      },
+      "scaleSamples": {
+        "$ref": "BinaryPointer"
+      },
+      "type": {
+        "enum": [
+          "Joint",
+          "Trigger",
+          "FloatLERP"
+        ]
+      },
+      "properties": {
+        "description": "Type trigger only, has to match length of times",
+        "type": "object",
+        "additionalProperties": {}
+      }
+    },
+    "required": [
+      "blendType",
+      "jointIndex",
+      "jointName",
+      "name",
+      "translationSamples",
+      "times",
+      "rotationSamples",
+      "scaleSamples",
+      "type"
+    ]
+  },
+  "clip": {
+    "additionalProperties": false,
+    "id": "clip",
+    "properties": {
+      "binaryRef": {
+        "$ref": "BinaryRef"
+      },
+      "name": {
         "type": "string"
-      },
-      "deleted": {
-        "type": "boolean"
-      },
-      "created": {
-        "$ref": "DateTime"
-      },
-      "modified": {
-        "$ref": "DateTime"
-      },
-      "parent": {
-        "type": "string"
-      },
-      "own": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "edit": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "view": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "entityRefs": {
-        "type": "array",
-        "items": {
-          "$ref": "EntityRef"
-        }
-      },
-      "posteffectRefs": {
-        "type": "array",
-        "items": {
-          "$ref": "PosteffectRef"
-        }
-      },
-      "groupRefs": {
-        "type": "array",
-        "items": {
-          "$ref": "GroupRef"
-        }
-      },
-      "backgroundColor": {
-        "$ref": "Color"
-      },
-      "globalAmbient": {
-        "$ref": "Color"
-      },
-      "skybox": {
-        "$ref": "SkyBox"
-      },
-      "screenshot": {
-        "$ref": "ImageRef"
-      },
-      "useFog": {
-        "type": "boolean"
-      },
-      "fogColor": {
-        "$ref": "Color"
-      },
-      "fogNear": {
-        "type": "number"
-      },
-      "fogFar": {
-        "type": "number"
       },
       "ref": {
         "type": "string"
       },
-      "weather": {
-        "$ref": "Weather"
-      },
-      "publishedURL": {
-        "$ref": "URI"
+      "channels": {
+        "type": "array",
+        "items": {
+          "$ref": "ClipChannel"
+        }
       }
     },
     "required": [
-      "id",
-      "licenseType",
+      "binaryRef",
       "name",
-      "public",
-      "deleted",
-      "created",
-      "modified",
-      "own",
-      "edit",
-      "view",
-      "entityRefs",
-      "groupRefs",
-      "backgroundColor",
-      "globalAmbient",
-      "useFog",
-      "fogColor",
-      "fogNear",
-      "fogFar"
+      "channels"
     ]
   },
   "DateTime": {

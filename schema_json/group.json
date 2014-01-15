@@ -61,7 +61,7 @@
   "Vector2": {
     "additionalProperties": false,
     "id": "Vector2",
-    "description": "Matches an array of 2 values",
+    "description": "Array of 2 values",
     "type": "array",
     "items": {
       "type": "number"
@@ -76,6 +76,15 @@
     "description": "Matches rfc3987 URI",
     "type": "string",
     "format": "uri",
+    "properties": {}
+  },
+  "BinaryPointer": {
+    "additionalProperties": false,
+    "id": "BinaryPointer",
+    "description": "Vector [byteOffset, wordLength, type]",
+    "type": "array",
+    "minItems": 3,
+    "maxItems": 3,
     "properties": {}
   },
   "EntityRef": {
@@ -188,6 +197,22 @@
     "description": "Matches id ending with .animstate",
     "type": "string",
     "pattern": "\\.animstate$",
+    "properties": {}
+  },
+  "ClipRef": {
+    "additionalProperties": false,
+    "id": "ClipRef",
+    "description": "Matches id ending with .clip",
+    "type": "string",
+    "pattern": "\\.clip$",
+    "properties": {}
+  },
+  "BinaryRef": {
+    "additionalProperties": false,
+    "id": "BinaryRef",
+    "description": "Matches id ending with .bin",
+    "type": "string",
+    "pattern": "\\.bin$",
     "properties": {}
   }
 }

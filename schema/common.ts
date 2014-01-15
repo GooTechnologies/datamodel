@@ -29,7 +29,7 @@ interface Vector3 {}
 
 
 /**
- * Matches an array of 2 values
+ * Array of 2 values
  *
  * @type array
  * @items.type number
@@ -45,6 +45,16 @@ interface Vector2 {}
  * @format uri
  */
 interface URI {}
+
+/**
+ * Vector [byteOffset, wordLength, type]
+ *
+ * @type array
+ * @minItems 3
+ * @maxItems 3
+ */
+interface BinaryPointer {}
+
 
 /**
  * Matches id ending with .entity
@@ -163,3 +173,22 @@ interface TextureRef {}
  * @pattern \.animstate$
  */
 interface AnimationStateRef {}
+
+/**
+ * Matches id ending with .clip
+ *
+ * @type string
+ * @pattern \.clip$
+ */
+interface ClipRef {}
+
+/**
+ * Matches id ending with .bin
+ *
+ * @type string
+ * @pattern \.bin$
+ */
+interface BinaryRef {}
+
+
+
