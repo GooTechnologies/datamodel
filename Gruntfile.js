@@ -7,8 +7,9 @@ module.exports = function (grunt) {
 					flatten: false,
 					cwd: 'schema',
 					src: [
-						'{,**/}*.ts',
-						'!common.ts'
+						'2.0/*.ts'
+						// '{,**/}*.ts',
+						// '!common.ts'
 					],
 					dest: 'schema_json',
 					ext: '.json',

@@ -24,16 +24,12 @@ enum ShadowType {
 	VSM
 }
 
-/**
- * Migration notes:
- * attenuate is never used, just remove
- * same with fov, type and projection from shadowSettings
- */
 interface LightComponent {
 	type: LightType;
 	angle?: number;
 	
 	color?: Color;
+	attenuate: boolean; // To be removed
 	direction?: Vector3;
 	exponent?: number;
 	intensity: number;
@@ -44,7 +40,6 @@ interface LightComponent {
 	penumbra?: number;
 	range?: number;
 	shadowCaster: boolean;
-	
 	shadowSettings?: {
 		darkness: number;
 		upVector: Vector3;
@@ -55,10 +50,12 @@ interface LightComponent {
 		resolution: Vector2;
 		shadowType: ShadowType;
 
+		fov: number; // Remove
+		type: string; // Remove
+		projection: string; // Remove
 	}
 	specularIntensity: number;
 }
-
 
 enum ShapeName {
 	Box,
@@ -85,12 +82,8 @@ enum CullMode {
 }
 
 interface MeshRendererComponent {
-	materialRefs?: {
-		[listId: string]: MaterialRef;
-	}
-
-	// TODO: Should we have hidden both here and on the entity?
 	hidden?: boolean;
+	materialRefs?: MaterialRef[]; // If missing, renders a default material
 	cullMode: CullMode;
 	castShadows: boolean;
 	receiveShadows: boolean;
@@ -98,41 +91,33 @@ interface MeshRendererComponent {
 }
 
 interface ScriptComponent {
-	scriptRefs: {
-		[listId: string]: ScriptRef;
-	}
+	scriptRefs: ScriptRef[];
+
 }
 
 interface StateMachineComponent {
-	machineRefs: {
-		[listId: string]: MachineRef;
-	}
+	machineRefs: MachineRef[];
 }
 
 interface SoundComponent {
-	soundRefs: {
-		[listId: string]: SoundRef;
-	}
+	soundRefs: SoundRef[];
 }
 
-/** 
- * Migration notes: 
- * - rotation may need to be transformed from matrix to euler angles
- * - parentRef is now childRefs
- */
 interface TransformComponent {
-	rotation: Vector3;
+	parentRef?: EntityRef;
+	rotation: number[]; // Should be vector3
 	scale?: Vector3;
 	translation: Vector3;
-	childRefs: {
-		[listId: string]: EntityRef;
-	}
 }
 
-
-interface entity extends GooObject {
-
+interface entity {
+	// Leaked from frontend
+	ref?: EntityRef;
+	name: string;
 	hidden?: boolean;
+
+	// Not needed
+	nodeType?: string;
 
 	components: {
 		animation?: AnimationComponent;
