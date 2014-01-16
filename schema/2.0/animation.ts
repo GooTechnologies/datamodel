@@ -34,7 +34,6 @@ interface AnimationLayer {
 
 
 interface animation extends GooObject {
-	ref?: string;
 	layers: {
 		[listId: string]: AnimationLayer;
 	}

@@ -278,12 +278,25 @@ interface GooObject {
 
 	public: boolean;
 	owner: string;
-	editors?: string[];
+	editors?: {
+		[listId: string]: string;
+	}
+
+	/**
+	 * Ignored if public is true
+	 */
+	viewers?: {
+		[listId: string]: string;
+	}
 
 	description: string;
 	thumbnail: ImageRef;
 
 	deleted: boolean; // TODO:
 
+	/**
+	 * @default 1
+	 */
+	dataModelVersion: number;
 }
 

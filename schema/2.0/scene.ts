@@ -10,7 +10,7 @@ interface scene extends GooObject {
 	/** 
 	 * _Root_ entities that are present in the scene
 	 */
-	entityRefs: {
+	entities: {
 		[listId: string]: {
 			entityRef: EntityRef;
 			sortValue: number;
