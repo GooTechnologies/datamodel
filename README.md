@@ -202,3 +202,12 @@ For arrays:
     minItems 
     maxItems 
     uniqueItems
+
+### Validating
+
+Run 
+
+    grunt
+
+
+

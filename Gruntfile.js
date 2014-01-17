@@ -7,15 +7,20 @@ module.exports = function (grunt) {
 					flatten: false,
 					cwd: 'schema',
 					src: [
-						'2.0/*.ts'
-						// '{,**/}*.ts',
-						// '!common.ts'
+						'{,**/}*.ts',
+						'!common.ts'
 					],
 					dest: 'schema_json',
 					ext: '.json',
 				}]
 			}
 		},
+		clean: {
+			schema: [
+				'schema_json/'
+			]
+		},
+
 		shell: {
       validate: {
         options: {
