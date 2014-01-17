@@ -1,4 +1,4 @@
-/// <reference path="common.ts"/>
+/// <reference path="gooobject.ts"/>
 
 
 interface project extends GooObject {

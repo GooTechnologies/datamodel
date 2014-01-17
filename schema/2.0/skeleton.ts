@@ -1,4 +1,4 @@
-/// <reference path="common.ts"/>
+/// <reference path="gooobject.ts"/>
 
 
 /**
@@ -14,8 +14,6 @@ interface Joint {
 	}
 }
 
-// TODO: ordering of joints is not important, right (they have index already)
-// TODO: Is a skeleton potentially reusable?
 interface skeleton extends GooObject {
 	joints: {
 		[listId: string]: Joint;

@@ -1,4 +1,4 @@
-/// <reference path="common.ts"/>
+/// <reference path="gooobject.ts"/>
 
 /** 
  * This datatype will be enhanced when we implement

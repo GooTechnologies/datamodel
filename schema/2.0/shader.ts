@@ -1,4 +1,4 @@
-/// <reference path="common.ts"/>
+/// <reference path="gooobject.ts"/>
 
 /** 
  * Not used in create (only ubershader), 

@@ -1,4 +1,4 @@
-/// <reference path="common.ts"/>
+/// <reference path="gooobject.ts"/>
 
 interface AnimationComponent {
 	layersRef: LayersRef;
@@ -6,7 +6,18 @@ interface AnimationComponent {
 }
 
 interface CameraComponent {
-	aspect?: number; // TODO: Mandatory?
+
+	/**
+	 * @default 1
+	 */
+	aspect: number; 
+
+	/**
+	 * @default false
+	 */
+	lockedRatio: boolean; 
+
+
 	far: number;
 	fov: number; 
 	near: number
@@ -89,8 +100,6 @@ interface MeshRendererComponent {
 		[listId: string]: MaterialRef;
 	}
 
-	// TODO: Should we have hidden both here and on the entity?
-	hidden?: boolean;
 	cullMode: CullMode;
 	castShadows: boolean;
 	receiveShadows: boolean;

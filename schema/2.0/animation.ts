@@ -1,4 +1,4 @@
-/// <reference path="common.ts"/>
+/// <reference path="gooobject.ts"/>
 
 enum TransitionType {
 	Fade, 
@@ -20,8 +20,7 @@ interface AnimationState {
 
 interface AnimationLayer {
 	sortValue: number;
-	name: string;
-
+	
 	blendWeight: number;
 	defaultState: string;
 	states: {

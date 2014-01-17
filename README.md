@@ -89,10 +89,10 @@ Say Oskar makes a nice house in Create, and I want to use it in my scene. I inse
 ##### Solution
 When I insert Oskar's house into my scene, it's not duplicated. Instead a linked entity is created: 
 
-    {
-      "id": "myHouse.entity",
-      "sourceRef": "oskarsHouse.entity"
-    }
+      {
+        "id": "myHouse.entity",
+        "sourceRef": "oskarsHouse.entity"
+      }
 
 Oskar's house is a dependency, hence the key name sourceRef. 
 
@@ -138,3 +138,67 @@ A common and desired workflow is
 This is a complicated problem, but a first step is to use the Selective Override pattern on converted models. In short, the result of a converted model is stored in some library. Then linked entities are created and added to the scene. When the updated fbx is converted, the result is stored as completely new objects. Merging logic then redirects links from the linked entities to the new result as needed. If the result of the old conversion is no longer referenced, it will be deleted. 
 
 There is a lot more to this, call it a work in progress. 
+
+
+### Migration
+
+The data model change contains a bunch of minor updates, that will require updates in specific places. Specific migration notes can be found in the .ts file for the different data types. The best way to find a migration strategy is to just take the 1.0 schema and the 2.0 schema and compare them. 
+
+#### GUIDs instead of Refs
+
+The ref-idea, an id that looks like a file path, is abandoned. The name `ref` is also abandoned, which will have to be changed in a gazillion places. Namespaces are a thing of the past. There's just the id, and the type.
+
+#### No more .group objects
+
+The group object is abandoned. It was designed to keep track of dependencies, but now every object is responsible for keeping track of its own dependencies. 
+
+#### No more arrays
+
+All arrays are changed to sets or unsorted sets. See the .ts schemas for examples. 
+
+## The Data Model Spec
+
+The data model schema is done in [typescript](http://www.typescriptlang.org/) and stored in this repo under schema/2.0/. We then use a fork of [typson](https://github.com/lbovet/typson) to convert the typescript to [json schema](http://json-schema.org/), which can then be used for documentation and validation.
+
+### Creating a schema
+
+A data type is defined as a typescript interface, and should extend the GooObject interface. Properties are declared like so:
+
+    propName: type;
+
+Where type can be a primitive type (number, string, boolean, any) or a user defined type (check common.ts for examples).
+
+Properties can also be annotated i jsdoc-like comments. For instance, most properties should have a default value: 
+
+    /**
+     * @default 2
+     */
+    dataModelVersion: number;
+
+The available annotation keywords are 
+
+General: 
+
+    type
+    default
+
+For numbers: 
+
+    minimum 
+    exclusiveMinimum 
+    maximum
+    exclusiveMaximum
+    multipleOf
+
+For strings: 
+
+    minLength
+    maxLength 
+    format  (see json schema for available options)
+    pattern (regex)
+
+For arrays:
+
+    minItems 
+    maxItems 
+    uniqueItems

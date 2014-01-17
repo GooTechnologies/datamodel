@@ -1,10 +1,9 @@
-/// <reference path="common.ts"/>
+/// <reference path="gooobject.ts"/>
 
 interface sound {
 
 	/**
 	 * Map key is the format (mp3, wav, etc.) in lowercase
-	 * TODO: what sound formats do we actually support?
 	 */
 	audioRefs: {
 		[format:string]: AudioRef;

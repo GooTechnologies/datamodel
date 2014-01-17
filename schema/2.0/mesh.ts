@@ -1,4 +1,4 @@
-/// <reference path="common.ts"/>
+/// <reference path="gooobject.ts"/>
 
 enum IndexMode {
 	Lines, 
@@ -31,12 +31,15 @@ interface BoundingVolume {
 interface mesh extends GooObject{
 
 	binaryRef: BinaryRef;
+
+	/**
+	 * @default "Mesh"
+	 */
 	type: MeshType;
 
 
 	/**
 	 * Normally only the first element of the array is used
-	 * TODO: Why have an array?
 	 */ 
 	indexLengths: int[];
 	indexModes: IndexMode[];
