@@ -33,6 +33,8 @@ module.exports = function (grunt) {
 
 	grunt.loadTasks('tools');
 	grunt.loadNpmTasks('grunt-shell')	
+	grunt.loadNpmTasks('grunt-contrib-clean');
+
 	grunt.registerTask('compile', ['typson']);
 	grunt.registerTask('validate', ['shell:validate']);
 	grunt.registerTask('default', ['typson', 'shell:validate']);

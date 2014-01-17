@@ -2,6 +2,7 @@ import json
 import rfc3987
 import os
 import sys
+import pdb
 from glob import glob
 
 # Install strict_rfc3339 if we want to use strict rfc3339 timestamp. 
@@ -14,7 +15,7 @@ from glob import glob
 from jsonschema import Draft4Validator, RefResolver, FormatChecker
 from jsonschema.exceptions import RefResolutionError, ValidationError, FormatError
 
-SCHEMA_DIR = "schema_json"
+SCHEMA_DIR = "schema_json/1.0"
 DATA_DIR = "testdata"
 BINARY_TYPES = ['png', 'jpg', 'jpeg', 'tga', 'dds', 'crn', 'wav', 'mp3', 'bin']
 
@@ -24,12 +25,23 @@ def validate_all(datatype=None):
 	failed = 0
 	for root, path, files in os.walk(DATA_DIR):
 		for filename in files:
-			filetype = filename.split('.')[-1]
-			if (not datatype or filetype == datatype) and filetype not in BINARY_TYPES: 
+			filetype = os.path.splitext(filename)[1]
+			try:
+				filetype = filetype[1:]
+			except Exception:
+				pass
+
+			if datatype and filetype != datatype: 
+				continue
+
+			if filetype and filetype not in BINARY_TYPES: 
+				print "Validating %s of type %s"%(filename, filetype)
 				try:
 					validate_file(os.path.join(root, filename))
 					succeeded += 1
-				except Exception as e:
+				except ValidationError as e:
+					failed += 1
+				except IOError as e:
 					failed += 1
 
 	if succeeded + failed == 0: 
@@ -67,6 +79,7 @@ def validator_for_type(datatype):
 	except IOError as e:
 		print "No validator for %s"%datatype
 		raise e
+
 	
 	return Draft4Validator(schema[datatype],
 		resolver=MyResolver.from_schema(schema),
