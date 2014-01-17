@@ -23,7 +23,6 @@ where listId is any locally unique string.
 #### Access Control
 A JSON object contains its own access control list: 
 
-  ...
   owner: "[userId]",
   public: true/false,
   editors: {
@@ -56,75 +55,86 @@ Binary objects have a simpler access control list, since they cannot be edited:
 In Create, this data is stored in Riak's usermeta object for the binary. Outside Create this information is useless, so it will not be exported. 
 
 
-### Merge-safe
-...
+### Future Proof
+There's a couple of things that we know we want to implement further down the roadmap, and while they're not needed now, we must make sure the data model can support them when we get around to it. 
 
+#### Merge-safe
+To prepare for real-time collaboration the data model format needs to be mergeable, i.e. changes from several people can be applied to an original without causing unnecessary conflicts. A lengthy discussion on the subject can be found here: http://bitsquid.se/presentations/collaboration.pdf.
 
- - Merge-safe (bitsquid)
-  - No arrays (objects with sort values)
- 
- - Dependencies
-  - It must be possible to somehow get all the dependencies of a given object
-   - Research (ask Basho)
-    - Drivers: 
-     - Performance
-     - Robustness
+In short there are two main things that are needed for mergeability: 
 
-   ? Manual indices (libraryRefs)
-   ? Link walking
-   ? Map reduce
+- Unique Id for every object
+- Using sets and sorted sets instead of arrays
 
-  - All objects should reference their direct dependencies
-   - Entities should reference their children, not their parent (parent is not a dependency)
+That's the reason why what was previously arrays sometimes look a bit cumbersome, e.g.
 
-  - All refs keys in the JSON should be easily identifiable
-   ? End with Ref (single ref) or Refs (array-like of refs)
-   - Binaries too (no more url)
- 
- - Prefabs, selective override
-  - When I use an object in my scene, a minimal linked object is created: 
-  {
-    id: "[localHouseID].entity",
-    sourceRef: "[originalHouseID].entity"
-  }
-  where [localHouseID] and [originalHouseID] are GUIDs
-  When the editor loads [localHousID], it reads originalHouseID and merges the two files
-  before the data is loaded into the engine. This merge is done in the engine loaders/handlers. 
+  posteffects: {
+    [key: string]: {
+      sortValue: number;
 
-  I change the position of my house, and voila!
-  {
-    id: "[localHouseID].entity",
-    sourceRef: "[originalHouseID].entity",
-    ...
-    transform: [x,x,x]
+      type: string;
+      options: {
+        [optname: string]: any;
+      }
+      enabled: boolean;
+    }
   }
 
-  When loading a bundle, the dependency walker must load originalHouse if localHouse is in my scene, 
-  hence the key is sourceRef.
 
-  I can manually sever the link in the editor. The data from originalHouse will be copied to localHouse, 
-  but future changes to originalHouse will not be reflected in localHouse. 
 
-  If my level designer team mate wants to use my house in a level, he can insert it in his scene. This 
-  will create a new object newLocalHouse with a link to my localHouse. Both my changes and changes to 
-  originalHouse will be reflected in newLocalHouse. 
+#### Sharing and Selective Override
 
-  If I want to sell/share my new improved localHouse on the asset market, all links are severed. Assets
-  in the global asset library cannot have links. 
+Say Oskar makes a nice house in Create, and I want to use it in my scene. I insert the house, move it and rotate it a bit. Then Oskar fixes the material on the tiled roof a bit. Then I want his changes to automatically update in my scene, but I don't want to revert to the original translation and rotation, which I change. We call this *selective override*.
 
-  Assets in the asset library are "immutable". Publishing local assets to an asset library copies
-  the local asset, with dependencies, severs all the links and creates a version of the asset in the 
-  asset library. If it's published anew, a new version of the same asset is created. Users can 
-  potentially subscribe to new versions of originalHouse, and get notifications or similar. 
+##### Solution
+When I insert Oskar's house into my scene, it's not duplicated. Instead a linked entity is created: 
 
- - Merging new converted fbx
-  - I convert an fbx, that contains 4 entities, 1,2,3,4 with names A,B,C,D
-  - Overrides are created for all 4 entities
-  - I drop a new version of the fbx and somehow indicate that I want to replace/merge
-  - It creates 4 new entities 5,6,7,8 with names A,B,C,E
-  - The editor matches A,B,C and overwrites enties 1,2,3 with the data in 5,6,7
-  - The editor adds entity 8 (E) to the project and discards 5,6,7
-  - An override is created for 8 (E)
-  - 4 (D) has no more links and is removed, either explicitly or by "the broom"
-  - The overrides still point to 1,2,3
+  {
+    "id": "myHouse.entity",
+    "sourceRef": "oskarsHouse.entity"
+  }
 
+Oskar's house is a dependency, hence the key name sourceRef. 
+
+I then move and rotate the house, and myHouse is updated:
+
+  {
+    "id": "myHouse.entity",
+    "sourceRef": "oskarsHouse.entity"
+    "components": {
+      "transform": {
+        "translation": [1,1,0],
+        "rotation": [1,2,0]
+      }
+    }
+  }
+
+When the entity is loaded into the engine, the loaders will merge myHouse with oskarsHouse to get the desired outcome. 
+
+The UI can also highlight which properties I have set and which are inherited from Oskar's original house. I can also easily revert to the original by erasing all my changes. 
+
+I can server the link to Oskars house in Create, e.g. by clicking a button. The editor will then merge oskarsHouse and myHouse, save the merged version in myHouse and remove the sourceRef. Now future changes that Oskar makes will not be visible in myHouse. 
+
+Links can be done in several steps. If Rikard wants to use myHouse (because I made some kickass changes to the curtains) rickardsHouse will be linked to myHouse, which is still linked to oskarsHouse. 
+
+
+#### Global Asset library/Asset Market
+
+We want users to be able to upload assets to a global asset market. This should work like publishing, in that you upload a snapshot of your assets to the market. Subsequent changes to the asset will not be available to people using the asset until you upload a new version. 
+
+That way, assets in the asset library are "immutable". Publishing local assets to an asset library copies the local asset, with dependencies, severs all the links and creates a version of the asset in the asset library. If it's published anew, a new version of the same asset is created. Users can potentially subscribe to new versions of oskarsHous, and get notifications or similar. 
+
+#### The Updated FBX-file
+
+A common and desired workflow is
+
+1. Create a model in Maya (or any other format)
+2. Drop it into create
+3. Modify the scene, tune the materials, etc. 
+4. Update the model in Maya
+5. Drop the new version into Create
+6. All the updates from Maya are intelligently merged with the modifications done in Create
+
+This is a complicated problem, but a first step is to use the Selective Override pattern on converted models. In short, the result of a converted model is stored in some library. Then linked entities are created and added to the scene. When the updated fbx is converted, the result is stored as completely new objects. Merging logic then redirects links from the linked entities to the new result as needed. If the result of the old conversion is no longer referenced, it will be deleted. 
+
+There is a lot more to this, call it a work in progress. 
