@@ -14,25 +14,25 @@ A JSON object hold references to all its dependencies, both JSON and Binary. A d
 
 All dependencies are referenced by JSON keys ending in "ref" or "refs" (case insensitive). In the singular case, the value is simply the key of the dependency. In the plural case, the value is a Set, looking like this: 
   
-  soundRefs: {
-    listId: dependencyId
-  } 
+    soundRefs: {
+      listId: dependencyId
+    } 
 
 where listId is any locally unique string.
 
 #### Access Control
 A JSON object contains its own access control list: 
 
-  owner: "[userId]",
-  public: true/false,
-  editors: {
-    "[listId]": "[userId]",
-    "[listId]": "[userId]"
-  },
-  viewers: {
-    "[listId]": "[userId]",
-    "[listId]": "[userId]"
-  }
+    owner: "[userId]",
+    public: true/false,
+    editors: {
+      "[listId]": "[userId]",
+      "[listId]": "[userId]"
+    },
+    viewers: {
+      "[listId]": "[userId]",
+      "[listId]": "[userId]"
+    }
 
 determining who can view and edit the object. This information is only used inside create, and could potentially be stripped on export to save size.  
 
@@ -46,11 +46,11 @@ The object key for a binary file is a hash of the file content, salted with a us
 
 Binary objects have a simpler access control list, since they cannot be edited:  
 
-  public: true/false,
-  viewers: {
-    "[listId]": "[userId]",
-    "[listId]": "[userId]"
-  }
+    public: true/false,
+    viewers: {
+      "[listId]": "[userId]",
+      "[listId]": "[userId]"
+    }
 
 In Create, this data is stored in Riak's usermeta object for the binary. Outside Create this information is useless, so it will not be exported. 
 
@@ -68,17 +68,17 @@ In short there are two main things that are needed for mergeability:
 
 That's the reason why what was previously arrays sometimes look a bit cumbersome, e.g.
 
-  posteffects: {
-    [key: string]: {
-      sortValue: number;
+    posteffects: {
+      [key: string]: {
+        sortValue: number;
 
-      type: string;
-      options: {
-        [optname: string]: any;
+        type: string;
+        options: {
+          [optname: string]: any;
+        }
+        enabled: boolean;
       }
-      enabled: boolean;
     }
-  }
 
 
 
@@ -89,25 +89,25 @@ Say Oskar makes a nice house in Create, and I want to use it in my scene. I inse
 ##### Solution
 When I insert Oskar's house into my scene, it's not duplicated. Instead a linked entity is created: 
 
-  {
-    "id": "myHouse.entity",
-    "sourceRef": "oskarsHouse.entity"
-  }
+    {
+      "id": "myHouse.entity",
+      "sourceRef": "oskarsHouse.entity"
+    }
 
 Oskar's house is a dependency, hence the key name sourceRef. 
 
 I then move and rotate the house, and myHouse is updated:
 
-  {
-    "id": "myHouse.entity",
-    "sourceRef": "oskarsHouse.entity"
-    "components": {
-      "transform": {
-        "translation": [1,1,0],
-        "rotation": [1,2,0]
+    {
+      "id": "myHouse.entity",
+      "sourceRef": "oskarsHouse.entity"
+      "components": {
+        "transform": {
+          "translation": [1,1,0],
+          "rotation": [1,2,0]
+        }
       }
     }
-  }
 
 When the entity is loaded into the engine, the loaders will merge myHouse with oskarsHouse to get the desired outcome. 
 
