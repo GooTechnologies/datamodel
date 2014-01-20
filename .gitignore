@@ -2,7 +2,10 @@ node_modules
 output
 npm-debug.log
 schema_json
+venv
 testdata/**/*.jpg
 testdata/**/*.png
 testdata/**/*.mp3
 testdata/**/*.bin
+*sublime-project
+*sublime-workspace
