@@ -40,7 +40,26 @@ determining who can view and edit the object. This information is only used insi
 
 Binary objects are immutable, they can only be created and deleted. To e.g. change the image file for a texture, you create a new binary image resource and redirect the dependency reference in the texture JSON file to point to the new image. 
 
-The object key for a binary file is a hash of the file content, salted with a user specific key (exact algorithm tbd). The hashing enables caching content (since it's immutable, we can cache forever), while the user-unique salt prevents intentional cache collisions. 
+The object key for a binary file is a SHA1 hash of the file content concatenated with the user id. The hashing enables caching content (since it's immutable, we can cache forever), while the user-unique salt prevents intentional cache collisions. Implementation is easy and fast enough in both python: 
+
+    from hashlib import sha1
+    from array import array
+
+    def get_hash(file_handle, user_id):
+      bytes = array('B', file_handle.read())
+      bytes.extend(array('B', user_id))
+      return sha1(bytes).hexdigest()
+
+and CoffeeScript (using [CryptoJS] https://code.google.com/p/crypto-js/)
+
+    # Make sure to include both the bundled sha1.js and lib-typedarrays.js
+
+    getHash = (arrayBuffer, userId)->
+      userIdBytes = new Uint8Array(userId.charCodeAt(idx) for char,idx in userId)
+      wordArray = CryptoJS.lib.WordArray.create(arrayBuffer)
+      wordArray.concat(CryptoJS.lib.WordArray.create(userIdBytes)) 
+      CryptoJS.SHA1(wordArray).toString()
+
 
 #### Access Control
 
