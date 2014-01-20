@@ -9,3 +9,4 @@ testdata/**/*.mp3
 testdata/**/*.bin
 *sublime-project
 *sublime-workspace
+.idea/

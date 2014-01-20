@@ -1,0 +1,19 @@
+{
+  "ref": "root.group",
+  "libraryRefs": [
+    "posteffects/Sepia.posteffect",
+    "posteffects/Bloom.posteffect",
+    "posteffects/Grain.posteffect",
+    "posteffects/Contrast.posteffect",
+    "posteffects/RgbShift.posteffect",
+    "posteffects/Vignette.posteffect",
+    "posteffects/Bleach.posteffect",
+    "goo_lab/entities/SpotLight.entity",
+    "images/googlasses.jpg",
+    "textures/googlasses.texture",
+    "images/screenshot.png",
+    "entities/ToolCamera.entity",
+    "scripts/ToolCameraScript.script"
+  ],
+  "name": "root"
+}
