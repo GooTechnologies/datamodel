@@ -100,14 +100,6 @@ interface BinaryPointer {}
 interface EntityRef {}
 
 /**
- * Matches id ending with .group
- *
- * @type string
- * @pattern \.group$
- */
-interface GroupRef {}
-
-/**
  * Matches id ending with one of .mp3, .wav
  * (case sensitive, must be lowercase)
  *
