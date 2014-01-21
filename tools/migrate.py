@@ -24,24 +24,7 @@ PROJECT_FILE = 'project.project'
 class GooDataModel:
 	"""Used for reading in a Goo scene and exporting it to desired data model version."""
 
-	class GooTree:
-
-		class TreeEntity:
-
-			def __init__(self, is_root=False):
-				self.children = list()
-				self.parent = None
-				self.is_root = is_root
-
-			def add_child(self, c):
-				raise NotImplementedError()
-
-		def __init__(self):
-			self._root = self.TreeEntity(is_root=True)
-
-		def add_root_entities(self, root_entities):
-			for ent in root_entities:
-				self._root.add_child(ent)
+	BINARY_TYPES = ['png', 'jpg', 'jpeg', 'tga', 'dds', 'crn', 'wav', 'mp3', 'bin']
 
 	DATA_MODEL_VERSION_1 = 0
 	DATA_MODEL_VERSION_2 = 1
@@ -69,7 +52,11 @@ class GooDataModel:
 
 		self._references = dict()  # Store ref -> dict
 
-		self._missing_files = list()  # Store references to missing files
+		self._missing_files = set()  # Store references to missing files
+
+		self._reading_from_bundle = False
+
+		self._project_dict = None
 
 	def read_directory(self, dir_path, model_version):
 
@@ -90,46 +77,94 @@ class GooDataModel:
 		self._update_root_path(project_file_path)
 
 		with open(project_file_path, 'r') as project_file:
-			project_dict = json.loads(project_file.read())
+			self._project_dict = json.loads(project_file.read())
 
-		self._find_references_in_scene(project_dict, model_version)
+		self._find_references_in_scene(model_version)
 
 		# TODO : Find asset items. Stuff which is in the libraryRefs and not in the entityRefs.
 
-	def write(self, model_version):
-		if model_version is GooDataModel.DATA_MODEL_VERSION_1:
+	def write(self, output_dir,  output_data_model_version):
+		"""Writes the read data into the desired"""
+		if output_data_model_version is GooDataModel.DATA_MODEL_VERSION_1:
 			pass
-		elif model_version is GooDataModel.DATA_MODEL_VERSION_2:
-
+		elif output_data_model_version is GooDataModel.DATA_MODEL_VERSION_2:
+			for ref, ref_dict in self._references.iteritems():
+				# Create a new dict for every ref and write it to the output folder.
+				if ref.endswith('animation'):
+					pass
+				elif ref.endswith('animstate'):
+					pass
+				elif ref.endswith('clip'):
+					pass
+				elif ref.endswith('entity'):
+					pass
+				elif ref.endswith('group'):
+					# Nothing should happen here.
+					pass
+				elif ref.endswith('machine'):
+					pass
+				elif ref.endswith('material'):
+					pass
+				elif ref.endswith('mesh'):
+					pass
+				elif ref.endswith('posteffect'):
+					pass
+				elif ref.endswith('project'):
+					# Will take care of this separately.
+					pass
+				elif ref.endswith('script'):
+					pass
+				elif ref.endswith('shader'):
+					pass
+				elif ref.endswith('skeleton'):
+					pass
+				elif ref.endswith('sound'):
+					pass
+				elif ref.endswith('texture'):
+					pass
+				else:
+					raise AssertionError('Non-matching reference, corruption? : %s', ref)
 		else:
 			raise AssertionError('Non-existing data model version number used')
 
 	def clear(self):
-		del self._references[:]
+		self._references.clear()
+		self._missing_files.clear()
 
-	def _find_references_in_scene(self, root_dict, model_version):
+	def _find_references_in_scene(self, model_version):
 
 		if model_version is GooDataModel.DATA_MODEL_VERSION_1:
-			assert GooDataModel.VERSION_1_ROOT_ENTITY_KEY in root_dict
-			assert GooDataModel.VERSION_1_GROUP_KEY in root_dict
+
+			assert GooDataModel.VERSION_1_ROOT_ENTITY_KEY in self._project_dict
+			assert GooDataModel.VERSION_1_GROUP_KEY in self._project_dict
 
 			entity_refs = list()
 
 			# Find entities from the entityRefs in the project.project file
-			entity_refs.extend(root_dict[GooDataModel.VERSION_1_ROOT_ENTITY_KEY])
+			entity_refs.extend(self._project_dict[GooDataModel.VERSION_1_ROOT_ENTITY_KEY])
 
 			# Open and write all the entities into memory
 			for ref in entity_refs:
 				entity_dict = self._get_reference_dict(ref)
-				self._add_reference(ref, entity_dict)
+				if entity_dict:
+					self._add_reference(ref, entity_dict)
 
-			logger.info('Found %d entities in %s:', len(entity_refs), root_dict['ref'])
+			self._find_parent_refs()
+
+			logger.info('Found %d entities in %s:', len(entity_refs), self._project_dict['ref'])
 			for r in entity_refs:
 				print r
 			logger.debug('Found %d dependency references:', len(self._references) - len(entity_refs))
 			for r in self._references:
 				if r not in entity_refs:
 					print r
+
+			# Add potential post effect references
+			if 'posteffectRefs' in self._project_dict:
+				for ref in self._project_dict['posteffectRefs']:
+					ref_dict = self._get_reference_dict(ref)
+					if ref_dict:
+						self._add_reference(ref, ref_dict)
 
 		elif model_version is GooDataModel.DATA_MODEL_VERSION_2:
 			raise NotImplementedError()
@@ -152,8 +187,16 @@ class GooDataModel:
 
 	def _get_reference_dict(self, reference):
 		ref_path = os.path.join(self._current_root_path, reference)
-		with open(ref_path, 'r') as ref_file:
-			return json.loads(ref_file.read())
+		if not self._reading_from_bundle:
+			try:
+				with open(ref_path, 'r') as ref_file:
+					return json.loads(ref_file.read())
+			except IOError:
+				logger.error('Found non-existing file : %s', ref_path)
+				self._missing_files.add(reference)
+				return None
+		else:
+			raise NotImplementedError()
 
 	def _traverse_dict(self, object_dict):
 		"""
@@ -163,16 +206,12 @@ class GooDataModel:
 		for key, value in object_dict.iteritems():
 			contains_refs = key.endswith('Ref') or key.endswith('Refs') or key == 'url'
 			if contains_refs:
-				if key == 'url':
-					# check that the binary file exist.
-					file_path = os.path.join(self._current_root_path, value)
-					if not os.path.exists(file_path):
-						logger.error('Found non-existing file : %s', file_path)
-						continue
 				logger.debug('Contains refs -- %s : %s', key, str(value))
 				if type(value) == list:
 					for ref in value:
-						self._add_reference(ref, self._get_reference_dict(ref))
+						ref_dict = self._get_reference_dict(ref)
+						if ref_dict:
+							self._add_reference(ref, ref_dict)
 				elif type(value) == str or type(value) == unicode:
 					if value.startswith(GooDataModel.VERSION_1_ENGINE_SHADER_PREFIX):
 						logger.debug('Found engine shader : %s', value)
@@ -181,7 +220,8 @@ class GooDataModel:
 					else:
 						ref = str(value)
 						ref_dict = self._get_reference_dict(ref)
-						self._add_reference(ref, ref_dict)
+						if ref_dict:
+							self._add_reference(ref, ref_dict)
 			elif type(value) == list:
 				for v in value:
 					if type(v) == dict:
@@ -190,7 +230,7 @@ class GooDataModel:
 						logger.debug('Nothing to see here --  %s : %s', key, str(value))
 						break
 			elif type(value) == dict:
-				logger.debug('... Going deeper into %s%s', key, json.dumps(value, sort_keys=True, indent=4, separators=(',', ':')))
+				logger.debug('... Going deeper into: %s = %s', key, json.dumps(value, sort_keys=True, indent=4, separators=(',', ':')))
 				self._traverse_dict(value)
 
 		"""
@@ -237,12 +277,12 @@ class GooDataModel:
 
 		entity_dict = self._references[entity_ref]
 
-		if 'children' in entity_dict:
+		if 'children' in entity_dict and child_ref not in entity_dict['children']:
 			entity_dict['children'].append(child_ref)
 		else:
 			entity_dict['children'] = [child_ref]
 
-		logger.debug('Added %s as a child of %s', child_ref, entity_ref)
+		logger.debug('%s has children : %s', entity_ref, entity_dict['children'])
 
 		assert 'children' in self._references[entity_ref]
 		assert child_ref in self._references[entity_ref]['children']
@@ -252,27 +292,28 @@ class GooDataModel:
 		self._current_root_path = os.path.dirname(os.path.abspath(project_file_path))
 		logger.debug('Current root path set to: %s', self._current_root_path)
 
-	def _find_parent_refs(self, reference, entity_dict):
-		"""Recursively find all entities through possible parents."""
+	def _find_parent_refs(self):
+		"""Scan all collected references for entities, and add child references to parents"""
 
-		# Find parent ref in the transform component
-		if 'components' in entity_dict:
-			if 'transform' in entity_dict['components']:
-				if 'parentRef' in entity_dict['components']['transform']:
-					parent_ref = entity_dict['components']['transform']['parentRef']
-					logger.debug('Found parent: %s', parent_ref)
-					self._add_child_to_entity(parent_ref, reference)
+		logger.info('Scanning for parents...')
+		for ref, ref_dict in self._references.iteritems():
+			if ref.endswith('.entity'):
+				# Find parent ref in the transform component
+				if 'components' in ref_dict:
+					if 'transform' in ref_dict['components']:
+						if 'parentRef' in ref_dict['components']['transform']:
+							parent_ref = ref_dict['components']['transform']['parentRef']
+							self._add_child_to_entity(parent_ref, ref)
 
 
 def migrate_projects(src_dir=None, out_dir=None):
 	goo_model = GooDataModel()
 	#goo_model.read_directory(SOURCE_DIR, GooDataModel.VERSION_1)
-	goo_model.read_file('testdata/1.0/8NHeIkgPQkex31c5ZLjOlA/project.project', GooDataModel.DATA_MODEL_VERSION_1)
-	#goo_model.read_file('testdata/1.0/template_creating_a_goon/project.project', GooDataModel.DATA_MODEL_VERSION_1)
+	#goo_model.read_file('testdata/1.0/8NHeIkgPQkex31c5ZLjOlA/project.project', GooDataModel.DATA_MODEL_VERSION_1)
+	goo_model.read_file('testdata/1.0/template_creating_a_goon/project.project', GooDataModel.DATA_MODEL_VERSION_1)
 
 	# VxdSOc06RB-PIBvDxL1s1A - HerrPotemkin user ID
-
-	goo_model.write(GooDataModel.DATA_MODEL_VERSION_2)
+	goo_model.write(OUTPUT_DIR, GooDataModel.DATA_MODEL_VERSION_2)
 
 if __name__ == '__main__':
 	migrate_projects()
