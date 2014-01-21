@@ -18,5 +18,5 @@ interface Joint {
 interface skeleton {
 	joints: Joint[];
 	ref?: string;
-	name: string
+	name: string;
 }

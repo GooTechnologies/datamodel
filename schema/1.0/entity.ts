@@ -1,15 +1,15 @@
 /// <reference path="common.ts"/>
 
 interface AnimationComponent {
-	layersRef: LayersRef;
-	poseRef: PoseRef
+	layersRef: LayersRef; // Reference to */Animations.animation
+	poseRef: PoseRef; // Reference to */Skeleton.skeleton
 }
 
 interface CameraComponent {
 	aspect?: number; // TODO: Mandatory?
 	far: number;
 	fov: number; 
-	near: number
+	near: number;
 }
 
 enum LightType {
@@ -122,12 +122,12 @@ interface entity {
 	components: {
 		animation?: AnimationComponent;
 		camera?: CameraComponent;
-		light?: LightComponent
+		light?: LightComponent;
 		meshData?: MeshDataComponent;
 		meshRenderer?: MeshRendererComponent;
 		script?: ScriptComponent;
 		stateMachine?: StateMachineComponent;
-		sound?: SoundComponent
+		sound?: SoundComponent;
 		transform?: TransformComponent;
 	}
 }
