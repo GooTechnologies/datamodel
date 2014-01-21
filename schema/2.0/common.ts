@@ -8,7 +8,7 @@ interface int {}
 
 
 /**
- * ISO8601 datetime, e.g. 2014-01-11T13:29:12.42423
+ * RFC3339 datetime, e.g. 2014-01-11T13:29:12+00:00
  * @type string
  * @format date-time
  */
