@@ -10,3 +10,5 @@ testdata/**/*.bin
 *sublime-project
 *sublime-workspace
 .idea/
+
+testdata/2.0/**

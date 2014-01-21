@@ -1,10 +1,11 @@
 #!/usr/bin/env python
-from __future__ import absolute_import
 
 import glob
 import json
 import os
 import logging
+import version1_to_version2 as v1_to_v2
+
 logger = logging.getLogger(__name__)
 
 # logging configuration
@@ -23,8 +24,6 @@ PROJECT_FILE = 'project.project'
 
 class GooDataModel:
 	"""Used for reading in a Goo scene and exporting it to desired data model version."""
-
-	BINARY_TYPES = ['png', 'jpg', 'jpeg', 'tga', 'dds', 'crn', 'wav', 'mp3', 'bin']
 
 	DATA_MODEL_VERSION_1 = 0
 	DATA_MODEL_VERSION_2 = 1
@@ -83,47 +82,20 @@ class GooDataModel:
 
 		# TODO : Find asset items. Stuff which is in the libraryRefs and not in the entityRefs.
 
-	def write(self, output_dir,  output_data_model_version):
+	def write(self, output_dir, output_data_model_version):
 		"""Writes the read data into the desired"""
+
+		output_path = os.path.abspath(os.path.abspath(output_dir))
+
 		if output_data_model_version is GooDataModel.DATA_MODEL_VERSION_1:
 			pass
 		elif output_data_model_version is GooDataModel.DATA_MODEL_VERSION_2:
+
+			# TODO: Create folders needed
+
 			for ref, ref_dict in self._references.iteritems():
-				# Create a new dict for every ref and write it to the output folder.
-				if ref.endswith('animation'):
-					pass
-				elif ref.endswith('animstate'):
-					pass
-				elif ref.endswith('clip'):
-					pass
-				elif ref.endswith('entity'):
-					pass
-				elif ref.endswith('group'):
-					# Nothing should happen here.
-					pass
-				elif ref.endswith('machine'):
-					pass
-				elif ref.endswith('material'):
-					pass
-				elif ref.endswith('mesh'):
-					pass
-				elif ref.endswith('posteffect'):
-					pass
-				elif ref.endswith('project'):
-					# Will take care of this separately.
-					pass
-				elif ref.endswith('script'):
-					pass
-				elif ref.endswith('shader'):
-					pass
-				elif ref.endswith('skeleton'):
-					pass
-				elif ref.endswith('sound'):
-					pass
-				elif ref.endswith('texture'):
-					pass
-				else:
-					raise AssertionError('Non-matching reference, corruption? : %s', ref)
+				v1_to_v2.convert(ref, ref_dict)
+
 		else:
 			raise AssertionError('Non-existing data model version number used')
 
@@ -142,6 +114,7 @@ class GooDataModel:
 
 			# Find entities from the entityRefs in the project.project file
 			entity_refs.extend(self._project_dict[GooDataModel.VERSION_1_ROOT_ENTITY_KEY])
+			entity_refs.sort()
 
 			# Open and write all the entities into memory
 			for ref in entity_refs:
@@ -151,20 +124,23 @@ class GooDataModel:
 
 			self._find_parent_refs()
 
-			logger.info('Found %d entities in %s:', len(entity_refs), self._project_dict['ref'])
-			for r in entity_refs:
-				print r
-			logger.debug('Found %d dependency references:', len(self._references) - len(entity_refs))
-			for r in self._references:
-				if r not in entity_refs:
-					print r
-
 			# Add potential post effect references
 			if 'posteffectRefs' in self._project_dict:
 				for ref in self._project_dict['posteffectRefs']:
 					ref_dict = self._get_reference_dict(ref)
 					if ref_dict:
 						self._add_reference(ref, ref_dict)
+
+
+			logger.info('Found %d entities in %s:', len(entity_refs), self._project_dict['ref'])
+			for r in entity_refs:
+				print r
+			logger.debug('Found %d dependency references:', len(self._references) - len(entity_refs))
+			for r in self._references.iterkeys():
+				if r not in entity_refs:
+					print r
+
+			logger.warn('Missing files: %s', self._missing_files)
 
 		elif model_version is GooDataModel.DATA_MODEL_VERSION_2:
 			raise NotImplementedError()
@@ -200,7 +176,6 @@ class GooDataModel:
 
 	def _traverse_dict(self, object_dict):
 		"""
-
 		@type object_dict: dict
 		"""
 		for key, value in object_dict.iteritems():
