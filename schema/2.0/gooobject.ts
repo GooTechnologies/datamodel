@@ -31,8 +31,8 @@ interface GooObject {
 		[listId: string]: string;
 	}
 
-	description: string;
-	thumbnail: ImageRef;
+	description?: string;
+	thumbnail?: ImageRef;
 
 	deleted: boolean; 
 

@@ -5,6 +5,8 @@ interface AnimationComponent {
 	poseRef: PoseRef
 }
 
+
+
 interface CameraComponent {
 
 	/**
@@ -17,10 +19,22 @@ interface CameraComponent {
 	 */
 	lockedRatio: boolean; 
 
+	/**
+	 * @minimum 0
+	 * @maximum 1
+	 */
+	projectionMode: number
 
 	far: number;
-	fov: number; 
-	near: number
+	/**
+	 * Mandatory if projectionMode is 0
+	 */
+	fov?: number;
+	near: number;
+	/**
+	 * Mandatory if projectionMode is 1
+	 */
+	size?: number;
 }
 
 enum LightType {
@@ -42,30 +56,40 @@ enum ShadowType {
  */
 interface LightComponent {
 	type: LightType;
+	/**
+	 * Mandatory if LightType is SpotLight
+	 */
 	angle?: number;
-	
+	/**
+	 * @default [1,1,1]
+	 */
 	color?: Color;
-	direction?: Vector3;
-	exponent?: number;
 	intensity: number;
 	lightCookie?: {
 		enabled: boolean;
 		textureRef: TextureRef;
 	};
 	penumbra?: number;
+	/**
+	 * Mandatory if LightType is other than DirectionalLight
+	 */
 	range?: number;
 	shadowCaster: boolean;
 	
 	shadowSettings?: {
 		darkness: number;
-		upVector: Vector3;
 		far: number;
-
+		/**
+		 * Mandatory if LightType is other than DirectionalLight
+		 */
+		fov?: number;
 		near: number;
-		size: number;
+		/**
+		 * Mandatory if LightType is DirectionalLight
+		 */
+		size?: number;
 		resolution: Vector2;
 		shadowType: ShadowType;
-
 	}
 	specularIntensity: number;
 }
@@ -131,9 +155,9 @@ interface SoundComponent {
  */
 interface TransformComponent {
 	rotation: Vector3;
-	scale?: Vector3;
+	scale: Vector3;
 	translation: Vector3;
-	childRefs: {
+	childRefs?: {
 		[listId: string]: EntityRef;
 	}
 }

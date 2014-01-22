@@ -19,8 +19,6 @@ interface DateTime {}
  *
  * @type array
  * @items.type number
- * @items.maximum 1
- * @items.minimum 0
  * @minItems 3
  * @maxItems 4
  */
@@ -34,9 +32,9 @@ interface Color {}
  * @items.type number
  * @minItems 3
  * @maxItems 4
- */
+ *
 interface HyperColor {}
-
+*/
 /**
  * @type array
  * @items.type number
