@@ -32,7 +32,7 @@ interface GooObject {
 	}
 
 	description?: string;
-	thumbnail?: ImageRef;
+	thumbnailRef?: ImageRef;
 
 	deleted: boolean; 
 
