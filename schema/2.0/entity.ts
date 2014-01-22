@@ -1,8 +1,8 @@
 /// <reference path="gooobject.ts"/>
 
 interface AnimationComponent {
-	layersRef?: LayersRef;
-	poseRef?: PoseRef
+	layersRef?: LayersRef; // Reference to */Animations.animation
+	poseRef?: PoseRef; // Reference to */Skeleton.skeleton
 }
 
 

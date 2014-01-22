@@ -66,6 +66,5 @@ interface ClipSource {
 }
 
 interface animstate extends gooObject {
-	name: string;
 	clipSource: ClipSource;
 }

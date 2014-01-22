@@ -16,6 +16,4 @@ interface skeleton extends GooObject {
 	joints: {
 		[listId: string]: Joint;
 	}
-	ref?: string;
-	name: string
 }
