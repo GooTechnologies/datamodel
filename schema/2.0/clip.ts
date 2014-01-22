@@ -7,16 +7,14 @@ enum BlendType {
 
 enum ClipType {
 	Joint,
+	Transform,
 	Trigger, 
 	FloatLERP
 }
 
 interface ClipChannel {
-	sortValue: number;
-	
 	blendType: BlendType;
 	jointIndex: int;
-	jointName: string;
 	name: string;
 
 	translationSamples: BinaryPointer;
@@ -28,15 +26,11 @@ interface ClipChannel {
 	/**
 	 * Type trigger only, has to match length of times
 	 */
-	properties?: {
-		[propname: string]: any;
-	}
+	properties?: string[];
 }
 
 interface clip extends GooObject {
 	binaryRef: BinaryRef;
-	name: string;
-	ref?: string;
 
 	channels: {
 		[listId: string]: ClipChannel;

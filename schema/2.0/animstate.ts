@@ -22,6 +22,9 @@ interface ClipSource {
 	 */
 	blendWeight?: number;
 
+	/**
+	 * For type Clip or Managed
+	 */
 	clipRef: ClipRef;
 
 	/**
@@ -62,8 +65,7 @@ interface ClipSource {
 	timeScale: number;
 }
 
-interface animstate {
-	ref?:string;
+interface animstate extends gooObject {
 	name: string;
 	clipSource: ClipSource;
 }
