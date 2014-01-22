@@ -91,10 +91,28 @@ class GooDataModel:
 			pass
 		elif output_data_model_version is GooDataModel.DATA_MODEL_VERSION_2:
 
-			# TODO: Create folders needed
+			# Pre-generate ids for mapping old references to the new references
+			old_ref_to_new_id = dict()
+			for ref in self._references.iterkeys():
+				assert ref not in old_ref_to_new_id
+				old_ref_to_new_id[ref] = v1_to_v2.generate_random_string()
+
+			base_args = v1_to_v2.create_project_wide_base_args(self._project_dict)
+
+			# Gather refs to the converted *.entity and *.posteffect in lists.
+			entity_references = list()
+			posteffect_references = list()
 
 			for ref, ref_dict in self._references.iteritems():
-				v1_to_v2.convert(ref, ref_dict)
+				v1_to_v2.convert(ref, ref_dict, base_args, old_ref_to_new_id)
+				if ref.endswith('entity'):
+					entity_references.append(ref)
+				elif ref.endswith('posteffect'):
+					posteffect_references.append(ref)
+
+			# TODO: Create folders needed
+			# TODO: Add the asset references here.
+			v1_to_v2.convert_project_file(self._project_dict, base_args, entity_references, posteffect_references=posteffect_references)
 
 		else:
 			raise AssertionError('Non-existing data model version number used')
