@@ -12,3 +12,4 @@ testdata/**/*.bin
 .idea/
 
 testdata/2.0/**
+*.pyc
