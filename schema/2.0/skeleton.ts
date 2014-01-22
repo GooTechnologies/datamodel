@@ -9,9 +9,7 @@ interface Joint {
 	index: int;
 	parentIndex: int;
 	name: string;
-	inverseBindPose: {
-		matrix?: Matrix4x4;
-	}
+	inverseBindPose: Matrix4x4;
 }
 
 interface skeleton extends GooObject {
