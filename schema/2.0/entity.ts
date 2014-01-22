@@ -1,11 +1,13 @@
 /// <reference path="gooobject.ts"/>
 
 interface AnimationComponent {
-	layersRef?: LayersRef; // Reference to */Animations.animation
-	poseRef?: PoseRef; // Reference to */Skeleton.skeleton
+
+	// Reference to */Animations.animation
+	layersRef?: LayersRef;
+
+	// Reference to */Skeleton.skeleton
+	poseRef?: PoseRef;
 }
-
-
 
 interface CameraComponent {
 
@@ -23,7 +25,7 @@ interface CameraComponent {
 	 * @minimum 0
 	 * @maximum 1
 	 */
-	projectionMode: number
+	projectionMode: number;
 
 	far: number;
 	/**

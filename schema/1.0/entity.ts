@@ -1,8 +1,12 @@
 /// <reference path="common.ts"/>
 
 interface AnimationComponent {
-	layersRef: LayersRef; // Reference to */Animations.animation
-	poseRef: PoseRef; // Reference to */Skeleton.skeleton
+
+	// Reference to */Animations.animation
+	layersRef: LayersRef;
+
+	// Reference to */Skeleton.skeleton
+	poseRef: PoseRef;
 }
 
 interface CameraComponent {
