@@ -2,7 +2,8 @@
 The Goo Data Model is a data representation designed to contain all the data needed for a game or an app running on the Goo Engine. The data format is used internally in Goo Create, but is intended to work just as well in published apps or apps developed outside Goo Create. 
 
 ## Data Objects
-An object is defined as the smallest potentially reusable piece of information. Each object has a globally unique key on the format "keystring.objectType".
+An object is defined as the smallest potentially reusable piece of information. Each object has a globally unique key on the format "keystring.objectType". Both 
+keystring and objectType can contain alphanumeric letters and dashes (-).
 
 There are currently two data types, JSON and Binary.
 
