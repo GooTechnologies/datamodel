@@ -101,15 +101,15 @@ class GooDataModel:
 
 			# Gather refs to the converted *.entity and *.posteffect in lists.
 			entity_references = list()
-			posteffect_references = list()
 
 			for ref, ref_dict in self._references.iteritems():
 				v1_to_v2.convert(ref, ref_dict, base_args, old_ref_to_new_id)
 				if ref.endswith('entity'):
 					entity_references.append(ref)
-				elif ref.endswith('posteffect'):
-					posteffect_references.append(ref)
 
+			# Add potential post effect references
+			posteffect_references = self._project_dict.get('posteffectRefs')
+			
 			# TODO: Create folders needed
 			# TODO: Add the asset references here.
 			v1_to_v2.convert_project_file(self._project_dict, base_args, old_ref_to_new_id, entity_references, posteffect_references=posteffect_references)
@@ -141,14 +141,6 @@ class GooDataModel:
 					self._add_reference(ref, entity_dict)
 
 			self._find_parent_refs()
-
-			# Add potential post effect references
-			if 'posteffectRefs' in self._project_dict:
-				for ref in self._project_dict['posteffectRefs']:
-					ref_dict = self._get_reference_dict(ref)
-					if ref_dict:
-						self._add_reference(ref, ref_dict)
-
 
 			logger.info('Found %d entities in %s:', len(entity_refs), self._project_dict['ref'])
 			for r in entity_refs:

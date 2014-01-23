@@ -398,15 +398,22 @@ def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 	elif ref.endswith('group'):
 		# Nothing should happen here. The libraryRefs in the groups should be added at some point
 		# to the projects assets
-		pass
+		return None
 	elif ref.endswith('machine'):
 		spec_data_dict = convert_machine(old_ref_to_new_id, ref_dict)
 	elif ref.endswith('material'):
-		pass
+		spec_data_dict = ref_dict
+		DEFAULT_DUAL_TRANSPARENCY = False
+		spec_data_dict['dualTransparency'] = DEFAULT_DUAL_TRANSPARENCY
 	elif ref.endswith('mesh'):
-		pass
+		spec_data_dict = ref_dict
+		spec_data_dict.pop('ref', None)
+		spec_data_dict.pop('name', None)
+		spec_data_dict['binaryRef'] = get_new_ref(spec_data_dict['binaryRef'], old_ref_to_new_id)
 	elif ref.endswith('posteffect'):
-		pass
+		# Do posteffect conversion when converting the project file.
+		# posteffects go into the scene object now.
+		raise AssertionError('Should not send any of these here')
 	elif ref.endswith('project'):
 		raise AssertionError('Do *.project conversion separately')
 	elif ref.endswith('script'):
@@ -436,7 +443,7 @@ def get_new_ref(old_ref, old_to_id_dict):
 
 	if old_ref.startswith(VERSION_1_ASSET_LIBRARY_PREFIX):
 		# TODO : RETURN REF FROM THE CONVERTED ASSET LIBRARY
-		logger.error('Asset library references not fixed yet.')
+		logger.error('Asset library references not fixed yet: %s -> ?', old_ref)
 		return old_ref
 	elif old_ref.startswith(VERSION_1_ENGINE_SHADER_PREFIX):
 		logger.debug('Engine shader reference, no modifications')
