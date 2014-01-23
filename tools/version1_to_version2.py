@@ -3,6 +3,7 @@ import os
 import random
 import string
 import json
+import math
 
 import dateutil.parser
 from datetime import datetime, tzinfo, timedelta
@@ -20,6 +21,9 @@ logger.addHandler(log_handler)
 # TODO: import from common
 BINARY_TYPES = ['png', 'jpg', 'jpeg', 'tga', 'dds', 'crn', 'wav', 'mp3', 'bin']
 LICENSE_TYPES = ['CC0', 'CC BY', 'CC BY-SA', 'CC BY-NC', 'CC BY-NC-SA', 'PRIVATE']
+
+VERSION_1_ENGINE_SHADER_PREFIX = 'GOO_ENGINE_SHADERS'
+VERSION_1_ASSET_LIBRARY_PREFIX = 'GOO_ASSET_LIBRARY'
 
 GENERATION_CHARS = string.ascii_letters + string.digits
 
@@ -184,7 +188,7 @@ def convert_clip(old_ref_to_new_id, ref_dict):
 		clip_channel['name'] = clip_channel['jointName']
 		del clip_channel['jointName']
 
-		keys = clip_channel['keys']
+		keys = clip_channel.get('keys')
 		if keys:
 			clip_channel['triggerSamples'] = keys
 			del clip_channel['keys']
@@ -217,6 +221,31 @@ def convert_entity(old_ref_to_new_id, ref_dict):
 			ref_dict[ref_id] = get_new_ref(ref, old_ref_to_new_id)
 		return ref_dict
 
+	def convert_rot_matrix_to_angles(matrix_list):
+		"""Copy paste from GooJS Matrix3x3.prototype.toAngles, transcribed into python."""
+
+		assert(len(matrix_list) == 9)
+
+		euler_angles = [0] * 3
+		epsilon = 0.0000001
+
+		if matrix_list[3] > (1 - epsilon):  # singularity at north pole
+			euler_angles[1] = math.atan2(matrix_list[2], matrix_list[8])
+			euler_angles[2] = math.pi / 2
+			euler_angles[0] = 0
+
+		elif matrix_list[3] < (-1 + epsilon):  # singularity at south pole
+			euler_angles[1] = math.atan2(matrix_list[2], matrix_list[8])
+			euler_angles[2] = -math.pi / 2
+			euler_angles[0] = 0
+
+		else:
+			euler_angles[1] = math.atan2(-matrix_list[2], matrix_list[0])
+			euler_angles[0] = math.atan2(-matrix_list[7], matrix_list[4])
+			euler_angles[2] = math.asin(matrix_list[1])
+
+		return euler_angles
+
 	entity_dict = dict()
 	is_hidden = ref_dict.get('hidden')
 	if is_hidden:
@@ -240,10 +269,11 @@ def convert_entity(old_ref_to_new_id, ref_dict):
 			comp_dict['projectionMode'] = DEFAULT_PROJECTION_MODE
 
 		elif comp_type == 'light':
-			del comp_dict['attenuate']
+			comp_dict.pop('attenuate', None)
 			# TODO : Check if these attributes really should be removed..
-			del comp_dict['direction']
-			del comp_dict['exponent']
+			comp_dict.pop('direction', None)
+			comp_dict.pop('exponent', None)
+
 			light_cookie = comp_dict.get('lightCookie')
 			if light_cookie:
 				light_cookie['textureRef'] = get_new_ref(light_cookie['textureRef'], old_ref_to_new_id)
@@ -255,8 +285,13 @@ def convert_entity(old_ref_to_new_id, ref_dict):
 				del shadow_settings['projection']
 
 		elif comp_type == 'meshData':
-			comp_dict['meshRef'] = get_new_ref(comp_dict['meshRef'], old_ref_to_new_id)
-			comp_dict['poseRef'] = get_new_ref(comp_dict['poseRef'], old_ref_to_new_id)
+			mesh_ref = comp_dict.get('meshRef')
+			if mesh_ref:
+				comp_dict['meshRef'] = get_new_ref(mesh_ref, old_ref_to_new_id)
+
+			pose_ref = comp_dict.get('poseRef')
+			if pose_ref:
+				comp_dict['poseRef'] = get_new_ref(pose_ref, old_ref_to_new_id)
 
 		elif comp_type == 'meshRenderer':
 			ref_list = comp_dict.get('materialRefs')
@@ -286,17 +321,14 @@ def convert_entity(old_ref_to_new_id, ref_dict):
 
 			rotation = comp_dict['rotation']
 			if len(rotation) > 3:
-				print rotation
-				raise Exception('Have to convert matrix to vector3')
+				comp_dict['rotation'] = convert_rot_matrix_to_angles(rotation)
 
 			# Adding the key children on entities earlier during the first traversal
 			# It is a list of v1-references to child entities.
-			children = comp_dict.get('children')
+			children = ref_dict.get('children')
 			if children:
 				child_dict = ref_list_to_dict(children, old_ref_to_new_id)
 				comp_dict['childRefs'] = child_dict
-				del comp_dict['children']
-
 		else:
 			raise AssertionError('Non-standard component found: %s!' % comp_type)
 
@@ -362,6 +394,14 @@ def get_new_ref(old_ref, old_to_id_dict):
 	@type old_ref: str
 	@type old_to_id_dict: dict
 	"""
+
+	if old_ref.startswith(VERSION_1_ASSET_LIBRARY_PREFIX):
+		# TODO : RETURN REF FROM THE CONVERTED ASSET LIBRARY
+		logger.error('Asset library references not fixed yet.')
+		return old_ref
+	elif old_ref.startswith(VERSION_1_ENGINE_SHADER_PREFIX):
+		logger.debug('Engine shader reference, no modifications')
+		return old_ref
 
 	object_id = old_to_id_dict[old_ref]
 	ref_type = os.path.splitext(old_ref)[1]
