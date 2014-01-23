@@ -10,6 +10,12 @@ import time as _time
 
 import logging
 logger = logging.getLogger(__name__)
+log_level = logging.DEBUG
+log_handler = logging.StreamHandler()
+logger.setLevel(log_level)
+log_handler.setLevel(log_level)
+log_handler.setFormatter(logging.Formatter(logging.BASIC_FORMAT))
+logger.addHandler(log_handler)
 
 # TODO: import from common
 BINARY_TYPES = ['png', 'jpg', 'jpeg', 'tga', 'dds', 'crn', 'wav', 'mp3', 'bin']
@@ -73,6 +79,10 @@ def create_date_time_string():
 	return d.isoformat()
 
 
+def pretty_string_dict(dictionary):
+	return json.dumps(dictionary, sort_keys=True, indent=4, separators=(',', ':'))
+
+
 def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 	"""
 	@type ref: str
@@ -92,11 +102,15 @@ def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 		layer_dict = dict()
 		for index, anim_layer in enumerate(layers):
 
-			ref_modded_states = dict(anim_layer['states'])
-			for anim_state in ref_modded_states.itervalues():
-				anim_state['stateRef'] = get_new_ref(anim_state['stateRef'], old_ref_to_new_id)
-
-			print ref_modded_states
+			old_to_new_state_keys = dict()
+			ref_modded_states = dict()
+			for old_key, anim_state in anim_layer['states'].iteritems():
+				old_ref = anim_state['stateRef']
+				new_key = old_ref_to_new_id[old_ref]
+				new_state = dict(anim_state)
+				new_state['stateRef'] = get_new_ref(old_ref, old_ref_to_new_id)
+				ref_modded_states.update({new_key: new_state})
+				old_to_new_state_keys[old_key] = new_key
 
 			layer_id = generate_random_string()
 			layer_dict.update({
@@ -158,6 +172,7 @@ def get_new_ref(old_ref, old_to_id_dict):
 
 	object_id = old_to_id_dict[old_ref]
 	ref_type = os.path.splitext(old_ref)[1]
+	assert len(ref_type) > 0
 	return object_id + ref_type
 
 
@@ -207,11 +222,13 @@ def create_base_goo_object_dict(id, name, owners, project_license, project_origi
 	m_date = dateutil.parser.parse(modified_date)
 	assert c_date >= m_date
 
-	num_of_owners = len(owners)
+	# Creating a set from the list of owners, in case there are doubles.
+	owner_set = set(owners)
+	num_of_owners = len(owner_set)
 	assert num_of_owners > 0
 
 	if num_of_owners > 1:
-		logger.warn('Multiple owners, setting the owner to the first in the list. : %s', owners)
+		logger.warn('Multiple owners, picking arbitrary owner from the set : %s', owner_set)
 
 	# Required attributes
 	base_dict = {
@@ -222,32 +239,32 @@ def create_base_goo_object_dict(id, name, owners, project_license, project_origi
 		'created': created_date,
 		'modified': modified_date,
 		'public': is_public,
-		'owner': owners[0],
+		'owner': owner_set.pop(),
 		'deleted': is_deleted,
 		'dataModelVersion': 2
 	}
 
 	# Optional attributes
-	if len(editors) > 0:
-		editor_dict = dict()
-		for user_id in editors:
-			if user_id not in editor_dict:
-				editor_dict[generate_random_string()] = user_id
 
-		# Add the other owners from the owner list to be editors , if there were more than one.
-		if num_of_owners > 1:
-			for user_id in owners[1:]:
-				if user_id not in editor_dict:
-					editor_dict[generate_random_string()] = user_id
+	editors_set = set(editors)
+	editor_dict = dict()
+	for user_id in editors_set:
+		if user_id not in editor_dict:
+			editor_dict[user_id] = user_id
 
-		base_dict['editors'] = editor_dict
+	# Add the other owners from the owner list to be editors , if there were more than one.
+	for user_id in owner_set:
+		if user_id not in editor_dict:
+			editor_dict[user_id] = user_id
 
-	if len(viewers) > 0:
-		viewer_dict = dict()
-		for user_id in viewers:
-			if user_id not in viewer_dict:
-				viewer_dict[generate_random_string()] = user_id
-		base_dict['viewers'] = viewer_dict
+	base_dict['editors'] = editor_dict
+
+	viewers_set = set(viewers)
+	viewer_dict = dict()
+	for user_id in viewers_set:
+		if user_id not in viewer_dict:
+			viewer_dict[user_id] = user_id
+	base_dict['viewers'] = viewer_dict
 
 	if thumbnail_ref:
 		# TODO: Assert that this ref exists
@@ -260,9 +277,8 @@ def create_base_goo_object_dict(id, name, owners, project_license, project_origi
 
 
 def create_project_wide_base_args(project_dict):
-	"""Creates a dict serving as a set of base keyword-arguments for creating the gooobject, the superclass for all objects.
-
-
+	"""Creates a dict serving as a set of base keyword-arguments for creating the gooobject,
+	the superclass for all objects.
 	"""
 
 	base_args = {
@@ -287,7 +303,7 @@ def create_project_wide_base_args(project_dict):
 	return base_args
 
 
-def convert_project_file(project_dict, project_base_args, entity_references, asset_references=list(), posteffect_references=list()):
+def convert_project_file(project_dict, project_base_args, old_to_new_id, entity_references, asset_references=list(), posteffect_references=list()):
 	"""
 
 	@type project_dict: dict
@@ -295,7 +311,7 @@ def convert_project_file(project_dict, project_base_args, entity_references, ass
 	"""
 
 	# Required attributes
-	base_args = {
+	args = {
 		'id': generate_random_string(),
 		'name': project_dict['name'],
 		'owners': project_dict['own'],
@@ -309,21 +325,27 @@ def convert_project_file(project_dict, project_base_args, entity_references, ass
 	# Optional attributes
 	editors = project_dict.get('edit')
 	if editors:
-		base_args.update({'editors': editors})
+		args.update({'editors': editors})
 
 	viewers = project_dict.get('view')
 	if viewers:
-		base_args.update({'viewers': viewers})
+		args.update({'viewers': viewers})
 
 	original_license = project_dict.get('originalLicenseType')
 	if original_license:
-		base_args.update({'project_original_license': original_license})
+		args.update({'project_original_license': original_license})
 
 	description = project_dict.get('description')
 	if description:
-		base_args.update({'description': description})
+		args.update({'description': description})
 
-	v2_project_dict = create_base_goo_object_dict(**base_args)
+	thumbnail = project_dict.get('screenshot')
+	if thumbnail:
+		# TODO: The screenshot should be added to the asset list?
+		#new_thumbnail_ref = old_to_new_id[thumbnail]
+		args.update({'thumbnail_ref': thumbnail})
+
+	v2_project_dict = create_base_goo_object_dict(**args)
 
 	# Add the non-base attributes
 	scene_dict = create_scene_object(project_dict, project_base_args, posteffect_references=posteffect_references)
@@ -333,14 +355,15 @@ def convert_project_file(project_dict, project_base_args, entity_references, ass
 
 	asset_dict = dict()
 	for index, ref in enumerate(asset_references):
-		asset_dict[generate_random_string()] = {
+		ref_id = old_to_new_id[ref]
+		asset_dict[ref_id] = {
 			'sortValue': index,
 			'assetRef': ref
 		}
 
 	v2_project_dict.update({
 		'scenes': {
-			generate_random_string(): {
+			scene_dict['id']: {
 				'sortValue': 1,
 				'sceneRef': scene_reference
 			}

@@ -112,7 +112,7 @@ class GooDataModel:
 
 			# TODO: Create folders needed
 			# TODO: Add the asset references here.
-			v1_to_v2.convert_project_file(self._project_dict, base_args, entity_references, posteffect_references=posteffect_references)
+			v1_to_v2.convert_project_file(self._project_dict, base_args, old_ref_to_new_id, entity_references, posteffect_references=posteffect_references)
 
 		else:
 			raise AssertionError('Non-existing data model version number used')
