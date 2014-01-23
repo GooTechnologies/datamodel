@@ -149,6 +149,34 @@ def convert_animation(old_ref_to_new_id, ref, ref_dict, v2_dict):
 	})
 
 
+def convert_animstate(old_ref_to_new_id, ref_dict, v2_dict):
+
+	def handle_clip_source(clip_dict):
+		"""Recurisive clip source conversion."""
+		new_clip_ref = get_new_ref(clip_dict['clipRef'], old_ref_to_new_id)
+		clip_dict['clipRef'] = new_clip_ref
+
+		clip_source = clip_dict.get('clipSource')
+		if clip_source:
+			handle_clip_source(clip_source)
+
+		clip_source_a = clip_dict.get('clipSourceA')
+		if clip_source_a:
+			handle_clip_source(clip_source_a)
+
+			# Has to have clipsourceB if there is A.
+			clip_source_b = clip_dict['clipSourceB']
+			if clip_source_b:
+				handle_clip_source(clip_source_b)
+
+	clip_dict = ref_dict['clipSource']
+	handle_clip_source(clip_dict)
+
+	v2_dict.update({
+		'clipSource': clip_dict
+	})
+
+
 def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 	"""
 	@type ref: str
@@ -164,9 +192,10 @@ def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 	# Write object specific data into the new goo object dict.
 	if ref.endswith('animation'):
 		convert_animation(old_ref_to_new_id, ref, ref_dict, v2_dict)
-		print v2_dict
 	elif ref.endswith('animstate'):
-		pass
+
+		convert_animstate(old_ref_to_new_id, ref_dict, v2_dict)
+
 	elif ref.endswith('clip'):
 		pass
 	elif ref.endswith('entity'):
