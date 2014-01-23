@@ -109,7 +109,7 @@ class GooDataModel:
 
 			# Add potential post effect references
 			posteffect_references = self._project_dict.get('posteffectRefs')
-			
+
 			# TODO: Create folders needed
 			# TODO: Add the asset references here.
 			v1_to_v2.convert_project_file(self._project_dict, base_args, old_ref_to_new_id, entity_references, posteffect_references=posteffect_references)
@@ -296,8 +296,6 @@ def migrate_projects(src_dir=None, out_dir=None):
 	#goo_model.read_directory(SOURCE_DIR, GooDataModel.VERSION_1)
 	#goo_model.read_file('testdata/1.0/8NHeIkgPQkex31c5ZLjOlA/project.project', GooDataModel.DATA_MODEL_VERSION_1)
 	goo_model.read_file('testdata/1.0/template_creating_a_goon/project.project', GooDataModel.DATA_MODEL_VERSION_1)
-
-	# VxdSOc06RB-PIBvDxL1s1A - HerrPotemkin user ID
 	goo_model.write(OUTPUT_DIR, GooDataModel.DATA_MODEL_VERSION_2)
 
 if __name__ == '__main__':

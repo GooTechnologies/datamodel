@@ -9,6 +9,8 @@ import dateutil.parser
 from datetime import datetime, tzinfo, timedelta
 import time as _time
 
+from fbx import FbxAMatrix, FbxVector4, FbxQuaternion
+
 import logging
 logger = logging.getLogger(__name__)
 log_level = logging.DEBUG
@@ -374,6 +376,58 @@ def convert_machine(old_ref_to_new_id, ref_dict):
 	return machine_dict
 
 
+def convert_skeleton(ref_dict):
+
+	def convert_tqs_to_matrix(translation, rotation, scale):
+
+		t = FbxVector4(translation[0], translation[1], translation[2])
+		q = FbxQuaternion(rotation[0], rotation[1], rotation[2], rotation[3])
+		s = FbxVector4(scale[0], scale[1], scale[2])
+
+		matrix = FbxAMatrix()
+		matrix.SetIdentity()
+		matrix.SetTQS(t, q, s)
+
+		mat_list = [0] * 16
+		for col_index in xrange(4):
+			col_vec = matrix.GetColumn(col_index)
+			start_index = col_index * 4
+			end_index = start_index + 5
+			mat_list[start_index:end_index] = [col_vec[0], col_vec[1], col_vec[2], col_vec[3]]
+
+		return mat_list
+
+	skeleton_dict = ref_dict
+	skeleton_dict.pop('ref', None)
+	skeleton_dict.pop('name', None)
+
+	joint_dict = dict()
+	for joint in skeleton_dict['joints']:
+		joint_id = generate_random_string()
+
+		inv_bind_pose = joint['inverseBindPose']
+		matrix = inv_bind_pose.get('matrix')
+		if matrix is None:
+			translation = inv_bind_pose['translation']
+			rotation = inv_bind_pose['rotation']
+			scale = inv_bind_pose['scale']
+			matrix = convert_tqs_to_matrix(translation, rotation, scale)
+
+		joint['inverseBindPose'] = matrix
+		joint_dict[joint_id] = joint
+
+	skeleton_dict['joints'] = joint_dict
+
+	"""
+	test_t = [12,3,5]
+	test_r = [0.23, 52, 2, 0.5]
+	test_s = [1,1,1]
+	print 'test matrix ' + str(convert_tqs_to_matrix(test_t, test_r, test_s))
+	"""
+
+	return skeleton_dict
+
+
 def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 	"""
 	@type ref: str
@@ -417,11 +471,15 @@ def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 	elif ref.endswith('project'):
 		raise AssertionError('Do *.project conversion separately')
 	elif ref.endswith('script'):
-		pass
+		spec_data_dict = ref_dict
+		spec_data_dict.pop('ref', None)
+		spec_data_dict.pop('name', None)
 	elif ref.endswith('shader'):
-		pass
+		spec_data_dict = ref_dict
+		# Adding empty dict for defines to please the datamodel specification.
+		spec_data_dict['defines'] = dict()
 	elif ref.endswith('skeleton'):
-		pass
+		spec_data_dict = convert_skeleton(ref_dict)
 	elif ref.endswith('sound'):
 		pass
 	elif ref.endswith('texture'):

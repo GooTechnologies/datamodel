@@ -6,6 +6,8 @@
  */
 interface shader extends GooObject {
 
+	type: string
+
 	attributes: {
 		[attrname: string]: any;
 	}

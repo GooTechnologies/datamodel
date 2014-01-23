@@ -14,6 +14,7 @@ interface Joint {
 
 interface skeleton extends GooObject {
 	joints: {
+		// Generated list ids
 		[listId: string]: Joint;
 	}
 }
