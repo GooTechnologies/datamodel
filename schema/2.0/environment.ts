@@ -25,7 +25,7 @@ interface environment extends GooObject {
 
 	backgroundColor: Color;
 	globalAmbient: Color;
-	skyboxRef: SkyboxRef;
+	skyboxRef?: SkyboxRef;
 	
 	fog: {
 		enabled: boolean;
