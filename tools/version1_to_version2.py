@@ -83,7 +83,7 @@ def pretty_string_dict(dictionary):
 	return json.dumps(dictionary, sort_keys=True, indent=4, separators=(',', ':'))
 
 
-def convert_animation(old_ref_to_new_id, ref, ref_dict, v2_dict):
+def convert_animation(old_ref_to_new_id, ref, ref_dict):
 
 	def state_ref_fix(old_ref_to_new_id, root_ref, state_key):
 		old_ref = root_ref + '/' + state_key + '.animstate'
@@ -144,12 +144,10 @@ def convert_animation(old_ref_to_new_id, ref, ref_dict, v2_dict):
 			}
 		})
 
-	v2_dict.update({
-		'layers': layer_dict
-	})
+	return {'layers': layer_dict}
 
 
-def convert_animstate(old_ref_to_new_id, ref_dict, v2_dict):
+def convert_animstate(old_ref_to_new_id, ref_dict):
 
 	def handle_clip_source(clip_dict):
 		"""Recurisive clip source conversion."""
@@ -172,9 +170,7 @@ def convert_animstate(old_ref_to_new_id, ref_dict, v2_dict):
 	clip_dict = ref_dict['clipSource']
 	handle_clip_source(clip_dict)
 
-	v2_dict.update({
-		'clipSource': clip_dict
-	})
+	return {'clipSource': clip_dict}
 
 
 def convert(ref, ref_dict, base_args, old_ref_to_new_id):
@@ -188,14 +184,12 @@ def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 	# Create a base goo object
 	ref_id = old_ref_to_new_id[ref]
 	v2_dict = new_goo_object(base_args, ref_id, name=ref_dict.get('name'))
-
+	spec_data_dict = dict()
 	# Write object specific data into the new goo object dict.
 	if ref.endswith('animation'):
-		convert_animation(old_ref_to_new_id, ref, ref_dict, v2_dict)
+		spec_data_dict = convert_animation(old_ref_to_new_id, ref, ref_dict)
 	elif ref.endswith('animstate'):
-
-		convert_animstate(old_ref_to_new_id, ref_dict, v2_dict)
-
+		spec_data_dict = convert_animstate(old_ref_to_new_id, ref_dict)
 	elif ref.endswith('clip'):
 		pass
 	elif ref.endswith('entity'):
@@ -228,6 +222,7 @@ def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 	else:
 		raise AssertionError('Non-matching reference, corruption? : %s', ref)
 
+	v2_dict.update(spec_data_dict)
 	return v2_dict
 
 
@@ -249,6 +244,7 @@ def new_goo_object(base_args, object_id, name=None):
 	args = dict(base_args)
 
 	args.update({'id': object_id})
+	# Defaulting name to be the id if there is no set name.
 	if not name:
 		name = object_id
 	args.update({'name': name})

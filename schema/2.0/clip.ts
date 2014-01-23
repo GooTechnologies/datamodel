@@ -15,6 +15,7 @@ enum ClipType {
 interface ClipChannel {
 	blendType: BlendType;
 	jointIndex: int;
+	// name is the old jointName
 	name: string;
 
 	translationSamples: BinaryPointer;
@@ -33,6 +34,7 @@ interface clip extends GooObject {
 	binaryRef: BinaryRef;
 
 	channels: {
+		// Generated id
 		[listId: string]: ClipChannel;
 	}
 }
