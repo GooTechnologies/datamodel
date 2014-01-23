@@ -123,6 +123,7 @@ enum CullMode {
 
 interface MeshRendererComponent {
 	materialRefs?: {
+		// listId is the materialRef's id
 		[listId: string]: MaterialRef;
 	}
 
@@ -134,6 +135,7 @@ interface MeshRendererComponent {
 
 interface ScriptComponent {
 	scriptRefs: {
+		// listId is the ScriptRef's id
 		[listId: string]: ScriptRef;
 	}
 }

@@ -199,6 +199,111 @@ def convert_clip(old_ref_to_new_id, ref_dict):
 	return clip_dict
 
 
+def convert_entity(old_ref_to_new_id, ref_dict):
+
+	DEFAULT_CAMERA_ASPECT = 1
+	DEFAULT_PROJECTION_MODE = 0
+
+	def ref_list_to_dict(ref_list, old_ref_to_new_id):
+		"""
+		Returns a dict with keys as the new id to the references.
+
+		@type ref_list: list
+		@type old_ref_to_new_id: dict
+		"""
+		ref_dict = dict()
+		for ref in ref_list:
+			ref_id = old_ref_to_new_id[ref]
+			ref_dict[ref_id] = get_new_ref(ref, old_ref_to_new_id)
+		return ref_dict
+
+	entity_dict = dict()
+	is_hidden = ref_dict.get('hidden')
+	if is_hidden:
+		entity_dict['hidden'] = is_hidden
+
+	# Go through the possible components of the entity and
+	# handle their conversions.
+	components = ref_dict['components']
+	for comp_type, comp_dict in components.iteritems():
+		if comp_type == 'animation':
+			comp_dict['layersRef'] = get_new_ref(comp_dict['layersRef'], old_ref_to_new_id)
+			comp_dict['poseRef'] = get_new_ref(comp_dict['poseRef'], old_ref_to_new_id)
+
+		elif comp_type == 'camera':
+			aspect = comp_dict.get('aspect')
+			if aspect is None:
+				comp_dict['aspect'] = DEFAULT_CAMERA_ASPECT
+
+			# New stuff
+			comp_dict['lockedRatio'] = False
+			comp_dict['projectionMode'] = DEFAULT_PROJECTION_MODE
+
+		elif comp_type == 'light':
+			del comp_dict['attenuate']
+			# TODO : Check if these attributes really should be removed..
+			del comp_dict['direction']
+			del comp_dict['exponent']
+			light_cookie = comp_dict.get('lightCookie')
+			if light_cookie:
+				light_cookie['textureRef'] = get_new_ref(light_cookie['textureRef'], old_ref_to_new_id)
+
+			shadow_settings = comp_dict.get('shadowSettings')
+			if shadow_settings:
+				del shadow_settings['fov']
+				del shadow_settings['type']
+				del shadow_settings['projection']
+
+		elif comp_type == 'meshData':
+			comp_dict['meshRef'] = get_new_ref(comp_dict['meshRef'], old_ref_to_new_id)
+			comp_dict['poseRef'] = get_new_ref(comp_dict['poseRef'], old_ref_to_new_id)
+
+		elif comp_type == 'meshRenderer':
+			ref_list = comp_dict.get('materialRefs')
+			if ref_list:
+				ref_dict = ref_list_to_dict(ref_list, old_ref_to_new_id)
+				comp_dict['materialRefs'] = ref_dict
+
+		elif comp_type == 'script':
+			ref_list = comp_dict['scriptRefs']
+			ref_dict = ref_list_to_dict(ref_list, old_ref_to_new_id)
+			comp_dict['scriptRefs'] = ref_dict
+
+		elif comp_type == 'stateMachine':
+			ref_list = comp_dict['machineRefs']
+			ref_dict = ref_list_to_dict(ref_list, old_ref_to_new_id)
+			comp_dict['machineRefs'] = ref_dict
+
+		elif comp_type == 'sound':
+			ref_list = comp_dict['soundRefs']
+			ref_dict = ref_list_to_dict(ref_list, old_ref_to_new_id)
+			comp_dict['soundRefs'] = ref_dict
+
+		elif comp_type == 'transform':
+			parent_ref = comp_dict.get('parentRef')
+			if parent_ref:
+				del comp_dict['parentRef']
+
+			rotation = comp_dict['rotation']
+			if len(rotation) > 3:
+				print rotation
+				raise Exception('Have to convert matrix to vector3')
+
+			# Adding the key children on entities earlier during the first traversal
+			# It is a list of v1-references to child entities.
+			children = comp_dict.get('children')
+			if children:
+				child_dict = ref_list_to_dict(children, old_ref_to_new_id)
+				comp_dict['childRefs'] = child_dict
+				del comp_dict['children']
+
+		else:
+			raise AssertionError('Non-standard component found: %s!' % comp_type)
+
+	entity_dict['components'] = components
+	return entity_dict
+
+
 def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 	"""
 	@type ref: str
@@ -219,7 +324,7 @@ def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 	elif ref.endswith('clip'):
 		spec_data_dict = convert_clip(old_ref_to_new_id, ref_dict)
 	elif ref.endswith('entity'):
-		pass
+		spec_data_dict = convert_entity(old_ref_to_new_id, ref_dict)
 	elif ref.endswith('group'):
 		# Nothing should happen here.
 		pass
