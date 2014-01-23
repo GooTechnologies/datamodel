@@ -173,6 +173,35 @@ def convert_animstate(old_ref_to_new_id, ref_dict):
 	return {'clipSource': clip_dict}
 
 
+def convert_clip(old_ref_to_new_id, ref_dict):
+
+	new_binary_ref = get_new_ref(ref_dict['binaryRef'], old_ref_to_new_id)
+
+	channel_dict = dict()
+	for clip_channel in ref_dict['channels']:
+		channel_id = generate_random_string()
+		clip_channel['name'] = clip_channel['jointName']
+		del clip_channel['jointName']
+
+		# TODO : VERIFY THIS CLIP PROPERTY THINGIE, this is probably wrong.
+		properties = ref_dict['properties']
+		if properties:
+			prop_list = list()
+			for p_key, p_val in properties.iteritems():
+				prop_list.append(p_key + ' ' + p_val)
+
+			clip_channel['properties'] = prop_list
+
+		channel_dict[channel_id] = clip_channel
+
+	clip_dict = {
+		'binaryRef': new_binary_ref,
+		'channels': channel_dict
+	}
+
+	return clip_dict
+
+
 def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 	"""
 	@type ref: str
@@ -191,7 +220,7 @@ def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 	elif ref.endswith('animstate'):
 		spec_data_dict = convert_animstate(old_ref_to_new_id, ref_dict)
 	elif ref.endswith('clip'):
-		pass
+		spec_data_dict = convert_clip(old_ref_to_new_id, ref_dict)
 	elif ref.endswith('entity'):
 		pass
 	elif ref.endswith('group'):
