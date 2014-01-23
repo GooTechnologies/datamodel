@@ -65,6 +65,6 @@ interface ClipSource {
 	timeScale: number;
 }
 
-interface animstate extends gooObject {
+interface animstate extends GooObject {
 	clipSource: ClipSource;
 }

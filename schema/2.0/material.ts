@@ -94,7 +94,7 @@ interface material extends GooObject {
 		materialDiffuse?: ColorUniform;
 		materialEmissive?: {
 			enabled: boolean;
-			value: HyperColor;
+			value: Color;
 		};
 		materialSpecular?: ColorUniform;
 		materialSpecularPower?: NumberUniform;
