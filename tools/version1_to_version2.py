@@ -180,17 +180,14 @@ def convert_clip(old_ref_to_new_id, ref_dict):
 	channel_dict = dict()
 	for clip_channel in ref_dict['channels']:
 		channel_id = generate_random_string()
+
 		clip_channel['name'] = clip_channel['jointName']
 		del clip_channel['jointName']
 
-		# TODO : VERIFY THIS CLIP PROPERTY THINGIE, this is probably wrong.
-		properties = ref_dict['properties']
-		if properties:
-			prop_list = list()
-			for p_key, p_val in properties.iteritems():
-				prop_list.append(p_key + ' ' + p_val)
-
-			clip_channel['properties'] = prop_list
+		keys = clip_channel['keys']
+		if keys:
+			clip_channel['triggerSamples'] = keys
+			del clip_channel['keys']
 
 		channel_dict[channel_id] = clip_channel
 

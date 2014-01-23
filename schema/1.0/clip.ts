@@ -26,8 +26,8 @@ interface ClipChannel {
 	/**
 	 * Type trigger only, has to match length of times
 	 */
-	properties?: {
-		[propname: string]: any;
+	keys?: {
+		string[];
 	}
 }
 

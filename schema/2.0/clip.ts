@@ -27,7 +27,7 @@ interface ClipChannel {
 	/**
 	 * Type trigger only, has to match length of times
 	 */
-	properties?: string[];
+	triggerSamples?: string[];
 }
 
 interface clip extends GooObject {
