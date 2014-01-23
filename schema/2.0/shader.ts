@@ -9,7 +9,9 @@ interface shader extends GooObject {
 	attributes: {
 		[attrname: string]: any;
 	}
-
+	defines: {
+		[defname: string]: any;
+	}
 	fshaderRef: string;
 	vshaderRef: string;
 

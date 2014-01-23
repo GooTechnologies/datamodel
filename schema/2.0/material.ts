@@ -80,6 +80,7 @@ interface material extends GooObject {
 	shaderRef: ShaderRef;
 
 	wireframe?: boolean;
+	flat?: boolean;
 
 	texturesMapping: {
 		[textureSlot: string]: {
@@ -89,6 +90,9 @@ interface material extends GooObject {
 	}	
 
 	// TODO: How hard/easy should it be to add new uniforms? We could just leave it unvalidated
+	/**
+	 * @additionalProperties true
+	 */
 	uniforms: {
 		materialAmbient?: ColorUniform;
 		materialDiffuse?: ColorUniform;
@@ -117,5 +121,10 @@ interface material extends GooObject {
 	blendState: BlendState;
 	cullState: CullState;
 	depthState: DepthState;
+	dualTransparency: boolean;
+	/**
+	 * default makes shader responsible for renderqueue
+	 * @default -1
+	 */
 	renderQueue: int;
 }
