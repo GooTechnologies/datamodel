@@ -98,34 +98,77 @@ def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 	# Write object specific data into the new goo object dict.
 	if ref.endswith('animation'):
 
+		root_ref = os.path.dirname(ref)
+
 		layers = ref_dict['layers']
 		layer_dict = dict()
 		for index, anim_layer in enumerate(layers):
 
-			old_to_new_state_keys = dict()
+			# LAYER STATES
 			ref_modded_states = dict()
 			for old_key, anim_state in anim_layer['states'].iteritems():
 				old_ref = anim_state['stateRef']
 				new_key = old_ref_to_new_id[old_ref]
 				new_state = dict(anim_state)
+				# Overwrite the ref with the new id
 				new_state['stateRef'] = get_new_ref(old_ref, old_ref_to_new_id)
+
+				# OPTIONAL STATE TRANSITIONS
+				# TODO : DRY UP
+				transition_dict = new_state.get('transitions')
+				if transition_dict:
+					new_transition_dict = dict()
+					for state_key, anim_transition in transition_dict.iteritems():
+						if state_key != '*':  # Special case for transitions, star is catch all.
+							# State keys are names of the states,
+							# so the ref is root_ref + state_key + .animstate
+							old_ref = root_ref + '/' + state_key + '.animstate'
+							new_key = old_ref_to_new_id[old_ref]
+							new_transition_dict[new_key] = anim_transition
+						elif state_key == '*':
+							new_transition_dict[state_key] = anim_transition
+						else:
+							raise AssertionError('Unexpected state key:  "%s"' % state_key)
+
 				ref_modded_states.update({new_key: new_state})
-				old_to_new_state_keys[old_key] = new_key
+
+			# LAYER TRANSITIONS
+			# TODO : DRY UP WITH ABOVE TRANSITIONS CONVERSION
+			layer_transition_dict = anim_layer['transitions']
+			ref_modded_layer_transitions = dict()
+			for state_key, anim_transition in layer_transition_dict.iteritems():
+				if state_key != '*':  # Special case for transitions, star is catch all.
+					# State keys are names of the states,
+					# so the ref is root_ref + state_key + .animstate
+					old_ref = root_ref + '/' + state_key + '.animstate'
+					new_key = old_ref_to_new_id[old_ref]
+					ref_modded_layer_transitions[new_key] = anim_transition
+				elif state_key == '*':
+					ref_modded_layer_transitions[state_key] = anim_transition
+				else:
+					raise AssertionError('Unexpected state key:  "%s"' % state_key)
+
+
+			# TODO : DRY UP STATE KEY STUUFF
+			old_ref = root_ref + '/' + anim_layer['defaultState'] + '.animstate'
+			default_state_id = old_ref_to_new_id[old_ref]
 
 			layer_id = generate_random_string()
 			layer_dict.update({
 				layer_id: {
 					'sortValue': index,
 					'blendWeight': anim_layer['blendWeight'],
-					'defaultState': anim_layer['defaultState'],
+					'defaultState': default_state_id,
 					'states': ref_modded_states,
-					'transitions': anim_layer['transitions']
+					'transitions': ref_modded_layer_transitions
 				}
 			})
 
 		v2_dict.update({
 			'layers': layer_dict
 		})
+
+		print pretty_string_dict(v2_dict)
 
 	elif ref.endswith('animstate'):
 		pass

@@ -23,9 +23,12 @@ interface AnimationLayer {
 	blendWeight: number;
 	defaultState: string;
 	states: {
+		// Key to a state
 		[ref: string]: AnimationState
 	}
 	transitions: {
+		// Key to a state
+		// '*' is special case key, catch-all
 		[ref: string]: AnimationTransition	
 	}
 }
