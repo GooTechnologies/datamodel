@@ -336,6 +336,44 @@ def convert_entity(old_ref_to_new_id, ref_dict):
 	return entity_dict
 
 
+def convert_machine(old_ref_to_new_id, ref_dict):
+
+	def list_to_sort_value_id_dict(dict_list):
+		out_dict = dict()
+		for i, obj in enumerate(dict_list):
+			obj['sortValue'] = i
+			out_dict[obj['id']] = obj
+		return out_dict
+
+	state_dict = dict()
+	for index, state in enumerate(ref_dict['states']):
+		state['sortValue'] = index
+
+		actions_dict = list_to_sort_value_id_dict(state['actions'])
+		state['actions'] = actions_dict
+
+		transitions_dict = list_to_sort_value_id_dict(state['transitions'])
+		state['transitions'] = transitions_dict
+
+		child_dict = dict()
+		for i, machine_ref in state['machineRefs']:
+			machine_id = old_ref_to_new_id[machine_ref]
+			new_machine_ref = get_new_ref(machine_ref, old_ref_to_new_id)
+			child_dict[machine_id] = new_machine_ref
+			child_dict['sortValue'] = i
+		state['childMachines'] = child_dict
+		del state['machineRefs']
+
+		state_dict[state['id']] = state
+
+	machine_dict = {
+		'initialState': ref_dict['initialState'],
+		'states': state_dict
+	}
+
+	return machine_dict
+
+
 def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 	"""
 	@type ref: str
@@ -358,10 +396,11 @@ def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 	elif ref.endswith('entity'):
 		spec_data_dict = convert_entity(old_ref_to_new_id, ref_dict)
 	elif ref.endswith('group'):
-		# Nothing should happen here.
+		# Nothing should happen here. The libraryRefs in the groups should be added at some point
+		# to the projects assets
 		pass
 	elif ref.endswith('machine'):
-		pass
+		spec_data_dict = convert_machine(old_ref_to_new_id, ref_dict)
 	elif ref.endswith('material'):
 		pass
 	elif ref.endswith('mesh'):

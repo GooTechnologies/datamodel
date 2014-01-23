@@ -39,14 +39,17 @@ interface State {
 	sortValue: number;
 
 	actions: {
+		// listId is Action's id
 		[listId: string]: Action;
 	}
 
 	transitions: {
+		// listid is Transition's id
 		[listId: string]: Transition;
 	}
 
 	childMachines: {
+		// list id is machineRef id
 		[listId: string]: {
 			machineRef: MachineRef;
 			sortValue: number;
@@ -57,8 +60,11 @@ interface State {
 
 interface machine extends GooObject {
 
+	// id to State
 	initialState: string;
+
 	states: {
+		// listId is id from State
 		[listId: string]: State;
 	}
 
