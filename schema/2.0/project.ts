@@ -9,6 +9,7 @@ interface project extends GooObject {
 	mainScene: SceneRef;
 	
 	scenes: {
+		// listID is id to scerenref
 		[listId: string]: {
 			sortValue: number;
 			sceneRef: SceneRef;

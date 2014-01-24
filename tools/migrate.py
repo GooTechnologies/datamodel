@@ -121,8 +121,11 @@ class GooDataModel:
 				else:
 					old_ref_to_new_id[ref] = v1_to_v2.generate_random_string()
 
-			# Gather refs to the converted *.entity and *.posteffect in lists.
-			entity_references = list()
+			for ref in self._missing_files:
+				# TODO: Come up with a solution for missing files.
+				# Adding the reference to not break when needing a version 2 of this
+				# reference.
+				old_ref_to_new_id[ref] = None
 
 			for ref, ref_dict in self._references.iteritems():
 				if self._is_ref_binary(ref):
@@ -136,12 +139,19 @@ class GooDataModel:
 				else:
 					v1_to_v2.convert(ref, ref_dict, base_args, old_ref_to_new_id)
 
-			# Add potential post effect references
-			posteffect_references = self._project_dict.get('posteffectRefs')
+			# Store all post effect objects into a list , sent to create the new posteffects object
+			# which contain all of them.
 
-			# TODO: Create folders needed
-			# TODO: Add the asset references here.
-			v1_to_v2.convert_project_file(self._project_dict, base_args, old_ref_to_new_id, entity_references, posteffect_references=posteffect_references)
+			post_effect_refs = self._project_dict.get('posteffectRefs')
+			if post_effect_refs:
+				post_effect_list = list()
+				for ref in post_effect_refs:
+					post_dict = self._get_reference_dict(ref)
+					post_effect_list.append(post_dict)
+			else:
+				post_effect_list = None
+
+			v1_to_v2.convert_project_file(self._project_dict, base_args, old_ref_to_new_id, post_effect_list)
 
 		else:
 			raise AssertionError('Non-existing data model version number used')
@@ -226,10 +236,6 @@ class GooDataModel:
 			except IOError:
 				logger.error('Found non-existing file : %s', ref_path)
 				self._missing_files.add(reference)
-				# TODO: Come up with a solution for missing files.
-				# Adding the reference to not break when needing a version 2 of this
-				# reference.
-				self._references[reference] = dict()
 				return None
 		else:
 			raise NotImplementedError()

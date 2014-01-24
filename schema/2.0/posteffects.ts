@@ -7,6 +7,7 @@
  */
 interface posteffects extends GooObject {
 	posteffects: {
+		// Key is a generated string
 		[key: string]: {
 			sortValue: number;
 

@@ -536,9 +536,12 @@ def get_new_ref(old_ref, old_to_id_dict):
 		return old_ref
 
 	object_id = old_to_id_dict[old_ref]
-	ref_type = os.path.splitext(old_ref)[1]
-	assert len(ref_type) > 0
-	return object_id + ref_type
+	if object_id:
+		ref_type = os.path.splitext(old_ref)[1]
+		assert len(ref_type) > 0
+		return object_id + ref_type
+	else:
+		return None
 
 
 def new_goo_object(base_args, object_id, name=None):
@@ -678,89 +681,119 @@ def create_project_wide_base_args(project_dict):
 	return base_args
 
 
-def convert_project_file(project_dict, project_base_args, old_to_new_id, entity_references, asset_references=list(), posteffect_references=list()):
+def convert_project_file(project_dict, base_args, old_to_new_id, posteffect_list):
 	"""
 
 	@type project_dict: dict
-	@type entity_references: list
 	"""
+	args = dict(base_args)
 
-	# Required attributes
-	args = {
+	args.update({
 		'id': generate_random_string(),
 		'name': project_dict['name'],
-		'is_public': project_dict['public'],
-		'is_deleted': project_dict['deleted'],
-		'project_license': project_dict['licenseType'],
 		'created_date': project_dict['created'],
 		'modified_date': project_dict['modified']
-	}
+	})
 
-	args.update(project_base_args)
-
-	# Optional attributes
-	editors = project_dict.get('edit')
-	if editors:
-		args.update({'editors': editors})
-
-	viewers = project_dict.get('view')
-	if viewers:
-		args.update({'viewers': viewers})
-
-	original_license = project_dict.get('originalLicenseType')
-	if original_license:
-		args.update({'project_original_license': original_license})
+	args.update(base_args)
 
 	description = project_dict.get('description')
 	if description:
 		args.update({'description': description})
 
 	thumbnail = project_dict.get('screenshot')
+	thumbnail = False
 	if thumbnail:
 		# TODO: The screenshot should be added to the asset list?
-		#new_thumbnail_ref = old_to_new_id[thumbnail]
-		args.update({'thumbnail_ref': thumbnail})
+		new_thumbnail_ref = get_new_ref(thumbnail, old_to_new_id)
+		args.update({'thumbnail_ref': new_thumbnail_ref})
 
 	v2_project_dict = create_base_goo_object_dict(**args)
 
-	# Add the non-base attributes
-	scene_dict = create_scene_object(project_dict, project_base_args, posteffect_references=posteffect_references)
-
-	scene_reference = scene_dict['id'] + '.scene'
-	v2_project_dict.update({'mainScene': scene_reference})
-
+	# TODO: Asset references
+	"""
+	asset_references = list()
 	asset_dict = dict()
 	for index, ref in enumerate(asset_references):
 		ref_id = old_to_new_id[ref]
+		new_ref = get_new_ref(ref, old_to_new_id)
 		asset_dict[ref_id] = {
 			'sortValue': index,
-			'assetRef': ref
+			'assetRef': new_ref
 		}
 
 	v2_project_dict.update({
-		'scenes': {
-			scene_dict['id']: {
-				'sortValue': 1,
-				'sceneRef': scene_reference
-			}
-		},
 		'assets': asset_dict
 	})
+	"""
 
 	published_url = project_dict.get('publishedURL')
 	if published_url:
 		v2_project_dict.update({'publishedURL': published_url})
 
-	#print json.dumps(v2_project_dict, sort_keys=True, indent=4, separators=(',', ':'))
+	# POSTEFFECTS CREATION
+	if posteffect_list:
+		posteffect_dict = create_posteffects_object(posteffect_list, base_args)
+		posteffect_ref = posteffect_dict['id'] + '.posteffects'
+	else:
+		posteffect_dict = None
+		posteffect_ref = None
+
+	# ENVIRONMENT CREATION
+	#environment_dict = create_environment_object()
+	environment_ref = 'asfd'
+
+	# SCENE CREATION
+	scene_dict = create_scene_object(project_dict, base_args, old_to_new_id, posteffect_ref, environment_ref)
+
+	scene_id = scene_dict['id']
+	scene_reference = scene_id + '.scene'
+	v2_project_dict.update({'mainScene': scene_reference})
+	v2_project_dict.update({
+		'scenes': {
+			scene_id: {
+				'sortValue': 0,
+				'sceneRef': scene_reference
+			}
+		}
+	})
 
 	return v2_project_dict, scene_dict
 
 
-def create_scene_object(project_dict, base_args, posteffect_references=list()):
+def create_posteffects_object(posteffect_list, base_args):
+	"""posteffect_list contains all the dicts of the posteffect objects which existed."""
+
+	post_effect_object = new_goo_object(base_args, object_id=generate_random_string())
+	posteffects = dict()
+	for i, post_dict in enumerate(posteffect_list):
+		post_dict.pop('ref', None)
+		post_dict['sortValue'] = i
+		posteffects[generate_random_string()] = post_dict
+
+	post_effect_object['posteffects'] = posteffects
+
+	return post_effect_object
+
+
+def create_scene_object(project_dict, base_args, old_to_new_id, posteffects_ref, environment_ref):
+	"""Creates the scene ditionary"""
 
 	scene_dict = new_goo_object(base_args,
 								object_id=generate_random_string(),
 								name=project_dict.get('name') + ' default scene')
+
+	entities = set(project_dict['entityRefs'])
+	entity_dict = dict()
+	for entity_ref in entities:
+		new_ref = get_new_ref(entity_ref, old_to_new_id)
+		ent_id = old_to_new_id[entity_ref]
+		entity_dict[ent_id] = new_ref
+
+	scene_dict.update({'entityRefs': entity_dict})
+	if posteffects_ref:
+		scene_dict['posteffectsRef'] = posteffects_ref
+	scene_dict['environmentRef'] = environment_ref
 
 	return scene_dict
 

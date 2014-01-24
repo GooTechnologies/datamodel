@@ -11,11 +11,12 @@ interface scene extends GooObject {
 	 * _Root_ entities that are present in the scene
 	 */
 	entityRefs: {
+		// listId is enities' id
 		[listId: string]: EntityRef;
 	}
 
 	posteffectsRef?: PosteffectsRef;
 
-	environment?: EnvironmentRef;
+	environmentRef?: EnvironmentRef;
 
 }
