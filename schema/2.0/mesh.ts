@@ -71,18 +71,7 @@ interface mesh extends GooObject{
 			dimensions: int
 		}
 	}
-	/** 
-	 * Vertex colors, very rarely used
-	 */
-	/*
-	colors?: BinaryPointer;
 	indices: BinaryPointer;
-
-	normals: BinaryPointer;
-	tangents: BinaryPointer;
-	textureCoords: BinaryPointer[];
-	vertices: BinaryPointer;
-	*/
 
 	/**
 	 * For skinned meshes
