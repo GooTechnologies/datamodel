@@ -98,10 +98,12 @@ class GooDataModel:
 
 		# TODO : Find asset items. Stuff which is in the libraryRefs and not in the entityRefs.
 
-	def write(self, output_dir, output_data_model_version):
+	def write(self, output_dir, output_data_model_version, pretty_print=False):
 		"""Writes the read data into the desired"""
 
-		output_path = os.path.abspath(os.path.abspath(output_dir))
+		output_path = os.path.abspath(output_dir)
+		output_path = os.path.join(output_path, 'testfolder')
+		os.makedirs(output_path)
 
 		if output_data_model_version is GooDataModel.DATA_MODEL_VERSION_1:
 			pass
@@ -137,7 +139,8 @@ class GooDataModel:
 					shutil.copyfile(src=file_path, dst=out_file_path)
 					logger.info('Wrote %s', out_file_path)
 				else:
-					v1_to_v2.convert(ref, ref_dict, base_args, old_ref_to_new_id)
+					ref, json_dict = v1_to_v2.convert(ref, ref_dict, base_args, old_ref_to_new_id)
+					self._write_json(ref, json_dict, output_path, pretty_print)
 
 			# Store all post effect objects into a list , sent to create the new posteffects object
 			# which contain all of them.
@@ -151,7 +154,9 @@ class GooDataModel:
 			else:
 				post_effect_list = None
 
-			v1_to_v2.convert_project_file(self._project_dict, base_args, old_ref_to_new_id, post_effect_list)
+			write_dict = v1_to_v2.convert_project_file(self._project_dict, base_args, old_ref_to_new_id, post_effect_list)
+			for ref, ref_dict in write_dict.iteritems():
+				self._write_json(ref, ref_dict, output_path, pretty_print)
 
 		else:
 			raise AssertionError('Non-existing data model version number used')
@@ -159,6 +164,16 @@ class GooDataModel:
 	def clear(self):
 		self._references.clear()
 		self._missing_files.clear()
+
+	def _write_json(self, file_name, json_dict, output_path, pretty_print):
+		out_file_path = os.path.join(output_path, file_name)
+		with open(out_file_path, 'w') as new_json_file:
+			if pretty_print:
+				new_json_file.write(json.dumps(json_dict, sort_keys=True, indent=4, separators=(',', ':')))
+			else:
+				new_json_file.write(json.dumps(json_dict))
+
+		logger.debug('wrote %s', out_file_path)
 
 	def _generate_binary_id(self, ref, owner_id):
 		"""Returns a string id for the binary resource"""
@@ -356,7 +371,7 @@ def migrate_projects(src_dir=None, out_dir=None):
 	#goo_model.read_directory(SOURCE_DIR, GooDataModel.VERSION_1)
 	#goo_model.read_file('testdata/1.0/8NHeIkgPQkex31c5ZLjOlA/project.project', GooDataModel.DATA_MODEL_VERSION_1)
 	goo_model.read_file('testdata/1.0/template_creating_a_goon/project.project', GooDataModel.DATA_MODEL_VERSION_1)
-	goo_model.write(OUTPUT_DIR, GooDataModel.DATA_MODEL_VERSION_2)
+	goo_model.write(OUTPUT_DIR, GooDataModel.DATA_MODEL_VERSION_2, pretty_print=True)
 
 if __name__ == '__main__':
 	migrate_projects()

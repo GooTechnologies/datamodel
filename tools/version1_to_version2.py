@@ -428,7 +428,8 @@ def convert_skeleton(ref_dict):
 
 
 def convert(ref, ref_dict, base_args, old_ref_to_new_id):
-	"""
+	"""Returns a ref and dict to be written.
+
 	@type ref: str
 	@type ref_dict: dict
 	@type base_args: dict
@@ -518,7 +519,8 @@ def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 		raise AssertionError('Non-matching reference, corruption? : %s', ref)
 
 	v2_dict.update(spec_data_dict)
-	return v2_dict
+	extension = os.path.splitext(ref)[1]
+	return v2_dict['id'] + extension, v2_dict
 
 
 def get_new_ref(old_ref, old_to_id_dict):
@@ -855,7 +857,7 @@ def create_posteffects_object(posteffect_list, base_args):
 
 
 def create_scene_object(project_dict, base_args, old_to_new_id, posteffects_ref, environment_ref):
-	"""Creates the scene ditionary"""
+	"""Creates the scene dictionary"""
 
 	scene_dict = new_goo_object(base_args,
 								object_id=generate_random_string(),
