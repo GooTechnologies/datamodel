@@ -27,6 +27,11 @@ interface BoundingVolume {
 	max?: Vector3;
 }
 
+/**
+ * @type string
+ * @pattern ^[A-Z_]+$
+ */
+interface AttributeKey {}
 
 interface mesh extends GooObject{
 
@@ -44,9 +49,32 @@ interface mesh extends GooObject{
 	indexLengths: int[];
 	indexModes: IndexMode[];
 
+	/**
+	 * Most commonly POSITION, NORMAL, TANGENT, etc so
+	 * attributes: {
+	 *  POSITION: {
+	 *   value: {...}
+	 *   dimensions: 3
+	 *  },
+	 *  NORMAL: {
+	 *   value: {...}
+	 *   dimensions: 3
+	 *  }
+	 * }
+	 */
+	attributes: {
+		[attrKey: AttributeKey]: {
+			value: BinaryPointer;
+			/**
+			 * @minimum 1
+			 */
+			dimensions: int
+		}
+	}
 	/** 
 	 * Vertex colors, very rarely used
 	 */
+	/*
 	colors?: BinaryPointer;
 	indices: BinaryPointer;
 
@@ -54,6 +82,7 @@ interface mesh extends GooObject{
 	tangents: BinaryPointer;
 	textureCoords: BinaryPointer[];
 	vertices: BinaryPointer;
+	*/
 
 	/**
 	 * For skinned meshes
