@@ -25,6 +25,7 @@ enum Wrap {
  * Migration notes: 
  * - Rename WrapU/WrapV to WrapS/WrapT to match the engine
  * - store fileName in matchFileName
+ * - url renamed to imageRef
  */
 interface texture extends GooObject {
 

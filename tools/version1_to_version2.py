@@ -20,8 +20,7 @@ log_handler.setLevel(log_level)
 log_handler.setFormatter(logging.Formatter(logging.BASIC_FORMAT))
 logger.addHandler(log_handler)
 
-# TODO: import from common
-BINARY_TYPES = ['png', 'jpg', 'jpeg', 'tga', 'dds', 'crn', 'wav', 'mp3', 'bin']
+# TODO: import lots of stuff from common instead
 LICENSE_TYPES = ['CC0', 'CC BY', 'CC BY-SA', 'CC BY-NC', 'CC BY-NC-SA', 'PRIVATE']
 
 VERSION_1_ENGINE_SHADER_PREFIX = 'GOO_ENGINE_SHADERS'
@@ -29,6 +28,13 @@ VERSION_1_ASSET_LIBRARY_PREFIX = 'GOO_ASSET_LIBRARY'
 
 GENERATION_CHARS = string.ascii_letters + string.digits
 
+_accepted_sound_formats = [
+	'.ogg',
+	'.mp3',
+	'.webm',
+	'.wave',
+	'.wav'
+]
 
 def generate_random_string(string_length=10):
 	# TODO : Move function into common .
@@ -418,13 +424,6 @@ def convert_skeleton(ref_dict):
 
 	skeleton_dict['joints'] = joint_dict
 
-	"""
-	test_t = [12,3,5]
-	test_r = [0.23, 52, 2, 0.5]
-	test_s = [1,1,1]
-	print 'test matrix ' + str(convert_tqs_to_matrix(test_t, test_r, test_s))
-	"""
-
 	return skeleton_dict
 
 
@@ -481,11 +480,41 @@ def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 	elif ref.endswith('skeleton'):
 		spec_data_dict = convert_skeleton(ref_dict)
 	elif ref.endswith('sound'):
-		pass
+		spec_data_dict = ref_dict
+		spec_data_dict.pop('ref', None)
+		spec_data_dict.pop('name', None)
+
+		audio_ref_dict = dict()
+		for ref in spec_data_dict['urls']:
+			extension = os.path.splitext(ref)[1].lower()
+			assert extension[1:] in _accepted_sound_formats
+			ref_id = old_ref_to_new_id[ref]
+			new_ref = get_new_ref(ref, old_ref_to_new_id)
+			audio_ref_dict[ref_id + extension] = new_ref
+
+		spec_data_dict['audioRefs'] = audio_ref_dict
+		del spec_data_dict['urls']
+
 	elif ref.endswith('texture'):
-		pass
-	elif os.path.splitext(ref)[1] in BINARY_TYPES:
-		print ref + ' is binary ?!?'
+		spec_data_dict = ref_dict
+
+		spec_data_dict['wrapS'] = spec_data_dict['wrapU']
+		spec_data_dict['wrapT'] = spec_data_dict['wrapV']
+
+		file_name = spec_data_dict.get('fileName')
+		if file_name is not None:
+			spec_data_dict['matchFileName'] = file_name
+
+		new_ref = get_new_ref(spec_data_dict['url'], old_ref_to_new_id)
+		spec_data_dict['imageRef'] = new_ref
+
+		# Removal of unwanted attributes.
+		spec_data_dict.pop('ref', None)
+		spec_data_dict.pop('name', None)
+		spec_data_dict.pop('wrapU', None)
+		spec_data_dict.pop('wrapV', None)
+		spec_data_dict.pop('url', None)
+		spec_data_dict.pop('realUrl', None)
 	else:
 		raise AssertionError('Non-matching reference, corruption? : %s', ref)
 
@@ -527,13 +556,14 @@ def new_goo_object(base_args, object_id, name=None):
 	return create_base_goo_object_dict(**args)
 
 
-def create_base_goo_object_dict(id, name, owners, project_license, project_original_license=None,
+def create_base_goo_object_dict(id, name, owner, project_license, extra_owners=list(), project_original_license=None,
 								is_public=True, editors=list(), viewers=list(), description=None, thumbnail_ref=None, is_deleted=False,
 								created_date=None, modified_date=None):
 	"""
 	@type id: str
 	@type name: str
-	@type owners: list
+	@type owner: str
+	@type extra_owners: list
 	@type project_license: str
 	@type project_original_license: str
 	@type is_public: bool
@@ -560,14 +590,6 @@ def create_base_goo_object_dict(id, name, owners, project_license, project_origi
 	m_date = dateutil.parser.parse(modified_date)
 	assert c_date >= m_date
 
-	# Creating a set from the list of owners, in case there are doubles.
-	owner_set = set(owners)
-	num_of_owners = len(owner_set)
-	assert num_of_owners > 0
-
-	if num_of_owners > 1:
-		logger.warn('Multiple owners, picking arbitrary owner from the set : %s', owner_set)
-
 	# Required attributes
 	base_dict = {
 		'id': id,
@@ -577,12 +599,14 @@ def create_base_goo_object_dict(id, name, owners, project_license, project_origi
 		'created': created_date,
 		'modified': modified_date,
 		'public': is_public,
-		'owner': owner_set.pop(),
+		'owner': owner,
 		'deleted': is_deleted,
 		'dataModelVersion': 2
 	}
 
 	# Optional attributes
+
+	# TODO: VALIDATE USER IDS EXISTANCE IN RIAK
 
 	editors_set = set(editors)
 	editor_dict = dict()
@@ -591,7 +615,7 @@ def create_base_goo_object_dict(id, name, owners, project_license, project_origi
 			editor_dict[user_id] = user_id
 
 	# Add the other owners from the owner list to be editors , if there were more than one.
-	for user_id in owner_set:
+	for user_id in extra_owners:
 		if user_id not in editor_dict:
 			editor_dict[user_id] = user_id
 
@@ -619,8 +643,22 @@ def create_project_wide_base_args(project_dict):
 	the superclass for all objects.
 	"""
 
+	owner_list = project_dict['own']
+	owner_set = set(owner_list)
+	if len(owner_set) > 1:
+		# If there are more owners, something is probably wrong, and
+		# there is now a problem of deciding which user who actually is the
+		# real owner. Will for now crash the migration.
+		raise NotImplementedError()
+
+	owner = owner_set.pop()
+	extra_owners = list()
+	for user_id in owner_set:
+		extra_owners.append(user_id)
+
 	base_args = {
-		'owners': project_dict['own'],
+		'owner': owner,
+		'extra_owners': extra_owners,
 		'is_public': project_dict['public'],
 		'is_deleted': project_dict['deleted'],
 		'project_license': project_dict['licenseType']
@@ -652,13 +690,14 @@ def convert_project_file(project_dict, project_base_args, old_to_new_id, entity_
 	args = {
 		'id': generate_random_string(),
 		'name': project_dict['name'],
-		'owners': project_dict['own'],
 		'is_public': project_dict['public'],
 		'is_deleted': project_dict['deleted'],
 		'project_license': project_dict['licenseType'],
 		'created_date': project_dict['created'],
 		'modified_date': project_dict['modified']
 	}
+
+	args.update(project_base_args)
 
 	# Optional attributes
 	editors = project_dict.get('edit')

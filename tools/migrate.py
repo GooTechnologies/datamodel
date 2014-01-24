@@ -4,6 +4,7 @@ import glob
 import json
 import os
 import logging
+import shutil
 import version1_to_version2 as v1_to_v2
 
 logger = logging.getLogger(__name__)
@@ -20,6 +21,19 @@ logger.addHandler(log_handler)
 SOURCE_DIR = 'testdata/1.0'
 OUTPUT_DIR = 'testdata/2.0'
 PROJECT_FILE = 'project.project'
+
+
+# TODO: import lots of stuff from common instead
+BINARY_TYPES = ['png', 'jpg', 'jpeg', 'tga', 'dds', 'crn', 'wav', 'mp3', 'bin']
+
+from hashlib import sha1
+from array import array
+
+
+def get_hash(file_handle, user_id):
+	bytes = array('B', file_handle.read())
+	bytes.extend(array('B', str(user_id)))
+	return sha1(bytes).hexdigest()
 
 
 class GooDataModel:
@@ -49,7 +63,9 @@ class GooDataModel:
 
 		self._current_root_path = ''
 
-		self._references = dict()  # Store ref -> dict
+		# Store ref -> dict
+		# for binary refs , store ref -> abspath
+		self._references = dict()
 
 		self._missing_files = set()  # Store references to missing files
 
@@ -91,21 +107,34 @@ class GooDataModel:
 			pass
 		elif output_data_model_version is GooDataModel.DATA_MODEL_VERSION_2:
 
+			base_args = v1_to_v2.create_project_wide_base_args(self._project_dict)
+
+			owner_id = base_args['owner']
+
 			# Pre-generate ids for mapping old references to the new references
 			old_ref_to_new_id = dict()
 			for ref in self._references.iterkeys():
 				assert ref not in old_ref_to_new_id
-				old_ref_to_new_id[ref] = v1_to_v2.generate_random_string()
 
-			base_args = v1_to_v2.create_project_wide_base_args(self._project_dict)
+				if self._is_ref_binary(ref):
+					old_ref_to_new_id[ref] = self._generate_binary_id(ref, owner_id)
+				else:
+					old_ref_to_new_id[ref] = v1_to_v2.generate_random_string()
 
 			# Gather refs to the converted *.entity and *.posteffect in lists.
 			entity_references = list()
 
 			for ref, ref_dict in self._references.iteritems():
-				v1_to_v2.convert(ref, ref_dict, base_args, old_ref_to_new_id)
-				if ref.endswith('entity'):
-					entity_references.append(ref)
+				if self._is_ref_binary(ref):
+					# Copy the old file to the new place.
+					file_path = ref_dict
+					ref_id = old_ref_to_new_id[ref]
+					extension = os.path.splitext(ref)[1]
+					out_file_path = os.path.join(output_path, ref_id + extension)
+					shutil.copyfile(src=file_path, dst=out_file_path)
+					logger.info('Wrote %s', out_file_path)
+				else:
+					v1_to_v2.convert(ref, ref_dict, base_args, old_ref_to_new_id)
 
 			# Add potential post effect references
 			posteffect_references = self._project_dict.get('posteffectRefs')
@@ -120,6 +149,15 @@ class GooDataModel:
 	def clear(self):
 		self._references.clear()
 		self._missing_files.clear()
+
+	def _generate_binary_id(self, ref, owner_id):
+		"""Returns a string id for the binary resource"""
+		ref_path = os.path.join(self._current_root_path, ref)
+		try:
+			with open(ref_path, 'rb') as bin_file:
+				return get_hash(bin_file, owner_id)
+		except IOError:
+			raise
 
 	def _find_references_in_scene(self, model_version):
 
@@ -164,10 +202,12 @@ class GooDataModel:
 		if ref in self._references:
 			logger.debug('Reference already exist: %s', ref)
 		else:
+
 			self._references[ref] = entity_dict
 			added_reference = True
-			logger.debug('Added %s... traversing...', ref)
-			self._traverse_dict(entity_dict)
+			logger.debug('Added reference: %s', ref)
+			if not self._is_ref_binary(ref):
+				self._traverse_dict(entity_dict)
 
 		return added_reference
 
@@ -175,11 +215,21 @@ class GooDataModel:
 		ref_path = os.path.join(self._current_root_path, reference)
 		if not self._reading_from_bundle:
 			try:
-				with open(ref_path, 'r') as ref_file:
-					return json.loads(ref_file.read())
+				if self._is_ref_binary(reference):
+					if os.path.isfile(ref_path):
+						return ref_path
+					else:
+						raise IOError
+				else:
+					with open(ref_path, 'r') as ref_file:
+						return json.loads(ref_file.read())
 			except IOError:
 				logger.error('Found non-existing file : %s', ref_path)
 				self._missing_files.add(reference)
+				# TODO: Come up with a solution for missing files.
+				# Adding the reference to not break when needing a version 2 of this
+				# reference.
+				self._references[reference] = dict()
 				return None
 		else:
 			raise NotImplementedError()
@@ -289,6 +339,10 @@ class GooDataModel:
 						if 'parentRef' in ref_dict['components']['transform']:
 							parent_ref = ref_dict['components']['transform']['parentRef']
 							self._add_child_to_entity(parent_ref, ref)
+
+	def _is_ref_binary(self, reference):
+		extension = os.path.splitext(reference)[1][1:]
+		return extension in BINARY_TYPES
 
 
 def migrate_projects(src_dir=None, out_dir=None):
