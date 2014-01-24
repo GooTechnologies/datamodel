@@ -683,9 +683,12 @@ def create_project_wide_base_args(project_dict):
 
 def convert_project_file(project_dict, base_args, old_to_new_id, posteffect_list):
 	"""
-
+	Returns a dict containing ref -> json_object , to be written
 	@type project_dict: dict
 	"""
+
+	write_dict = dict()
+
 	args = dict(base_args)
 
 	args.update({
@@ -735,13 +738,22 @@ def convert_project_file(project_dict, base_args, old_to_new_id, posteffect_list
 	if posteffect_list:
 		posteffect_dict = create_posteffects_object(posteffect_list, base_args)
 		posteffect_ref = posteffect_dict['id'] + '.posteffects'
+		write_dict[posteffect_ref] = posteffect_dict
 	else:
-		posteffect_dict = None
 		posteffect_ref = None
 
+	# SKYBOX CREATION
+	skybox = project_dict.get('skybox')
+	if skybox:
+		skybox_dict = create_skybox_object(skybox, old_to_new_id, base_args)
+		skybox_ref = skybox_dict['id'] + '.skybox'
+		write_dict[skybox_ref] = skybox_dict
+	else:
+		skybox_ref = None
 	# ENVIRONMENT CREATION
-	#environment_dict = create_environment_object()
-	environment_ref = 'asfd'
+
+	environment_dict = create_environment_object(project_dict, base_args, skybox_ref)
+	environment_ref = environment_dict['id'] + '.environment'
 
 	# SCENE CREATION
 	scene_dict = create_scene_object(project_dict, base_args, old_to_new_id, posteffect_ref, environment_ref)
@@ -758,7 +770,73 @@ def convert_project_file(project_dict, base_args, old_to_new_id, posteffect_list
 		}
 	})
 
-	return v2_project_dict, scene_dict
+	write_dict[v2_project_dict['id']] = v2_project_dict
+	write_dict[scene_reference] = scene_dict
+
+	return write_dict
+
+
+def create_skybox_object(skybox, old_to_new_id, base_args):
+
+	skybox_obj = new_goo_object(base_args, object_id=generate_random_string())
+
+	rotation = skybox.get('rotation')
+	if rotation:
+		skybox_obj['rotation'] = rotation
+
+	sky_shape = skybox['shape']
+	if sky_shape == 'Box':
+
+		box_images = skybox['imageUrls']
+		assert len(box_images) == 6
+		for index, img_ref in enumerate(box_images):
+			box_images[index] = get_new_ref(box_images[index], old_to_new_id)
+
+		# order of images, from goojs TextureCreator.prototype.loadTextureCube
+		# [left, right, bottom, top, back, front]
+		# This is not true for this array for some reason.
+		skybox_obj['box'] = {
+			'enabled': True,
+			'rightRef': box_images[0],
+			'leftRef': box_images[1],
+			'topRef': box_images[2],
+			'bottomRef': box_images[3],
+			'frontRef': box_images[4],
+			'backRef': box_images[5]
+		}
+	elif sky_shape == 'Sphere':
+		sphere_texture_ref = get_new_ref(skybox['imageUrls'][0], old_to_new_id)
+		skybox_obj['sphere'] = {
+			'enabled': True,
+			'sphereRef': sphere_texture_ref
+		}
+	else:
+		raise AssertionError('Non-standard skybox shape %s', sky_shape)
+
+	return skybox_obj
+
+
+def create_environment_object(project_dict, base_args, skybox_ref):
+
+	env_obj = new_goo_object(base_args, object_id=generate_random_string())
+
+	env_obj['backgroundColor'] = project_dict['backgroundColor']
+	env_obj['globalAmbient'] = project_dict['globalAmbient']
+	env_obj['fog'] = {
+		'enabled': project_dict['useFog'],
+		'color': project_dict['fogColor'],
+		'near': project_dict['fogNear'],
+		'far': project_dict['fogFar']
+	}
+
+	if skybox_ref:
+		env_obj['skyboxRef'] = skybox_ref
+
+	weather = project_dict.get('weather')
+	if weather:
+		env_obj['weather'] = weather
+
+	return env_obj
 
 
 def create_posteffects_object(posteffect_list, base_args):
