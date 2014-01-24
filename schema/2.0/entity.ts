@@ -122,15 +122,21 @@ enum CullMode {
 }
 
 interface MeshRendererComponent {
-	materialRefs?: {
+	materials?: {
 		// listId is the materialRef's id
-		[listId: string]: MaterialRef;
+		[listId: string]: {
+			sortValue: number;
+			materialRef: MaterialRef;
+		}
 	}
 
 	cullMode: CullMode;
 	castShadows: boolean;
 	receiveShadows: boolean;
-	reflectable?: boolean;
+	/**
+	 * @default true
+	 */
+	reflectable: boolean;
 }
 
 interface ScriptComponent {
