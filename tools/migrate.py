@@ -103,6 +103,8 @@ class GooDataModel:
 
 		output_path = os.path.abspath(output_dir)
 		output_path = os.path.join(output_path, 'testfolder')
+		if os.path.exists(output_path):
+			shutil.rmtree(output_path)
 		os.makedirs(output_path)
 
 		if output_data_model_version is GooDataModel.DATA_MODEL_VERSION_1:
@@ -139,8 +141,8 @@ class GooDataModel:
 					shutil.copyfile(src=file_path, dst=out_file_path)
 					logger.info('Wrote %s', out_file_path)
 				else:
-					ref, json_dict = v1_to_v2.convert(ref, ref_dict, base_args, old_ref_to_new_id)
-					self._write_json(ref, json_dict, output_path, pretty_print)
+					file_name, json_dict = v1_to_v2.convert(ref, ref_dict, base_args, old_ref_to_new_id)
+					self._write_json(file_name, json_dict, output_path, pretty_print)
 
 			# Store all post effect objects into a list , sent to create the new posteffects object
 			# which contain all of them.

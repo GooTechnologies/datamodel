@@ -63,7 +63,11 @@ interface mesh extends GooObject{
 	 * }
 	 */
 	attributes: {
-		[attrKey: AttributeKey]: {
+		/**
+		 * @type string
+		 * @pattern ^[A-Z_]+$
+		 */
+		[attrKey: string]: {
 			value: BinaryPointer;
 			/**
 			 * @minimum 1
@@ -71,14 +75,7 @@ interface mesh extends GooObject{
 			dimensions: int
 		}
 	}
-	indices: BinaryPointer;
 
-	/**
-	 * For skinned meshes
-	 */
-	joints?: BinaryPointer;
-	weights?: BinaryPointer;
-	
 	vertexCount: int;
 
 	boundingVolume: BoundingVolume

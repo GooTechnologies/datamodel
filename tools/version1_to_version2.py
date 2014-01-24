@@ -115,6 +115,8 @@ def convert_animation(old_ref_to_new_id, ref, ref_dict):
 			else:
 				raise AssertionError('Unexpected state key:  "%s"' % state_key)
 
+			# Convert possible strings to be a number.
+			anim_transition['fadeTime'] = float(anim_transition['fadeTime'])
 		return fixed_transitions
 
 	root_ref = os.path.dirname(ref)
@@ -216,6 +218,10 @@ def convert_entity(old_ref_to_new_id, ref_dict):
 	DEFAULT_CAMERA_ASPECT = 1
 	DEFAULT_PROJECTION_MODE = 0
 
+	DEFAULT_TRANSLATION = [0,0,0]
+	DEFAULT_SCALE = [1,1,1]
+	DEFAULT_ROTATION = DEFAULT_TRANSLATION
+
 	def ref_list_to_dict(ref_list, old_ref_to_new_id):
 		"""
 		Returns a dict with keys as the new id to the references.
@@ -291,6 +297,7 @@ def convert_entity(old_ref_to_new_id, ref_dict):
 				del shadow_settings['fov']
 				del shadow_settings['type']
 				del shadow_settings['projection']
+				del shadow_settings['upVector']
 
 		elif comp_type == 'meshData':
 			mesh_ref = comp_dict.get('meshRef')
@@ -305,7 +312,10 @@ def convert_entity(old_ref_to_new_id, ref_dict):
 			ref_list = comp_dict.get('materialRefs')
 			if ref_list:
 				ref_dict = ref_list_to_dict(ref_list, old_ref_to_new_id)
-				comp_dict['materialRefs'] = ref_dict
+				comp_dict['materials'] = ref_dict
+				comp_dict.pop('materialRefs', None)
+
+			comp_dict.pop('hidden', None)
 
 		elif comp_type == 'script':
 			ref_list = comp_dict['scriptRefs']
@@ -337,6 +347,13 @@ def convert_entity(old_ref_to_new_id, ref_dict):
 			if children:
 				child_dict = ref_list_to_dict(children, old_ref_to_new_id)
 				comp_dict['childRefs'] = child_dict
+
+			if not 'rotation' in comp_dict:
+				comp_dict['rotation'] = DEFAULT_ROTATION
+			if not 'scale' in comp_dict:
+				comp_dict['scale'] = DEFAULT_SCALE
+			if not 'translation' in comp_dict:
+				comp_dict['translation'] = DEFAULT_TRANSLATION
 		else:
 			raise AssertionError('Non-standard component found: %s!' % comp_type)
 
@@ -457,6 +474,9 @@ def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 		spec_data_dict = convert_machine(old_ref_to_new_id, ref_dict)
 	elif ref.endswith('material'):
 		spec_data_dict = ref_dict
+		spec_data_dict.pop('ref', None)
+		spec_data_dict.pop('name', None)
+		spec_data_dict.pop('type', None)
 		DEFAULT_DUAL_TRANSPARENCY = False
 		spec_data_dict['dualTransparency'] = DEFAULT_DUAL_TRANSPARENCY
 	elif ref.endswith('mesh'):
@@ -464,6 +484,36 @@ def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 		spec_data_dict.pop('ref', None)
 		spec_data_dict.pop('name', None)
 		spec_data_dict['binaryRef'] = get_new_ref(spec_data_dict['binaryRef'], old_ref_to_new_id)
+
+		attr_dict = dict()
+		colors = spec_data_dict.pop('colors', None)
+		if colors:
+			attr_dict['COLOR'] = colors
+		indices = spec_data_dict.pop('indices', None)
+		if indices:
+			attr_dict['INDEX'] = indices
+		normals = spec_data_dict.pop('normals', None)
+		if normals:
+			attr_dict['NORMAL'] = normals
+		tangents = spec_data_dict.pop('tangents', None)
+		if tangents:
+			attr_dict['TANGENT'] = tangents
+		texcoords_list = spec_data_dict.pop('textureCoords', None)
+		if texcoords_list:
+			for texture_unit, texcoords in enumerate(texcoords_list):
+				attr_dict['TEXCOORD' + str(texture_unit)] = texcoords
+		positions = spec_data_dict.pop('vertices', None)
+		if positions:
+			attr_dict['POSITION'] = positions
+		joints = spec_data_dict.pop('joints', None)
+		if joints:
+			attr_dict['JOINTIDS'] = joints
+		weights = spec_data_dict.pop('weights', None)
+		if weights:
+			attr_dict['WEIGHTS'] = weights
+
+		spec_data_dict['attributes'] = attr_dict
+
 	elif ref.endswith('posteffect'):
 		# Do posteffect conversion when converting the project file.
 		# posteffects go into the scene object now.
@@ -515,6 +565,7 @@ def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 		spec_data_dict.pop('wrapV', None)
 		spec_data_dict.pop('url', None)
 		spec_data_dict.pop('realUrl', None)
+		spec_data_dict.pop('fileName', None)
 	else:
 		raise AssertionError('Non-matching reference, corruption? : %s', ref)
 
