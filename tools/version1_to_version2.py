@@ -488,9 +488,8 @@ def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 		for ref in spec_data_dict['urls']:
 			extension = os.path.splitext(ref)[1].lower()
 			assert extension[1:] in _accepted_sound_formats
-			ref_id = old_ref_to_new_id[ref]
 			new_ref = get_new_ref(ref, old_ref_to_new_id)
-			audio_ref_dict[ref_id + extension] = new_ref
+			audio_ref_dict[extension] = new_ref
 
 		spec_data_dict['audioRefs'] = audio_ref_dict
 		del spec_data_dict['urls']
