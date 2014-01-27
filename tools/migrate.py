@@ -390,8 +390,8 @@ def migrate_projects(src_dir=None, out_dir=None):
 	goo_model = GooDataModel()
 	#goo_model.read_directory(SOURCE_DIR, GooDataModel.VERSION_1)
 	#goo_model.read_file('testdata/1.0/8NHeIkgPQkex31c5ZLjOlA/project.project', GooDataModel.DATA_MODEL_VERSION_1)
-	goo_model.read_file('testdata/1.0/template_creating_a_goon/project.project', GooDataModel.DATA_MODEL_VERSION_1)
-	#goo_model.read_file('testdata/1.0/q12pYis6QtG1XNKRnHe2tA/project.project', GooDataModel.DATA_MODEL_VERSION_1)
+	#goo_model.read_file('testdata/1.0/template_creating_a_goon/project.project', GooDataModel.DATA_MODEL_VERSION_1)
+	goo_model.read_file('testdata/1.0/q12pYis6QtG1XNKRnHe2tA/project.project', GooDataModel.DATA_MODEL_VERSION_1)
 	goo_model.write(OUTPUT_DIR, GooDataModel.DATA_MODEL_VERSION_2, pretty_print=True)
 
 if __name__ == '__main__':

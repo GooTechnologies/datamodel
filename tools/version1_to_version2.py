@@ -487,6 +487,11 @@ def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 		spec_data_dict.pop('type', None)
 		DEFAULT_DUAL_TRANSPARENCY = False
 		spec_data_dict['dualTransparency'] = DEFAULT_DUAL_TRANSPARENCY
+
+		textures_map = spec_data_dict['texturesMapping']
+		for tex_slot_dict in textures_map.itervalues():
+			tex_slot_dict['textureRef'] = get_new_ref(tex_slot_dict['textureRef'], old_ref_to_new_id)
+
 	elif ref.endswith('mesh'):
 		spec_data_dict = ref_dict
 		spec_data_dict.pop('ref', None)
