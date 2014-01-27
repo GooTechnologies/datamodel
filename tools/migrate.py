@@ -225,6 +225,7 @@ class GooDataModel:
 
 			skybox = self._project_dict.get('skybox')
 			if skybox:
+				logger.debug('Has skybox, adding image urls...')
 				img_urls = skybox['imageUrls']
 				for url in img_urls:
 					img_path = self._get_reference_dict(url)
@@ -282,7 +283,7 @@ class GooDataModel:
 		@type object_dict: dict
 		"""
 		for key, value in object_dict.iteritems():
-			contains_refs = key.endswith('Ref') or key.endswith('Refs') or key == 'url'
+			contains_refs = key.endswith('Ref') or key.endswith('Refs') or key == 'url' or key == 'urls'
 			if contains_refs:
 				logger.debug('Contains refs -- %s : %s', key, str(value))
 				if type(value) == list:
@@ -391,8 +392,8 @@ class GooDataModel:
 def migrate_projects(src_dir=None, out_dir=None):
 	goo_model = GooDataModel()
 	#goo_model.read_directory(SOURCE_DIR, GooDataModel.VERSION_1)
-	#goo_model.read_file('testdata/1.0/8NHeIkgPQkex31c5ZLjOlA/project.project', GooDataModel.DATA_MODEL_VERSION_1)
-	goo_model.read_file('testdata/1.0/template_creating_a_goon/project.project', GooDataModel.DATA_MODEL_VERSION_1)
+	goo_model.read_file('testdata/1.0/8NHeIkgPQkex31c5ZLjOlA/project.project', GooDataModel.DATA_MODEL_VERSION_1)
+	#goo_model.read_file('testdata/1.0/template_creating_a_goon/project.project', GooDataModel.DATA_MODEL_VERSION_1)
 	goo_model.write(OUTPUT_DIR, GooDataModel.DATA_MODEL_VERSION_2, pretty_print=True)
 
 if __name__ == '__main__':

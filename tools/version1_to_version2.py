@@ -234,7 +234,7 @@ def convert_entity(old_ref_to_new_id, ref_dict):
 			ref_id = old_ref_to_new_id[ref]
 			ref_dict[ref_id] = get_new_ref(ref, old_ref_to_new_id)
 			if add_sort_value:
-				ref_dict['sortValue'] = index
+				ref_dict[ref_id]['sortValue'] = index
 		return ref_dict
 
 	def convert_rot_matrix_to_angles(matrix_list):
@@ -540,9 +540,9 @@ def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 		audio_ref_dict = dict()
 		for ref in spec_data_dict['urls']:
 			extension = os.path.splitext(ref)[1].lower()
-			assert extension[1:] in _accepted_sound_formats
+			assert extension in _accepted_sound_formats
 			new_ref = get_new_ref(ref, old_ref_to_new_id)
-			audio_ref_dict[extension] = new_ref
+			audio_ref_dict[extension[1:]] = new_ref
 
 		spec_data_dict['audioRefs'] = audio_ref_dict
 		del spec_data_dict['urls']
@@ -645,7 +645,7 @@ def create_base_goo_object_dict(id, name, owner, project_license, extra_owners=l
 
 	c_date = dateutil.parser.parse(created_date)
 	m_date = dateutil.parser.parse(modified_date)
-	assert c_date >= m_date
+	assert c_date <= m_date
 
 	# Required attributes
 	base_dict = {
