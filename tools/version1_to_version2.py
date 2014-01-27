@@ -316,6 +316,8 @@ def convert_entity(old_ref_to_new_id, ref_dict):
 				ref_dict = ref_list_to_dict(ref_list, old_ref_to_new_id, add_sort_value=True)
 				comp_dict['materials'] = ref_dict
 				comp_dict.pop('materialRefs', None)
+				if not 'reflectable' in comp_dict:
+					comp_dict['reflectable'] = True
 
 			comp_dict.pop('hidden', None)
 
