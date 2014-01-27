@@ -815,7 +815,7 @@ def convert_project_file(project_dict, base_args, old_to_new_id, posteffect_list
 
 	scene_id = scene_dict['id']
 	scene_reference = scene_id + '.scene'
-	v2_project_dict.update({'mainScene': scene_reference})
+	v2_project_dict.update({'mainSceneRef': scene_reference})
 	v2_project_dict.update({
 		'scenes': {
 			scene_id: {
