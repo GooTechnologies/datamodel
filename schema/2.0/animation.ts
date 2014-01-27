@@ -23,7 +23,7 @@ interface AnimationLayer {
 	sortValue: number;
 	
 	blendWeight: number;
-	defaultState: string;
+	initialState: string;
 	states: {
 		// ref is id to a stateRef
 		[ref: string]: AnimationState

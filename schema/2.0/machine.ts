@@ -6,7 +6,7 @@ interface Transition {
 	name: string;
 	sortValue: number;
 
-	key: string;
+	eventName: string;
 
 	/**
 	 * If this property is not present, the transition is not connected 
