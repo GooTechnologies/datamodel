@@ -492,6 +492,10 @@ def convert(ref, ref_dict, base_args, old_ref_to_new_id):
 		for tex_slot_dict in textures_map.itervalues():
 			tex_slot_dict['textureRef'] = get_new_ref(tex_slot_dict['textureRef'], old_ref_to_new_id)
 
+		shader_ref = spec_data_dict['shaderRef']
+		if not shader_ref.startswith(VERSION_1_ENGINE_SHADER_PREFIX):
+			spec_data_dict['shaderRef'] = get_new_ref(shader_ref, old_ref_to_new_id)
+
 	elif ref.endswith('mesh'):
 		spec_data_dict = ref_dict
 		spec_data_dict.pop('ref', None)
