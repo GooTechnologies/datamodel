@@ -388,7 +388,7 @@ def convert_machine(old_ref_to_new_id, ref_dict):
 		state['transitions'] = transitions_dict
 
 		child_dict = dict()
-		for i, machine_ref in state['machineRefs']:
+		for i, machine_ref in enumerate(state['machineRefs']):
 			machine_id = old_ref_to_new_id[machine_ref]
 			new_machine_ref = get_new_ref(machine_ref, old_ref_to_new_id)
 			child_dict[machine_id] = new_machine_ref
@@ -650,7 +650,9 @@ def create_base_goo_object_dict(id, name, owner, project_license, extra_owners=l
 
 	c_date = dateutil.parser.parse(created_date)
 	m_date = dateutil.parser.parse(modified_date)
-	assert c_date <= m_date
+	if c_date > m_date:
+		logger.error('The modified date is before the created date, setting the modified date to the created.')
+		modified_date = created_date
 
 	# Required attributes
 	base_dict = {
