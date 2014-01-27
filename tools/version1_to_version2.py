@@ -744,7 +744,7 @@ def create_project_wide_base_args(project_dict):
 	return base_args
 
 
-def convert_project_file(project_dict, base_args, old_to_new_id, posteffect_list):
+def convert_project_file(project_dict, base_args, old_to_new_id, posteffect_list, asset_references):
 	"""
 	Returns a dict containing ref -> json_object , to be written
 	@type project_dict: dict
@@ -774,18 +774,16 @@ def convert_project_file(project_dict, base_args, old_to_new_id, posteffect_list
 
 	v2_project_dict = create_base_goo_object_dict(**args)
 
-	entity_references = set(project_dict['entityRefs'])
-
 	asset_dict = dict()
 	asset_sort_value = 0
-	for ref, new_id in old_to_new_id.iteritems():
-		if ref not in entity_references:
-			new_ref = get_new_ref(ref, old_to_new_id)
-			asset_dict[new_id] = {
-				'sortValue': asset_sort_value,
-				'assetRef': new_ref
-			}
-			asset_sort_value += 1
+	for ref in asset_references:
+		new_id = old_to_new_id[ref]
+		new_ref = get_new_ref(ref, old_to_new_id)
+		asset_dict[new_id] = {
+			'sortValue': asset_sort_value,
+			'assetRef': new_ref
+		}
+		asset_sort_value += 1
 
 	v2_project_dict.update({
 		'assets': asset_dict
@@ -816,6 +814,7 @@ def convert_project_file(project_dict, base_args, old_to_new_id, posteffect_list
 	environment_reference = environment_dict['id'] + '.environment'
 
 	# SCENE CREATION
+	entity_references = set(project_dict['entityRefs'])
 	scene_dict = create_scene_object(project_dict, entity_references, base_args, old_to_new_id, posteffect_reference, environment_reference)
 
 	scene_id = scene_dict['id']

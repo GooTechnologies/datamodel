@@ -73,7 +73,7 @@ class GooDataModel:
 
 		self._project_dict = None
 
-		self._asset_references = set()
+		self._asset_references = dict()
 
 	def read_directory(self, dir_path, model_version):
 
@@ -100,6 +100,28 @@ class GooDataModel:
 
 		self._find_asset_references(self._project_dict['groupRefs'])
 
+		logger.warn('Missing files: %s', self._missing_files)
+
+	def _write_new_file(self, base_args, old_ref_to_new_id, output_path, pretty_print, ref, ref_dict):
+		if self._is_ref_binary(ref):
+			# Copy the old file to the new place.
+			file_path = ref_dict
+			ref_id = old_ref_to_new_id[ref]
+			extension = os.path.splitext(ref)[1]
+			out_file_path = os.path.join(output_path, ref_id + extension)
+			shutil.copyfile(src=file_path, dst=out_file_path)
+			logger.info('Wrote %s', out_file_path)
+		else:
+			file_name, json_dict = v1_to_v2.convert(ref, ref_dict, base_args, old_ref_to_new_id)
+			self._write_json(file_name, json_dict, output_path, pretty_print)
+
+	def _pregenerate_new_ids(self, old_ref_to_new_id, owner_id, ref):
+		assert ref not in old_ref_to_new_id
+		if self._is_ref_binary(ref):
+			old_ref_to_new_id[ref] = self._generate_binary_id(ref, owner_id)
+		else:
+			old_ref_to_new_id[ref] = v1_to_v2.generate_random_string()
+
 	def write(self, output_dir, output_data_model_version, pretty_print=False):
 		"""Writes the read data into the desired"""
 
@@ -117,15 +139,12 @@ class GooDataModel:
 
 			owner_id = base_args['owner']
 
-			# Pre-generate ids for mapping old references to the new references
 			old_ref_to_new_id = dict()
-			for ref in self._references.iterkeys():
-				assert ref not in old_ref_to_new_id
 
-				if self._is_ref_binary(ref):
-					old_ref_to_new_id[ref] = self._generate_binary_id(ref, owner_id)
-				else:
-					old_ref_to_new_id[ref] = v1_to_v2.generate_random_string()
+			for ref in self._references.iterkeys():
+				self._pregenerate_new_ids(old_ref_to_new_id, owner_id, ref)
+			for ref in self._asset_references.iterkeys():
+				self._pregenerate_new_ids(old_ref_to_new_id, owner_id, ref)
 
 			for ref in self._missing_files:
 				# TODO: Come up with a solution for missing files.
@@ -133,22 +152,14 @@ class GooDataModel:
 				# reference.
 				old_ref_to_new_id[ref] = None
 
+			# Write and convert the new files.
 			for ref, ref_dict in self._references.iteritems():
-				if self._is_ref_binary(ref):
-					# Copy the old file to the new place.
-					file_path = ref_dict
-					ref_id = old_ref_to_new_id[ref]
-					extension = os.path.splitext(ref)[1]
-					out_file_path = os.path.join(output_path, ref_id + extension)
-					shutil.copyfile(src=file_path, dst=out_file_path)
-					logger.info('Wrote %s', out_file_path)
-				else:
-					file_name, json_dict = v1_to_v2.convert(ref, ref_dict, base_args, old_ref_to_new_id)
-					self._write_json(file_name, json_dict, output_path, pretty_print)
+				self._write_new_file(base_args, old_ref_to_new_id, output_path, pretty_print, ref, ref_dict)
+			for ref, ref_dict in self._asset_references.iteritems():
+				self._write_new_file(base_args, old_ref_to_new_id, output_path, pretty_print, ref, ref_dict)
 
 			# Store all post effect objects into a list , sent to create the new posteffects object
 			# which contain all of them.
-
 			post_effect_refs = self._project_dict.get('posteffectRefs')
 			if post_effect_refs:
 				post_effect_list = list()
@@ -158,7 +169,8 @@ class GooDataModel:
 			else:
 				post_effect_list = None
 
-			write_dict = v1_to_v2.convert_project_file(self._project_dict, base_args, old_ref_to_new_id, post_effect_list)
+			asset_references = self._asset_references.keys()
+			write_dict = v1_to_v2.convert_project_file(self._project_dict, base_args, old_ref_to_new_id, post_effect_list, asset_references)
 			for ref, ref_dict in write_dict.iteritems():
 				self._write_json(ref, ref_dict, output_path, pretty_print)
 
@@ -234,8 +246,6 @@ class GooDataModel:
 					img_path = self._get_reference_dict(url)
 					if img_path:
 						self._add_reference(url, img_path)
-
-			logger.warn('Missing files: %s', self._missing_files)
 
 		elif model_version is GooDataModel.DATA_MODEL_VERSION_2:
 			raise NotImplementedError()
@@ -355,7 +365,9 @@ class GooDataModel:
 		return extension in BINARY_TYPES
 
 	def _find_asset_references(self, library_refs):
-		"""Traverses the library refs. Recursive call when finding a .group reference"""
+		"""Traverses the library refs. Recursive call when finding a .group reference.
+		Adding references into the _asset_references dict.
+		"""
 		for ref in library_refs:
 			if ref.endswith('group'):
 				# Add the refs in the group object's to the lib_refs
@@ -367,9 +379,11 @@ class GooDataModel:
 					# Skip posteffects. These are taken care of when converting
 					# the project.project.
 					continue
-				if ref not in self._references and ref not in self._missing_files:
-					logger.debug('Adding %s to asset refs', ref)
-					self._asset_references.add(ref)
+				if ref not in self._references and ref not in self._missing_files and ref not in self._asset_references:
+					asset_dict = self._get_reference_dict(ref)
+					if asset_dict is not None:
+						self._asset_references[ref] = asset_dict
+						logger.debug('Added %s to asset refs', ref)
 
 
 def migrate_projects(src_dir=None, out_dir=None):
