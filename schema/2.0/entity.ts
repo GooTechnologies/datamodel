@@ -152,8 +152,11 @@ interface ScriptComponent {
 }
 
 interface StateMachineComponent {
-	machineRefs: {
-		[listId: string]: MachineRef;
+	machines: {
+		[listId: string]: {
+			machineRef: MachineRef;
+			sortValue: number;
+		}
 	}
 }
 
