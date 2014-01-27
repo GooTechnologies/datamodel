@@ -790,26 +790,25 @@ def convert_project_file(project_dict, base_args, old_to_new_id, posteffect_list
 	# POSTEFFECTS CREATION
 	if posteffect_list:
 		posteffect_dict = create_posteffects_object(posteffect_list, base_args)
-		posteffect_ref = posteffect_dict['id'] + '.posteffects'
-		write_dict[posteffect_ref] = posteffect_dict
+		posteffect_reference = posteffect_dict['id'] + '.posteffects'
+		write_dict[posteffect_reference] = posteffect_dict
 	else:
-		posteffect_ref = None
+		posteffect_reference = None
 
 	# SKYBOX CREATION
 	skybox = project_dict.get('skybox')
 	if skybox:
-		skybox_dict = create_skybox_object(skybox, old_to_new_id, base_args)
-		skybox_ref = skybox_dict['id'] + '.skybox'
-		write_dict[skybox_ref] = skybox_dict
+		skybox_reference, sky_write_dict = create_skybox_object(skybox, base_args)
+		write_dict.update(sky_write_dict)
 	else:
-		skybox_ref = None
-	# ENVIRONMENT CREATION
+		skybox_reference = None
 
-	environment_dict = create_environment_object(project_dict, base_args, skybox_ref)
-	environment_ref = environment_dict['id'] + '.environment'
+	# ENVIRONMENT CREATION
+	environment_dict = create_environment_object(project_dict, base_args, skybox_reference)
+	environment_reference = environment_dict['id'] + '.environment'
 
 	# SCENE CREATION
-	scene_dict = create_scene_object(project_dict, base_args, old_to_new_id, posteffect_ref, environment_ref)
+	scene_dict = create_scene_object(project_dict, base_args, old_to_new_id, posteffect_reference, environment_reference)
 
 	scene_id = scene_dict['id']
 	scene_reference = scene_id + '.scene'
@@ -823,15 +822,21 @@ def convert_project_file(project_dict, base_args, old_to_new_id, posteffect_list
 		}
 	})
 
-	write_dict[v2_project_dict['id']] = v2_project_dict
+	project_reference = v2_project_dict['id'] + '.project'
+	write_dict[project_reference] = v2_project_dict
 	write_dict[scene_reference] = scene_dict
 
 	return write_dict
 
 
-def create_skybox_object(skybox, old_to_new_id, base_args):
+def create_skybox_object(skybox, base_args):
+	"""Returns sky_ref , stuff_to_be_written_dict (containing ref -> dict"""
 
 	skybox_obj = new_goo_object(base_args, object_id=generate_random_string())
+
+	skybox_reference = skybox_obj['id'] + '.skybox'
+
+	write_dict = dict()
 
 	rotation = skybox.get('rotation')
 	if rotation:
@@ -842,31 +847,70 @@ def create_skybox_object(skybox, old_to_new_id, base_args):
 
 		box_images = skybox['imageUrls']
 		assert len(box_images) == 6
-		for index, img_ref in enumerate(box_images):
-			box_images[index] = get_new_ref(box_images[index], old_to_new_id)
+		texture_refs = list()
+		for img_ref in box_images:
+			tex_ref, tex_dict = create_texture_obj(img_ref, base_args)
+			texture_refs.append(tex_ref)
+			write_dict[tex_ref] = tex_dict
 
 		# order of images, from goojs TextureCreator.prototype.loadTextureCube
 		# [left, right, bottom, top, back, front]
 		# This is not true for this array for some reason.
 		skybox_obj['box'] = {
 			'enabled': True,
-			'rightRef': box_images[0],
-			'leftRef': box_images[1],
-			'topRef': box_images[2],
-			'bottomRef': box_images[3],
-			'frontRef': box_images[4],
-			'backRef': box_images[5]
+			'rightRef': texture_refs[0],
+			'leftRef': texture_refs[1],
+			'topRef': texture_refs[2],
+			'bottomRef': texture_refs[3],
+			'frontRef': texture_refs[4],
+			'backRef': texture_refs[5]
 		}
 	elif sky_shape == 'Sphere':
-		sphere_texture_ref = get_new_ref(skybox['imageUrls'][0], old_to_new_id)
+		assert len(skybox['imageUrls']) == 1
+		tex_ref, tex_dict = create_texture_obj(skybox['imageUrls'][0], base_args)
+		write_dict[tex_ref] = tex_dict
 		skybox_obj['sphere'] = {
 			'enabled': True,
-			'sphereRef': sphere_texture_ref
+			'sphereRef': tex_ref
 		}
 	else:
 		raise AssertionError('Non-standard skybox shape %s', sky_shape)
 
-	return skybox_obj
+	write_dict[skybox_reference] = skybox_obj
+
+	return skybox_reference, write_dict
+
+
+def create_texture_obj(image_reference, base_args):
+
+	MAG_FILTERS = ['NearestNeighbor', 'Bilinear']
+
+	MIN_FILTERS = ['NearestNeighborNoMipMaps',
+				   'NearestNeighborNearestMipMap',
+				   'NearestNeighborLinearMipMap',
+				   'BiliniearNoMipMaps',
+				   'BiliniearNearestMipMap',
+				   'Trilinear']
+
+	WRAP_MODES = [
+		'Repeat',
+		'MirroredRepeat',
+		'EdgeClamp'
+	]
+
+	tex_id = generate_random_string()
+	texture_ref = tex_id + '.texture'
+	tex_obj = new_goo_object(base_args, object_id=tex_id)
+	tex_obj['magFilter'] = MAG_FILTERS[1]
+	tex_obj['minFilter'] = MIN_FILTERS[3]
+	tex_obj['offset'] = [0, 0]
+	tex_obj['repeat'] = [0, 0]
+	tex_obj['imageRef'] = image_reference
+	tex_obj['wrapS'] = WRAP_MODES[0]
+	tex_obj['wrapT'] = WRAP_MODES[0]
+	tex_obj['anisotropy'] = 1
+	tex_obj['flipY'] = False
+	return texture_ref, tex_obj
 
 
 def create_environment_object(project_dict, base_args, skybox_ref):
