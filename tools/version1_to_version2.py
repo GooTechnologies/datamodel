@@ -264,8 +264,10 @@ def convert_entity(old_ref_to_new_id, ref_dict):
 
 	entity_dict = dict()
 	is_hidden = ref_dict.get('hidden')
-	if is_hidden:
-		entity_dict['hidden'] = is_hidden
+	if is_hidden is None:
+		is_hidden = False
+	entity_dict['hidden'] = is_hidden
+	entity_dict['static'] = False
 
 	# Go through the possible components of the entity and
 	# handle their conversions.
