@@ -6,7 +6,7 @@ interface project extends GooObject {
 	/**
 	 * Should always be in scenes as well
 	 */
-	mainScene: SceneRef;
+	mainSceneRef: SceneRef;
 	
 	scenes: {
 		// listID is id to scerenref
