@@ -175,7 +175,8 @@ interface TransformComponent {
 
 interface entity extends GooObject {
 
-	hidden?: boolean;
+	hidden: boolean;
+	static: boolean;
 
 	components: {
 		animation?: AnimationComponent;
