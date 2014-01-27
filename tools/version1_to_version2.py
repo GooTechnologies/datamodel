@@ -232,9 +232,13 @@ def convert_entity(old_ref_to_new_id, ref_dict):
 		ref_dict = dict()
 		for index, ref in enumerate(ref_list):
 			ref_id = old_ref_to_new_id[ref]
-			ref_dict[ref_id] = get_new_ref(ref, old_ref_to_new_id)
 			if add_sort_value:
-				ref_dict[ref_id]['sortValue'] = index
+				ref_dict = {
+					ref_id: get_new_ref(ref, old_ref_to_new_id),
+					'sortValue': index
+				}
+			else:
+				ref_dict[ref_id] = get_new_ref(ref, old_ref_to_new_id)
 		return ref_dict
 
 	def convert_rot_matrix_to_angles(matrix_list):
@@ -703,15 +707,19 @@ def create_project_wide_base_args(project_dict):
 	owner_list = project_dict['own']
 	owner_set = set(owner_list)
 	if len(owner_set) > 1:
+
+		# TODO :
 		# If there are more owners, something is probably wrong, and
 		# there is now a problem of deciding which user who actually is the
 		# real owner. Will for now crash the migration.
-		raise NotImplementedError()
+		# raise NotImplementedError()
+		pass
 
 	owner = owner_set.pop()
 	extra_owners = list()
 	for user_id in owner_set:
 		extra_owners.append(user_id)
+		logger.error('Adding an extra owner: %s', user_id)
 
 	base_args = {
 		'owner': owner,
@@ -866,8 +874,9 @@ def create_skybox_object(skybox, base_args):
 			'backRef': texture_refs[5]
 		}
 	elif sky_shape == 'Sphere':
-		assert len(skybox['imageUrls']) == 1
-		tex_ref, tex_dict = create_texture_obj(skybox['imageUrls'][0], base_args)
+		sphere_ref = skybox['imageUrls'][0]
+		assert len(sphere_ref) > 0
+		tex_ref, tex_dict = create_texture_obj(sphere_ref, base_args)
 		write_dict[tex_ref] = tex_dict
 		skybox_obj['sphere'] = {
 			'enabled': True,
