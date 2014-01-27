@@ -215,15 +215,23 @@ class GooDataModel:
 				if r not in entity_refs:
 					print r
 
-			logger.warn('Missing files: %s', self._missing_files)
-
 			# Add the screenshot
-			screenshot = self._project_dict['screenshot']
+			screenshot = self._project_dict.get('screenshot')
 			if screenshot:
 				logger.debug('Found a screenshot of the project!')
 				screen_path = self._get_reference_dict(screenshot)
 				if screen_path:
 					self._add_reference(screenshot, screen_path)
+
+			skybox = self._project_dict.get('skybox')
+			if skybox:
+				img_urls = skybox['imageUrls']
+				for url in img_urls:
+					img_path = self._get_reference_dict(url)
+					if img_path:
+						self._add_reference(url, img_path)
+
+			logger.warn('Missing files: %s', self._missing_files)
 
 		elif model_version is GooDataModel.DATA_MODEL_VERSION_2:
 			raise NotImplementedError()
