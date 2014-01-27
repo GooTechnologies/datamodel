@@ -222,7 +222,7 @@ def convert_entity(old_ref_to_new_id, ref_dict):
 	DEFAULT_SCALE = [1,1,1]
 	DEFAULT_ROTATION = DEFAULT_TRANSLATION
 
-	def ref_list_to_dict(ref_list, old_ref_to_new_id, add_sort_value=False):
+	def ref_list_to_dict(ref_list, old_ref_to_new_id):
 		"""
 		Returns a dict with keys as the new id to the references.
 
@@ -232,13 +232,7 @@ def convert_entity(old_ref_to_new_id, ref_dict):
 		ref_dict = dict()
 		for index, ref in enumerate(ref_list):
 			ref_id = old_ref_to_new_id[ref]
-			if add_sort_value:
-				ref_dict = {
-					ref_id: get_new_ref(ref, old_ref_to_new_id),
-					'sortValue': index
-				}
-			else:
-				ref_dict[ref_id] = get_new_ref(ref, old_ref_to_new_id)
+			ref_dict[ref_id] = get_new_ref(ref, old_ref_to_new_id)
 		return ref_dict
 
 	def convert_rot_matrix_to_angles(matrix_list):
@@ -313,11 +307,18 @@ def convert_entity(old_ref_to_new_id, ref_dict):
 				comp_dict['poseRef'] = get_new_ref(pose_ref, old_ref_to_new_id)
 
 		elif comp_type == 'meshRenderer':
-			ref_list = comp_dict.get('materialRefs')
-			if ref_list:
-				ref_dict = ref_list_to_dict(ref_list, old_ref_to_new_id, add_sort_value=True)
+			material_refs = comp_dict.pop('materialRefs', None)
+			if material_refs is not None:
+				ref_dict = dict()
+				for i, mat_ref in enumerate(material_refs):
+					new_ref = get_new_ref(mat_ref, old_ref_to_new_id)
+					mat_id = old_ref_to_new_id[mat_ref]
+					ref_dict[mat_id] = {
+						'sortValue': i,
+						'materialRef': new_ref
+					}
+
 				comp_dict['materials'] = ref_dict
-				comp_dict.pop('materialRefs', None)
 
 			if not 'reflectable' in comp_dict:
 				comp_dict['reflectable'] = True
