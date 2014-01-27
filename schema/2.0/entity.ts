@@ -77,6 +77,11 @@ interface LightComponent {
 	 */
 	range?: number;
 	shadowCaster: boolean;
+	/**
+	* Direction and exponent is used by a SpotLight
+	*/
+	direction?: Vector3;
+	exponent?: number;
 	
 	shadowSettings?: {
 		darkness: number;

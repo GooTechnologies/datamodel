@@ -288,10 +288,6 @@ def convert_entity(old_ref_to_new_id, ref_dict):
 
 		elif comp_type == 'light':
 			comp_dict.pop('attenuate', None)
-			# TODO : Check if these attributes really should be removed..
-			comp_dict.pop('direction', None)
-			comp_dict.pop('exponent', None)
-
 			light_cookie = comp_dict.get('lightCookie')
 			if light_cookie:
 				light_cookie['textureRef'] = get_new_ref(light_cookie['textureRef'], old_ref_to_new_id)
