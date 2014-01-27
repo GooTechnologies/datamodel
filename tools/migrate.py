@@ -312,43 +312,6 @@ class GooDataModel:
 				logger.debug('... Going deeper into: %s = %s', key, json.dumps(value, sort_keys=True, indent=4, separators=(',', ':')))
 				self._traverse_dict(value)
 
-		"""
-		# Maybe too specific , gonna start with just going for anything that ends with *Refs
-		for component_type, obj_dict in component_dict.iteritems():
-			if component_type == 'animation':
-				# TODO :  poseRef and layerRef, .skeleton and .animation
-				pass
-			elif component_type == 'camera':
-				# Do nothing with the camera component. The data exists in the entity
-				pass
-			elif component_type == 'light':
-				# TODO : Can contain lightCookie, which contains a textureRef, which can contain an image ref
-				pass
-			elif component_type == 'meshData':
-				# TODO: Contains meshRefs and poseRefs, .mesh and .skeleton
-				pass
-			elif component_type == 'meshRenderer':
-				# Contains material refs, which can contain textureRefs and shaderRefs.
-				# And then the textureRefs can contain imageRef to the binary.
-				assert 'materialRefs' in obj_dict
-				for mat_ref in obj_dict['materialRefs']:
-					print mat_ref
-			elif component_type == 'script':
-				# TODO: Contains scriptRefs
-				pass
-			elif component_type == 'stateMachine':
-				# TODO: Contain machineRefs, which contain more machineRefs
-				pass
-			elif component_type == 'sound':
-				# TODO : Contain soundRefs, which contain {url: AudioRef}, references to sound binaries.
-				pass
-			elif component_type == 'transform':
-				# TODO: Convert rotation into euler x, y, z if its not in it already
-				pass
-			else:
-				raise AssertionError('Corrupt project? - %s is not a recognized component', component_type)
-		"""
-
 	def _add_child_to_entity(self, entity_ref, child_ref):
 
 		assert entity_ref != child_ref
