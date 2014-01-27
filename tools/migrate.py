@@ -73,6 +73,8 @@ class GooDataModel:
 
 		self._project_dict = None
 
+		self._asset_references = set()
+
 	def read_directory(self, dir_path, model_version):
 
 		path_match = os.path.join(os.path.curdir, dir_path, '**/', PROJECT_FILE)
@@ -96,7 +98,7 @@ class GooDataModel:
 
 		self._find_references_in_scene(model_version)
 
-		# TODO : Find asset items. Stuff which is in the libraryRefs and not in the entityRefs.
+		self._find_asset_references(self._project_dict['groupRefs'])
 
 	def write(self, output_dir, output_data_model_version, pretty_print=False):
 		"""Writes the read data into the desired"""
@@ -166,6 +168,7 @@ class GooDataModel:
 	def clear(self):
 		self._references.clear()
 		self._missing_files.clear()
+		self._asset_references.clear()
 
 	def _write_json(self, file_name, json_dict, output_path, pretty_print):
 		out_file_path = os.path.join(output_path, file_name)
@@ -350,6 +353,23 @@ class GooDataModel:
 	def _is_ref_binary(self, reference):
 		extension = os.path.splitext(reference)[1][1:]
 		return extension in BINARY_TYPES
+
+	def _find_asset_references(self, library_refs):
+		"""Traverses the library refs. Recursive call when finding a .group reference"""
+		for ref in library_refs:
+			if ref.endswith('group'):
+				# Add the refs in the group object's to the lib_refs
+				# in traversal at the moment.
+				group_dict = self._get_reference_dict(ref)
+				self._find_asset_references(group_dict['libraryRefs'])
+			else:
+				if ref.endswith('posteffect'):
+					# Skip posteffects. These are taken care of when converting
+					# the project.project.
+					continue
+				if ref not in self._references and ref not in self._missing_files:
+					logger.debug('Adding %s to asset refs', ref)
+					self._asset_references.add(ref)
 
 
 def migrate_projects(src_dir=None, out_dir=None):

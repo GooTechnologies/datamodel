@@ -806,7 +806,7 @@ def convert_project_file(project_dict, base_args, old_to_new_id, posteffect_list
 	# SKYBOX CREATION
 	skybox = project_dict.get('skybox')
 	if skybox:
-		skybox_reference, sky_write_dict = create_skybox_object(skybox, base_args)
+		skybox_reference, sky_write_dict = create_skybox_object(skybox, base_args, old_to_new_id)
 		write_dict.update(sky_write_dict)
 	else:
 		skybox_reference = None
@@ -837,7 +837,7 @@ def convert_project_file(project_dict, base_args, old_to_new_id, posteffect_list
 	return write_dict
 
 
-def create_skybox_object(skybox, base_args):
+def create_skybox_object(skybox, base_args, old_to_new_id):
 	"""Returns sky_ref , stuff_to_be_written_dict (containing ref -> dict"""
 
 	skybox_obj = new_goo_object(base_args, object_id=generate_random_string())
@@ -857,7 +857,8 @@ def create_skybox_object(skybox, base_args):
 		assert len(box_images) == 6
 		texture_refs = list()
 		for img_ref in box_images:
-			tex_ref, tex_dict = create_texture_obj(img_ref, base_args)
+			new_img_ref = old_to_new_id[img_ref]
+			tex_ref, tex_dict = create_texture_obj(new_img_ref, base_args)
 			texture_refs.append(tex_ref)
 			write_dict[tex_ref] = tex_dict
 
