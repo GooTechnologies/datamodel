@@ -16,6 +16,9 @@ interface project extends GooObject {
 		}
 	}
 
+	/**
+	* All references not in the scenes' entityRefs.
+	*/
 	assets: {
 		[listId: string]: {
 			sortValue: number;

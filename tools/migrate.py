@@ -217,6 +217,14 @@ class GooDataModel:
 
 			logger.warn('Missing files: %s', self._missing_files)
 
+			# Add the screenshot
+			screenshot = self._project_dict['screenshot']
+			if screenshot:
+				logger.debug('Found a screenshot of the project!')
+				screen_path = self._get_reference_dict(screenshot)
+				if screen_path:
+					self._add_reference(screenshot, screen_path)
+
 		elif model_version is GooDataModel.DATA_MODEL_VERSION_2:
 			raise NotImplementedError()
 		else:
@@ -239,6 +247,10 @@ class GooDataModel:
 		return added_reference
 
 	def _get_reference_dict(self, reference):
+		"""If the reference is of a JSON type, the returned value is the dict of the object.
+		If the reference is of a binary type , the full path to the file is returned.
+		"""
+
 		ref_path = os.path.join(self._current_root_path, reference)
 		if not self._reading_from_bundle:
 			try:

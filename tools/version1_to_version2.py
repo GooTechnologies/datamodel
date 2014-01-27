@@ -758,11 +758,9 @@ def convert_project_file(project_dict, base_args, old_to_new_id, posteffect_list
 		args.update({'description': description})
 
 	thumbnail = project_dict.get('screenshot')
-	thumbnail = False
 	if thumbnail:
-		# TODO: The screenshot should be added to the asset list?
-		new_thumbnail_ref = get_new_ref(thumbnail, old_to_new_id)
-		args.update({'thumbnail_ref': new_thumbnail_ref})
+		new_ref = old_to_new_id[thumbnail]
+		args.update({'thumbnail_ref': new_ref})
 
 	v2_project_dict = create_base_goo_object_dict(**args)
 
@@ -808,7 +806,8 @@ def convert_project_file(project_dict, base_args, old_to_new_id, posteffect_list
 	environment_reference = environment_dict['id'] + '.environment'
 
 	# SCENE CREATION
-	scene_dict = create_scene_object(project_dict, base_args, old_to_new_id, posteffect_reference, environment_reference)
+	entities = set(project_dict['entityRefs'])
+	scene_dict = create_scene_object(project_dict, entities, base_args, old_to_new_id, posteffect_reference, environment_reference)
 
 	scene_id = scene_dict['id']
 	scene_reference = scene_id + '.scene'
@@ -951,14 +950,12 @@ def create_posteffects_object(posteffect_list, base_args):
 	return post_effect_object
 
 
-def create_scene_object(project_dict, base_args, old_to_new_id, posteffects_ref, environment_ref):
+def create_scene_object(project_dict, entities, base_args, old_to_new_id, posteffects_ref, environment_ref):
 	"""Creates the scene dictionary"""
 
 	scene_dict = new_goo_object(base_args,
 								object_id=generate_random_string(),
 								name=project_dict.get('name') + ' default scene')
-
-	entities = set(project_dict['entityRefs'])
 	entity_dict = dict()
 	for entity_ref in entities:
 		new_ref = get_new_ref(entity_ref, old_to_new_id)
