@@ -48,6 +48,7 @@ interface mesh extends GooObject{
 	 */ 
 	indexLengths: int[];
 	indexModes: IndexMode[];
+	indices: BinaryPointer;
 
 	/**
 	 * Most commonly POSITION, NORMAL, TANGENT, etc so
