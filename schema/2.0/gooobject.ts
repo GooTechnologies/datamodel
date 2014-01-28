@@ -18,7 +18,7 @@ interface GooObject {
 	created: DateTime;
 	modified: DateTime;
 
-	readOnly: boolean;
+	readOnly?: boolean;
 
 	description?: string;
 	thumbnailRef?: ImageRef;
