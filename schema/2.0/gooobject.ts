@@ -18,18 +18,7 @@ interface GooObject {
 	created: DateTime;
 	modified: DateTime;
 
-	public: boolean;
-	owner: string;
-	editors?: {
-		[listId: string]: string;
-	}
-
-	/**
-	 * Ignored if public is true
-	 */
-	viewers?: {
-		[listId: string]: string;
-	}
+	readOnly: boolean;
 
 	description?: string;
 	thumbnailRef?: ImageRef;
