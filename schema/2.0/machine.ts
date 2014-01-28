@@ -6,8 +6,6 @@ interface Transition {
 	name: string;
 	sortValue: number;
 
-	eventName: string;
-
 	/**
 	 * If this property is not present, the transition is not connected 
 	 * to another state. 

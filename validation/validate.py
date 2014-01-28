@@ -43,6 +43,8 @@ def validate_all(datatype=None):
 					failed += 1
 				except IOError as e:
 					failed += 1
+				except Exception as e:
+					print "Error validating: %s"%e
 
 	if succeeded + failed == 0: 
 		print "No files found"
@@ -57,9 +59,10 @@ def validate_file(filepath):
 	"""
 	datatype = filepath.split('.')[-1]
 
+
 	with open(filepath) as f: 
 		jsondata = json.load(f)
-
+	
 	clear_null_properties(jsondata)
 	validator = validator_for_type(datatype)
 	try: 
