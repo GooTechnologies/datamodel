@@ -65,8 +65,7 @@ interface mesh extends GooObject{
 	 */
 	attributes: {
 		/**
-		 * @type string
-		 * @pattern ^[A-Z_]+$
+		 * Key should conform to pattern ^[A-Z_]+$, but validator cannot validate object keys
 		 */
 		[attrKey: string]: {
 			value: BinaryPointer;
