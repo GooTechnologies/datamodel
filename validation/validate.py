@@ -15,8 +15,8 @@ from glob import glob
 from jsonschema import Draft4Validator, RefResolver, FormatChecker
 from jsonschema.exceptions import RefResolutionError, ValidationError, FormatError
 
-SCHEMA_DIR = "schema_json/2.0"
-DATA_DIR = "testdata/2.0"
+SCHEMA_DIR = "schema_json/1.0"
+DATA_DIR = "testdata/1.0"
 BINARY_TYPES = ['png', 'jpg', 'jpeg', 'tga', 'dds', 'crn', 'wav', 'mp3', 'bin']
 
 
