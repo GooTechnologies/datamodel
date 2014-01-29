@@ -9,8 +9,8 @@ enum MinFilter {
 	NearestNeighborNoMipMaps,
 	NearestNeighborNearestMipMap,
 	NearestNeighborLinearMipMap,
-	BiliniearNoMipMaps,
-	BiliniearNearestMipMap,
+	BilinearNoMipMaps,
+	BilinearNearestMipMap,
 	Trilinear	
 }
 
