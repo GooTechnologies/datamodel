@@ -1,6 +1,6 @@
 /// <reference path="gooobject.ts"/>
 
-interface sound {
+interface sound extends GooObject {
 
 	/**
 	 * Map key is the format (mp3, wav, etc.) in lowercase
