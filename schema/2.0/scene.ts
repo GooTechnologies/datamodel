@@ -14,6 +14,7 @@ interface scene extends GooObject {
 		// listId is enities' id
 		[listId: string]: EntityRef;
 	}
+	initialCameraRef: EntityRef;
 
 	posteffectsRef?: PosteffectsRef;
 
