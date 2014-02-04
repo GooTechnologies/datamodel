@@ -34,7 +34,7 @@ interface texture extends GooObject {
 	offset: Vector2;
 	repeat: Vector2;
 	
-	imageRef: ImageRef;
+	imageRef?: ImageRef;
 
 	/**
 	 * For automatic matching, only set by the converter
