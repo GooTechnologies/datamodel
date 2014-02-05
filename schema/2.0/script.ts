@@ -6,9 +6,13 @@
  */
 interface script extends GooObject {
 
-	className: string;
+
+
+	className?: string;
+
+	body?: string; 
 
 	options?: {
 		[optname: string]: any;
-	} 
+	}
 }
