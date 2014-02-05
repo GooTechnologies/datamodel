@@ -66,17 +66,24 @@ interface LightComponent {
 	 * @default [1,1,1]
 	 */
 	color?: Color;
+
 	intensity: number;
+
+	specularIntensity: number;
+
 	lightCookie?: {
 		enabled: boolean;
 		textureRef: TextureRef;
 	};
+
 	penumbra?: number;
+
 	/**
 	 * Mandatory if LightType is other than DirectionalLight
 	 */
 	range?: number;
 	shadowCaster: boolean;
+
 	/**
 	* Direction and exponent is used by a SpotLight
 	*/
@@ -98,7 +105,6 @@ interface LightComponent {
 		resolution: Vector2;
 		shadowType: ShadowType;
 	}
-	specularIntensity: number;
 }
 
 
