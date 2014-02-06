@@ -82,6 +82,10 @@ interface LightComponent {
 	 * Mandatory if LightType is other than DirectionalLight
 	 */
 	range?: number;
+
+	/**
+	 * @default true
+	 */
 	shadowCaster: boolean;
 
 	/**
