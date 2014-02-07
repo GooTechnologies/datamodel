@@ -11,9 +11,22 @@ interface Weather {
 	 * Particle based snow flakes
 	 */
 	snow?: {
+
+		/**
+		* @default 10
+		*/
 		velocity: number;
+		/**
+		* @default 10
+		*/
 		rate: number;
+		/**
+		* @default true
+		*/
 		enabled: boolean;
+		/**
+		* @default 25
+		*/
 		height:number;
 	}
 }

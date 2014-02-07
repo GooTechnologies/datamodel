@@ -67,8 +67,14 @@ interface LightComponent {
 	 */
 	color?: Color;
 
+	/**
+	 * @default 1
+	 */
 	intensity: number;
 
+	/**
+	 * @default 0.2
+	 */
 	specularIntensity: number;
 
 	lightCookie?: {
