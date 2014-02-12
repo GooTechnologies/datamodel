@@ -54,5 +54,8 @@ interface texture extends GooObject {
 	 */
 	anisotropy: number;
 
+	/**
+	 * @default true
+	 */
 	flipY: boolean;
 }

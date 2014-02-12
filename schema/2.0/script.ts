@@ -6,8 +6,6 @@
  */
 interface script extends GooObject {
 
-
-
 	className?: string;
 
 	body?: string; 
