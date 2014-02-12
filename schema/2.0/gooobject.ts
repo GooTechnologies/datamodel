@@ -13,7 +13,7 @@ interface GooObject {
 	id: string;
 	name: string;
 	license: LicenseType;
-	originalLicense: LicenseType;
+	originalLicense?: LicenseType;
 
 	created: DateTime;
 	modified: DateTime;
