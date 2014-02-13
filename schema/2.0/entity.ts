@@ -9,6 +9,12 @@ interface AnimationComponent {
 	poseRef?: PoseRef;
 }
 
+enum CameraProjectionType {
+	Perspective, 
+	Parallel
+}
+
+
 interface CameraComponent {
 
 	/**
@@ -22,10 +28,9 @@ interface CameraComponent {
 	lockedRatio: boolean; 
 
 	/**
-	 * @minimum 0
-	 * @maximum 1
+	 * @default "Perspective"
 	 */
-	projectionMode: number;
+	projectionMode: CameraProjectionType;
 
 	far: number;
 	/**
