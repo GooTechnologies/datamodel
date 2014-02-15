@@ -15,10 +15,10 @@ from glob import glob
 from jsonschema import Draft4Validator, RefResolver, FormatChecker
 from jsonschema.exceptions import RefResolutionError, ValidationError, FormatError
 
-SCHEMA_DIR = "schema_json/1.0"
-DATA_DIR = "testdata/1.0"
+SCHEMA_DIR = "schema_json/2.0"
+DATA_DIR = "testdata/2.0"
 BINARY_TYPES = ['png', 'jpg', 'jpeg', 'tga', 'dds', 'crn', 'wav', 'mp3', 'bin']
-
+IGNORE_TYPES = ['usermeta', 'manifest']
 
 def validate_all(datatype=None):
 	succeeded = 0
@@ -34,8 +34,8 @@ def validate_all(datatype=None):
 			if datatype and filetype != datatype: 
 				continue
 
-			if filetype and filetype not in BINARY_TYPES: 
-				print "Validating %s of type %s"%(filename, filetype)
+			if filetype and filetype not in BINARY_TYPES and filetype not in IGNORE_TYPES: 
+				#print "Validating %s of type %s"%(filename, filetype)
 				try:
 					validate_file(os.path.join(root, filename))
 					succeeded += 1

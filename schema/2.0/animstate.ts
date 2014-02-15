@@ -25,7 +25,7 @@ interface ClipSource {
 	/**
 	 * For type Clip or Managed
 	 */
-	clipRef: ClipRef;
+	clipRef?: ClipRef;
 
 	/**
 	 * For type Frozen
@@ -56,11 +56,13 @@ interface ClipSource {
 
 	/**
 	 * -1 means loop infinitely
+	 * @default -1
 	 */
 	loopCount: int;
 
 	/**
 	 * Higher means faster
+	 * @default 1
 	 */
 	timeScale: number;
 }

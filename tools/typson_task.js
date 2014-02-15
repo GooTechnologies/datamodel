@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 			separator: ', '
 		});
 	
-		var typson = require('typson/typson-schema');
+		var typson = require('typson/lib/typson-schema');
 		var done = this.async();
 		// Iterate over all specified file groups.
 		var fileCount = this.files.length;
