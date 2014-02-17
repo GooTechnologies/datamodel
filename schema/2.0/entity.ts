@@ -204,7 +204,13 @@ interface TransformComponent {
 
 interface entity extends GooObject {
 
+	/**
+	* @default false
+	*/
 	hidden: boolean;
+	/**
+	* @default false
+	*/
 	static: boolean;
 
 	components: {
