@@ -24,8 +24,8 @@ interface Action {
 	/**
 	 * @additionalProperties true
 	 */
-	options: {
-		transitions: {
+	options?: {
+		transitions?: {
 			[key: string]: string
 		} 
 	}
@@ -36,17 +36,17 @@ interface State {
 	name: string;
 	sortValue: number;
 
-	actions: {
+	actions?: {
 		// listId is Action's id
 		[listId: string]: Action;
 	}
 
-	transitions: {
+	transitions?: {
 		// listid is Transition's id
 		[listId: string]: Transition;
 	}
 
-	childMachines: {
+	childMachines?: {
 		// list id is machineRef id
 		[listId: string]: {
 			machineRef: MachineRef;
