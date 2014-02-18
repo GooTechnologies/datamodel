@@ -182,7 +182,7 @@ interface StateMachineComponent {
 }
 
 interface SoundComponent {
-	soundRefs: {
+	soundRefs?: {
 		[listId: string]: SoundRef;
 	}
 }
