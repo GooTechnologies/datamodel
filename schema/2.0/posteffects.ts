@@ -10,7 +10,8 @@ interface posteffects extends GooObject {
 		// Key is a generated string
 		[key: string]: {
 			sortValue: number;
-
+			id: string;
+			name: string
 			type: string;
 			options: {
 				[optname: string]: any;
