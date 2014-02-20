@@ -22,7 +22,8 @@ interface AnimationState {
 
 interface AnimationLayer {
 	sortValue: number;
-	
+	id: string;
+	name: string;
 	blendWeight: number;
 	initialState?: string;
 	states: {
