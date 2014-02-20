@@ -12,6 +12,7 @@ interface AnimationTransition {
 }
 
 interface AnimationState {
+	sortValue: number;
 	stateRef: AnimationStateRef;
 	transitions?: {
 		// key is id to a stateRef

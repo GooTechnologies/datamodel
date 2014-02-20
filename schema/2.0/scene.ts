@@ -10,9 +10,12 @@ interface scene extends GooObject {
 	/** 
 	 * _Root_ entities that are present in the scene
 	 */
-	entityRefs: {
+	entities: {
 		// listId is enities' id
-		[listId: string]: EntityRef;
+		[listId: string]: {
+			entityRef: EntityRef;
+			sortValue: number;
+		}
 	}
 	initialCameraRef: EntityRef;
 

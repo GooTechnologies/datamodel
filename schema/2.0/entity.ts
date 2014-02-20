@@ -14,7 +14,6 @@ enum CameraProjectionType {
 	Parallel
 }
 
-
 interface CameraComponent {
 
 	/**
@@ -166,9 +165,12 @@ interface MeshRendererComponent {
 }
 
 interface ScriptComponent {
-	scriptRefs: {
+	scripts: {
 		// listId is the ScriptRef's id
-		[listId: string]: ScriptRef;
+		[listId: string]: {
+			scriptRef: ScriptRef;
+			sortValue: number;
+		}
 	}
 }
 
@@ -182,8 +184,11 @@ interface StateMachineComponent {
 }
 
 interface SoundComponent {
-	soundRefs?: {
-		[listId: string]: SoundRef;
+	sounds?: {
+		[listId: string]: {
+			soundRef: SoundRef;
+			sortValue: number;
+		}
 	}
 }
 
@@ -196,8 +201,11 @@ interface TransformComponent {
 	rotation: Vector3;
 	scale: Vector3;
 	translation: Vector3;
-	childRefs?: {
-		[listId: string]: EntityRef;
+	children?: {
+		[listId: string]: {
+			entityRef: EntityRef;
+			sortValue: number;
+		}
 	}
 }
 
