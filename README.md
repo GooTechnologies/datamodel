@@ -62,6 +62,19 @@ and CoffeeScript (using [CryptoJS] https://code.google.com/p/crypto-js/)
       CryptoJS.SHA1(wordArray).toString()
 
 
+#### Binary Buffers (.bin files)
+
+Mesh data, rigs and animations data are partly stored in binary buffers with the file extension .bin. These are just simple byte buffers, and the JSON objects refer to them using triplets: 
+
+  [byteOffset, length, format]
+
+  byteOffset: offset where in the file to start reading
+
+  length: the number of values of the given type that should be read (i.e. NOT the number of bytes)
+  format: one of 'uint8', 'uint16', 'uint32', 'float32'
+
+The `offset` value must be a multiple of 4, so if the byte length of a data array is not a multiple of 4, the data is padded with zeros. E.g. storing 3 uint16, you'd add another 00 00 and start the next buffer on the position after.  
+
 #### Access Control
 
 Binary objects have a simpler access control list, since they cannot be edited:  
