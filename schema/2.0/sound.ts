@@ -12,13 +12,9 @@ interface sound extends GooObject {
 	loop: boolean;
 	volume: number;
 
-	/**
-	 * Currently not used
-	 */
-	sprite?: {
-		spriteKey: {
-			offset: number;
-			duration: number;
-		}
-	}
+	/* New sound stuff */
+	/** Starting offset in seconds */
+	offset?: number;
+	duration?: number;
+	timeScale?: number;
 }

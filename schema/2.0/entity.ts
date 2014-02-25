@@ -190,6 +190,8 @@ interface SoundComponent {
 			sortValue: number;
 		}
 	}
+	volume?: number;
+	reverb?: number;
 }
 
 /** 
