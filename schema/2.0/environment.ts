@@ -50,6 +50,8 @@ interface environment extends GooObject {
 	weather?: Weather;
 	sound?: {
 		dopplerFactor?: number;
+		rolloffFactor?: number;
+		maxDistance?: number;
 		volume?: number;
 		reverb?: number;
 		reverbRef?: SoundRef;
