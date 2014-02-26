@@ -82,7 +82,7 @@ interface ClipSource {
 interface animstate extends GooObject {
 	clipSource: ClipSource;
 	
-	transitions: {
+	transitions?: {
 		// ref is id to a stateRef
 		// '*' is special case for catch-all
 		[ref: string]: AnimationTransition
