@@ -13,6 +13,18 @@ enum ClipFilter {
 	Include
 }
 
+enum TransitionType {
+	Fade, 
+	SyncFade, 
+	Frozen
+}
+
+interface AnimationTransition {
+	type: TransitionType;
+	fadeTime: number; 
+}
+
+
 interface ClipSource {
 	type: ClipType;
 	/**
@@ -69,4 +81,10 @@ interface ClipSource {
 
 interface animstate extends GooObject {
 	clipSource: ClipSource;
+	
+	transitions: {
+		// ref is id to a stateRef
+		// '*' is special case for catch-all
+		[ref: string]: AnimationTransition
+	}	
 }

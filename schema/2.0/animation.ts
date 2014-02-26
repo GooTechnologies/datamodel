@@ -1,34 +1,19 @@
 /// <reference path="gooobject.ts"/>
+/// <reference path="animstate.ts"/>
 
-enum TransitionType {
-	Fade, 
-	SyncFade, 
-	Frozen
-}
-
-interface AnimationTransition {
-	type: TransitionType;
-	fadeTime: number; 
-}
-
-interface AnimationState {
-	sortValue: number;
-	stateRef: AnimationStateRef;
-	transitions?: {
-		// key is id to a stateRef
-		[key: string]: AnimationTransition;
-	}
-}
 
 interface AnimationLayer {
 	sortValue: number;
 	id: string;
 	name: string;
 	blendWeight: number;
-	initialState?: string;
+	initialStateRef?: string;
 	states: {
 		// ref is id to a stateRef
-		[ref: string]: AnimationState
+		[ref: string]: {
+			sortValue: number;
+			stateRef: AnimationStateRef;
+		}
 	}
 	transitions: {
 		// ref is id to a stateRef
