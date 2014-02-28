@@ -41,6 +41,11 @@ interface CameraComponent {
 	 * Mandatory if projectionMode is 1
 	 */
 	size?: number;
+
+	/**
+	 * Inside Create, update this camera when the editor camera moves
+	 */
+	followToolCam?:boolean;
 }
 
 enum LightType {
