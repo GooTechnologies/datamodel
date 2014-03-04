@@ -45,7 +45,7 @@ interface CameraComponent {
 	/**
 	 * Inside Create, update this camera when the editor camera moves
 	 */
-	followToolCam?:boolean;
+	followEditorCam?:boolean;
 }
 
 enum LightType {
