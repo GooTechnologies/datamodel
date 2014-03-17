@@ -11,7 +11,7 @@ enum MinFilter {
 	NearestNeighborLinearMipMap,
 	BilinearNoMipMaps,
 	BilinearNearestMipMap,
-	Trilinear	
+	Trilinear
 }
 
 enum Wrap {
@@ -22,7 +22,7 @@ enum Wrap {
 
 
 /**
- * Migration notes: 
+ * Migration notes:
  * - Rename WrapU/WrapV to WrapS/WrapT to match the engine
  * - store fileName in matchFileName
  * - url renamed to imageRef
@@ -33,16 +33,16 @@ interface texture extends GooObject {
 	minFilter: MinFilter;
 	offset: Vector2;
 	repeat: Vector2;
-	
+
 	imageRef?: ImageRef;
 
 	/**
 	 * For automatic matching, only set by the converter
 	 */
-	matchFileName?: string; 
+	matchFileName?: string;
 
-	wrapS: Wrap; 
-	wrapT: Wrap; 
+	wrapS: Wrap;
+	wrapT: Wrap;
 
 	/**
 	 * Amount of anisotropic filtering (1=1x, 4=4x etc)
@@ -58,4 +58,13 @@ interface texture extends GooObject {
 	 * @default true
 	 */
 	flipY: boolean;
+
+
+	/**
+	 * Renndering size for vector graphics.
+	 *
+	 * @minimum 1
+	 * @multipleOf 1
+	 */
+	renderSize: number;
 }
