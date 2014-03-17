@@ -15,7 +15,7 @@ interface Weather {
 		/**
 		* @default 10
 		*/
-		velocity: number;
+		velocity?: number;
 		/**
 		* @default 10
 		*/

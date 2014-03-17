@@ -15,10 +15,16 @@ enum BlendEquation {
 }
 
 enum BlendSrc {
-	SrcAlphaFactor,
-	ZeroFactor, 
+	ZeroFactor,
 	OneFactor,
-	SrcColorFactor
+	SrcAlphaFactor,
+	OneMinusSrcAlphaFactor,
+	DstAlphaFactor,
+	OneMinusDstAlphaFactor,
+	SrcColorFactor,
+	OneMinusSrcColorFactor,
+	DstColorFactor,
+	OneMinusDstColorFactor
 }
 
 enum BlendDst {
