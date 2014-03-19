@@ -199,6 +199,66 @@ interface SoundComponent {
 	reverb?: number;
 }
 
+
+interface TimelineComponent {
+
+	/**
+	 * Duration in seconds
+	 */
+	duration: number;
+	loop: {
+		/**
+		 * If true, loop entire timeline. Additional properties to be added in 
+		 * the future. 
+		 */
+		enabled: boolean;
+	}
+	channels: {
+		[channelId: string]: {
+			sortValue: float;
+			entityId: EntityRef;
+			/**
+			 * Available values are set by the handler. Example: translationX, diffuseR, animationLayer_<id>
+			 * Invalid values will fail silently (no animation)
+			 */
+			propertyKey: string;
+
+			keyFrames: {
+				[keyFrameId: string]: {
+					/**
+					 * Position in the timeline, in seconds counted from the start.
+					 */
+					time: number;
+
+					/** 
+					 * Value of the channel property in this particular point in time
+					 * Not required for pure event channels.
+					 */
+					value?: any;
+
+					/**
+					 * Easing function covering the interval between this keyframe and the next.
+					 */
+					easing?: EasingFunction;
+
+					/**
+					 * Events to be fired on the Engine event bus when this keyframe is passed. 
+					 */
+					events: {
+						[listId: string]: {
+							name: string;
+							data?: {
+								[optname: string]: any;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+}
+
 /** 
  * Migration notes: 
  * - rotation may need to be transformed from matrix to euler angles
@@ -215,6 +275,8 @@ interface TransformComponent {
 		}
 	}
 }
+
+
 
 
 interface entity extends GooObject {
@@ -236,7 +298,8 @@ interface entity extends GooObject {
 		meshRenderer?: MeshRendererComponent;
 		script?: ScriptComponent;
 		stateMachine?: StateMachineComponent;
-		sound?: SoundComponent
+		sound?: SoundComponent;
+		timeline?: TimelineComponent;
 		transform?: TransformComponent;
 	}
 }

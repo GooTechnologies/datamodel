@@ -1,4 +1,5 @@
 /// <reference path="gooobject.ts"/>
+/// <reference path="entity.ts"/>
 
 
 
@@ -23,4 +24,6 @@ interface scene extends GooObject {
 
 	environmentRef?: EnvironmentRef;
 
+
+	timeline?: TimelineComponent;
 }
