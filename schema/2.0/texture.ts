@@ -59,6 +59,8 @@ interface texture extends GooObject {
 	 */
 	flipY: boolean;
 
+	// REVIEW This should probably be power of two
+
 	/**
 	 * Rendering size for vector graphics.
 	 *

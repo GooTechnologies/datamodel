@@ -97,6 +97,7 @@ interface EntityRef {}
 interface AudioRef {}
 
 
+// REVIEW This indicates that images can be svg, which we don't support in the handlers yet
 /**
  * Matches id ending with one of .jpg, .jpeg, .gif, .png, .tga, .dds, .crn
  * (case sensitive, must be lowercase)
