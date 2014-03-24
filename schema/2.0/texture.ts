@@ -60,11 +60,13 @@ interface texture extends GooObject {
 	flipY: boolean;
 
 
+	// REVIEW This should probably be power of two
 	/**
-	 * Renndering size for vector graphics.
+	 * Rendering size for vector graphics.
 	 *
 	 * @minimum 1
 	 * @multipleOf 1
 	 */
 	renderSize: number;
+	// REVIEW You need to add svgData?: string
 }
