@@ -8,7 +8,13 @@ interface script extends GooObject {
 
 	className?: string;
 
-	body?: string; 
+	body?: string;
+	dependencies?: {
+		[ref: string]: {
+			url: URI;
+			sortValue: number;
+		}
+	}
 
 	options?: {
 		[optname: string]: any;
