@@ -59,12 +59,16 @@ interface texture extends GooObject {
 	 */
 	flipY: boolean;
 
-
 	/**
-	 * Renndering size for vector graphics.
+	 * Rendering size for vector graphics.
 	 *
 	 * @minimum 1
 	 * @multipleOf 1
 	 */
-	renderSize: number;
+	renderSize?: number;
+
+	/**
+	 * SVG xml-data.
+	 */
+	svgData?: string;
 }

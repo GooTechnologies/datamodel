@@ -10,7 +10,7 @@ interface AnimationComponent {
 }
 
 enum CameraProjectionType {
-	Perspective, 
+	Perspective,
 	Parallel
 }
 
@@ -19,12 +19,12 @@ interface CameraComponent {
 	/**
 	 * @default 1
 	 */
-	aspect: number; 
+	aspect: number;
 
 	/**
 	 * @default false
 	 */
-	lockedRatio: boolean; 
+	lockedRatio: boolean;
 
 	/**
 	 * @default "Perspective"
@@ -108,7 +108,7 @@ interface LightComponent {
 	*/
 	direction?: Vector3;
 	exponent?: number;
-	
+
 	shadowSettings?: {
 		darkness: number;
 		far: number;
@@ -129,7 +129,7 @@ interface LightComponent {
 
 enum ShapeName {
 	Box,
-	Quad, 
+	Quad,
 	Sphere,
 	Cylinder,
 	Torus,
@@ -138,11 +138,11 @@ enum ShapeName {
 };
 
 interface MeshDataComponent {
-	meshRef?: MeshRef; 
+	meshRef?: MeshRef;
 	poseRef?: PoseRef;
 	shape?: ShapeName;
 	shapeOptions?: {
-		[optName: string]: any;		
+		[optName: string]: any;
 	}
 }
 
@@ -167,6 +167,10 @@ interface MeshRendererComponent {
 	 * @default true
 	 */
 	reflectable: boolean;
+}
+
+interface QuadComponent {
+	materialRef?: MaterialRef;
 }
 
 interface ScriptComponent {
@@ -199,8 +203,8 @@ interface SoundComponent {
 	reverb?: number;
 }
 
-/** 
- * Migration notes: 
+/**
+ * Migration notes:
  * - rotation may need to be transformed from matrix to euler angles
  * - parentRef is now childRefs
  */
@@ -234,6 +238,7 @@ interface entity extends GooObject {
 		light?: LightComponent
 		meshData?: MeshDataComponent;
 		meshRenderer?: MeshRendererComponent;
+		quad?: QuadComponent;
 		script?: ScriptComponent;
 		stateMachine?: StateMachineComponent;
 		sound?: SoundComponent
