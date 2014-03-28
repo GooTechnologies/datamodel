@@ -60,6 +60,11 @@ enum ShadowType {
 	VSM
 }
 
+
+interface HTMLComponent {
+	innerHTML: string;
+}
+
 /**
  * Migration notes:
  * attenuate is never used, just remove
@@ -204,6 +209,31 @@ interface SoundComponent {
 }
 
 
+enum EasingFunction {
+	'Linear.None',
+	'Quadratic.In', 
+	'Quadratic.Out',
+	'Quadratic.InOut',
+	'Cubic.In', 
+	'Cubic.Out',
+	'Cubic.InOut',
+	'Exponential.In', 
+	'Exponential.Out',
+	'Exponential.InOut',
+	'Elastic.In', 
+	'Elastic.Out',
+	'Elastic.InOut',
+	'Circular.In', 
+	'Circular.Out',
+	'Circular.InOut',
+	'Back.In', 
+	'Back.Out',
+	'Back.InOut',
+	'Bounce.In', 
+	'Bounce.Out',
+	'Bounce.InOut'
+}
+
 interface TimelineComponent {
 
 	/**
@@ -219,15 +249,15 @@ interface TimelineComponent {
 	}
 	channels: {
 		[channelId: string]: {
-			sortValue: float;
-			entityId: EntityRef;
+			sortValue: number;
+			entityId?: EntityRef;
 			/**
 			 * Available values are set by the handler. Example: translationX, diffuseR, animationLayer_<id>
 			 * Invalid values will fail silently (no animation)
 			 */
-			propertyKey: string;
+			propertyKey?: string;
 
-			keyFrames: {
+			keyframes: {
 				[keyFrameId: string]: {
 					/**
 					 * Position in the timeline, in seconds counted from the start.
@@ -304,5 +334,6 @@ interface entity extends GooObject {
 		sound?: SoundComponent;
 		timeline?: TimelineComponent;
 		transform?: TransformComponent;
+		html?: HTMLComponent;
 	}
 }
