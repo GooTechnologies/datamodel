@@ -33,6 +33,7 @@ interface texture extends GooObject {
 	minFilter: MinFilter;
 	offset: Vector2;
 	repeat: Vector2;
+	lodBias?: number;
 
 	imageRef?: ImageRef;
 
