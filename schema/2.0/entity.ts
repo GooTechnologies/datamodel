@@ -249,13 +249,22 @@ interface TimelineComponent {
 	}
 	channels: {
 		[channelId: string]: {
+			
 			sortValue: number;
+
 			entityId?: EntityRef;
+			
 			/**
 			 * Available values are set by the handler. Example: translationX, diffuseR, animationLayer_<id>
 			 * Invalid values will fail silently (no animation)
 			 */
 			propertyKey?: string;
+
+			/**
+			 * Name of event to fire. Only one of eventName and propertyKey should be defined. 
+			 * If both are defined, propertyKey will override. 
+			 */ 
+			eventName?: string;
 
 			keyframes: {
 				[keyFrameId: string]: {
@@ -272,20 +281,9 @@ interface TimelineComponent {
 
 					/**
 					 * Easing function covering the interval between this keyframe and the next.
+					 * Only for property channels
 					 */
 					easing?: EasingFunction;
-
-					/**
-					 * Events to be fired on the Engine event bus when this keyframe is passed. 
-					 */
-					events: {
-						[listId: string]: {
-							name: string;
-							data?: {
-								[optname: string]: any;
-							}
-						}
-					}
 				}
 			}
 		}
