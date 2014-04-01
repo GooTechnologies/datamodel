@@ -92,7 +92,7 @@ interface EntityRef {}
  * (case sensitive, must be lowercase)
  *
  * @type string
- * @pattern \.(mp3|wav)$
+ * @pattern \.(mp3|wav|ogg)$
  */
 interface AudioRef {}
 
