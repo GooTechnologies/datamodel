@@ -249,7 +249,7 @@ interface TimelineComponent {
 	}
 	channels: {
 		[channelId: string]: {
-			
+			id: string;
 			sortValue: number;
 
 			entityId?: EntityRef;
