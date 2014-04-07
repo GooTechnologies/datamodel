@@ -1,13 +1,24 @@
 /// <reference path="gooobject.ts"/>
 
 
+/**
+ * Matches types with one of 2d or 3d
+ * (case sensitive, must be lowercase)
+ *
+ * @type string
+ * @pattern (2d|3d)
+ */
+interface ProjectType {}
+
 interface project extends GooObject {
+
+	type?: ProjectType;
 
 	/**
 	 * Should always be in scenes as well
 	 */
 	mainSceneRef: SceneRef;
-	
+
 	scenes: {
 		// listID is id to scerenref
 		[listId: string]: {
