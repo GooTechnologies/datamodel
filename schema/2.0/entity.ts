@@ -211,25 +211,25 @@ interface SoundComponent {
 
 enum EasingFunction {
 	'Linear.None',
-	'Quadratic.In', 
+	'Quadratic.In',
 	'Quadratic.Out',
 	'Quadratic.InOut',
-	'Cubic.In', 
+	'Cubic.In',
 	'Cubic.Out',
 	'Cubic.InOut',
-	'Exponential.In', 
+	'Exponential.In',
 	'Exponential.Out',
 	'Exponential.InOut',
-	'Elastic.In', 
+	'Elastic.In',
 	'Elastic.Out',
 	'Elastic.InOut',
-	'Circular.In', 
+	'Circular.In',
 	'Circular.Out',
 	'Circular.InOut',
-	'Back.In', 
+	'Back.In',
 	'Back.Out',
 	'Back.InOut',
-	'Bounce.In', 
+	'Bounce.In',
 	'Bounce.Out',
 	'Bounce.InOut'
 }
@@ -242,8 +242,8 @@ interface TimelineComponent {
 	duration: number;
 	loop: {
 		/**
-		 * If true, loop entire timeline. Additional properties to be added in 
-		 * the future. 
+		 * If true, loop entire timeline. Additional properties to be added in
+		 * the future.
 		 */
 		enabled: boolean;
 	}
@@ -253,7 +253,7 @@ interface TimelineComponent {
 			sortValue: number;
 
 			entityId?: EntityRef;
-			
+
 			/**
 			 * Available values are set by the handler. Example: translationX, diffuseR, animationLayer_<id>
 			 * Invalid values will fail silently (no animation)
@@ -261,9 +261,9 @@ interface TimelineComponent {
 			propertyKey?: string;
 
 			/**
-			 * Name of event to fire. Only one of eventName and propertyKey should be defined. 
-			 * If both are defined, propertyKey will override. 
-			 */ 
+			 * Name of event to fire. Only one of eventName and propertyKey should be defined.
+			 * If both are defined, propertyKey will override.
+			 */
 			eventName?: string;
 
 			keyframes: {
@@ -273,7 +273,7 @@ interface TimelineComponent {
 					 */
 					time: number;
 
-					/** 
+					/**
 					 * Value of the channel property in this particular point in time
 					 * Not required for pure event channels.
 					 */
@@ -291,8 +291,8 @@ interface TimelineComponent {
 
 }
 
-/** 
- * Migration notes: 
+/**
+ * Migration notes:
  * - rotation may need to be transformed from matrix to euler angles
  * - parentRef is now childRefs
  */

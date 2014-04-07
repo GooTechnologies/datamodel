@@ -1,14 +1,18 @@
 /// <reference path="gooobject.ts"/>
 /// <reference path="entity.ts"/>
 
-
+enum CanvasSizingMode {
+	Stretch,
+	Resolution,
+	AspectRatio
+};
 
 /**
  * A scene in create (what was previously called a project)
  */
 interface scene extends GooObject {
 
-	/** 
+	/**
 	 * _Root_ entities that are present in the scene
 	 */
 	entities: {
@@ -24,6 +28,17 @@ interface scene extends GooObject {
 
 	environmentRef?: EnvironmentRef;
 
+	canvas?: {
+		mode?: CanvasSizingMode;
+		resolution?: {
+			width: number;
+			height: number;
+		}
+		aspectRatio?: {
+			width: number;
+			height: number;
+		}
+	}
 
 	timeline?: TimelineComponent;
 }
