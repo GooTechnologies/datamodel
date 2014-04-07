@@ -61,8 +61,14 @@ enum ShadowType {
 }
 
 
-interface HTMLComponent {
-	innerHTML: string;
+interface HtmlComponent {
+	innerHtml: string;
+
+	/**
+	 * If this is set to true, the html element will be centered to
+	 * the screenspace coordinate of the entity.
+	 */
+	useTransformComponent: boolean;
 }
 
 /**
@@ -332,6 +338,6 @@ interface entity extends GooObject {
 		sound?: SoundComponent;
 		timeline?: TimelineComponent;
 		transform?: TransformComponent;
-		html?: HTMLComponent;
+		html?: HtmlComponent;
 	}
 }
