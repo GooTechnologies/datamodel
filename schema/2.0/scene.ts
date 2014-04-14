@@ -34,7 +34,7 @@ interface scene extends GooObject {
 			width: number;
 			height: number;
 		}
-		aspectRatio?: {
+		aspect?: {
 			width: number;
 			height: number;
 		}
