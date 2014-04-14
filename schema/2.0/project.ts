@@ -1,6 +1,8 @@
 /// <reference path="gooobject.ts"/>
 
 
+
+// REVIEW: use an enum, see e.g. CameraProjectionType in entity.ts
 /**
  * Matches types with one of 2d or 3d
  * (case sensitive, must be lowercase)
