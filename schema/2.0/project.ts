@@ -39,5 +39,13 @@ interface project extends GooObject {
 		}
 	}
 
+	// TO BE REMOVED 
 	publishedUrl?: URI;
+
+	/**
+	*	A set with published URI with it's date of publish.
+	*/
+	publishedUrls?: {
+		URI: DateTime
+	}
 }
