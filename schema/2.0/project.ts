@@ -39,7 +39,7 @@ interface project extends GooObject {
 		}
 	}
 
-	// TO BE REMOVED 
+	// TO BE REMOVED
 	publishedUrl?: URI;
 
 	/**

@@ -64,6 +64,10 @@ enum ShadowType {
 interface HtmlComponent {
 	innerHtml: string;
 
+	imageRefs?: {
+		[ref: string]: ImageRef
+	};
+
 	/**
 	 * If this is set to true, the html element will be centered to
 	 * the screenspace coordinate of the entity.
