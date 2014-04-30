@@ -46,6 +46,6 @@ interface project extends GooObject {
 	*	A set with published URI with it's date of publish.
 	*/
 	publishedUrls?: {
-		URI: DateTime
+		[URI: string]: DateTime
 	}
 }
