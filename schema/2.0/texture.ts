@@ -34,6 +34,7 @@ interface texture extends GooObject {
 	offset: Vector2;
 	repeat: Vector2;
 	lodBias?: number;
+	loop?: boolean;
 
 	imageRef?: ImageRef;
 

@@ -103,8 +103,8 @@ interface AudioRef {}
  * (case sensitive, must be lowercase)
  *
  * @type string
- * @pattern \.(jpe?g|png|gif|tga|dds|crn)$
- * pattern \.([jJ][pP][eE]?[gG]|[gG][iI][fF]|[pP][nN][gG]|[tT][gG][aA]|[dD][dD][sS]|[cC][rR][nN])$
+ * @pattern \.(jpe?g|png|gif|tga|dds|crn|mp4|ogv|webm)$
+ * pattern \.([jJ][pP][eE]?[gG]|[gG][iI][fF]|[pP][nN][gG]|[tT][gG][aA]|[dD][dD][sS]|[cC][rR][nN] |[mM][pP][3]|[oO][gG][vV]|[wW][eE][bB][mM])$
  */
 interface ImageRef {}
 

@@ -37,6 +37,10 @@ interface Weather {
 interface environment extends GooObject {
 
 	backgroundColor: Color;
+	backgroundTexture?: {
+		enabled: boolean;
+		textureRef: TextureRef;
+	};
 	globalAmbient: Color;
 	skyboxRef?: SkyboxRef;
 	
