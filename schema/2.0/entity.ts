@@ -276,6 +276,13 @@ interface TimelineComponent {
 			 */
 			eventName?: string;
 
+			/**
+			 * Whether the channel is enabled. When the channel is disabled, the
+			 * animation specified in its keyframes will not be performed by the
+			 * engine.
+			 */
+			enabled?: boolean;
+
 			keyframes: {
 				[keyFrameId: string]: {
 					/**
