@@ -338,7 +338,7 @@ interface entity extends GooObject {
 	static: boolean;
 
 	tags?: {
-	    [tagName: string] : boolean;
+	    [tagName: string]: string;
 	}
 
 	components: {
