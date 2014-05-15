@@ -337,6 +337,10 @@ interface entity extends GooObject {
 	*/
 	static: boolean;
 
+	tags?: {
+	    [tagName: string] : boolean;
+	}
+
 	components: {
 		animation?: AnimationComponent;
 		camera?: CameraComponent;
