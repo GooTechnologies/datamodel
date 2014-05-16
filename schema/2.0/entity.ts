@@ -194,6 +194,10 @@ interface ScriptComponent {
 		[listId: string]: {
 			scriptRef: ScriptRef;
 			sortValue: number;
+			name?: string;
+			options?: {
+				[optname: string]: any;
+			}
 		}
 	}
 }

@@ -145,7 +145,7 @@ interface MaterialRef {}
  * Matches id ending with .script
  *
  * @type string
- * @pattern \.script$
+ * @pattern (\.script|GOO_ENGINE_SCRIPTS/\w+)$
  */
 interface ScriptRef {}
 
