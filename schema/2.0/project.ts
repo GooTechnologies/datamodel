@@ -39,7 +39,7 @@ interface project extends GooObject {
 		}
 	}
 
-	// Contains the stable url for the latest published project.s
+	// Contains the stable url for the latest published project.
 	publishedUrl?: URI;
 
 	/**
