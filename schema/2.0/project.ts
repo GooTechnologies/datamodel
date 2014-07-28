@@ -29,6 +29,10 @@ interface project extends GooObject {
 		}
 	}
 
+	tags?: {
+	    [tagName: string]: string;
+	}
+
 	/**
 	* All references not in the scenes' entityRefs.
 	*/
