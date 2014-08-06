@@ -63,6 +63,8 @@ enum ShadowType {
 
 interface HtmlComponent {
 	innerHtml: string;
+    
+    style?: string;
 
 	imageRefs?: {
 		[ref: string]: ImageRef
