@@ -1,5 +1,12 @@
 /// <reference path="common.ts"/>
 
+interface AnnouncementSettings {
+	timestamp: int;
+	data: {
+		[announcementId: string]: boolean;
+	};
+}
+
 interface CanvasSettings {
 	timestamp: int;
 	data: {
@@ -28,28 +35,6 @@ interface BinSettings {
 	};
 }
 
-interface CollapsedScriptsSettings {
-	timestamp: int;
-	data: {
-		[listId: string]: {
-			scripts: {
-				[listId: string]: boolean;
-			};
-		};
-	};
-}
-
-interface ExplodedPanelsSettings {
-	timestamp: int;
-	data: {
-		[listId: string]: {
-			panels: {
-				[listId: string]: boolean;
-			};
-		}
-	};
-}
-
 enum ShortCutMode {
 	legacy,
 	blender
@@ -73,19 +58,40 @@ interface ViewConfigSettings {
 }
 
 interface TimelineSettings {
-	timestamp: int;
-	data: {
-		settings?: {
-			autoKey: boolean;
+	settings?: {
+		timestamp: int;
+		data: {
+			autoKey?: boolean;
+		};
+	};
+}
+
+interface InspectorSettings {
+	// Stores which scripts are collapsed for each entity.
+	collapsedScripts?: {
+		[entityId: string]: {
+			timestamp: int;
+			data: {
+				[scriptId: string]: boolean;
+			};
+		};
+	};
+	// Stores which panels are exploded for each entity.
+	explodedPanels?: {
+		[entityId: string]: {
+			timestamp: int;
+			data: {
+				[panelId: string]: boolean;
+			};
 		};
 	};
 }
 
 interface usersettings {
+	announcements?: AnnouncementSettings;
 	bin?: BinSettings;
 	canvas?: CanvasSettings;
-	collapsedScripts?: CollapsedScriptsSettings;
-	explodedPanels?: ExplodedPanelsSettings;
+	inspector?: InspectorSettings;
 	export?: ExportSettings;
 	timeline?: TimelineSettings;
 	viewConfig?: ViewConfigSettings;
