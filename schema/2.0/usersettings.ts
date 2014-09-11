@@ -76,8 +76,8 @@ interface InspectorSettings {
 			};
 		};
 	};
-	// Stores which panels are exploded for each entity.
-	explodedPanels?: {
+	// Stores which panels are collapsed for each entity.
+	collapsedPanels?: {
 		[entityId: string]: {
 			timestamp: int;
 			data: {
