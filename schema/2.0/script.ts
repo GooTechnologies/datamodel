@@ -1,8 +1,6 @@
 /// <reference path="gooobject.ts"/>
 
-/** 
- * This datatype will be enhanced when we implement
- * scripting for real.
+/**
  */
 interface script extends GooObject {
 
@@ -16,6 +14,9 @@ interface script extends GooObject {
 		}
 	}
 
+	/**
+	 * Deprecated, the script options should go on the script component
+	 */
 	options?: {
 		[optname: string]: any;
 	}
