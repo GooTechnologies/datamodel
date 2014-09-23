@@ -21,6 +21,26 @@ All dependencies are referenced by JSON keys ending in "ref" or "refs" (case ins
 
 where listId is any locally unique string.
 
+##### Refs that are not dependencies
+Parameters to scripts and state machine actions are not considered dependencies, even though they are references to other objects. If a house has a script that has a light as a parameter, that particular relationship does not make the light a dependency of the house. The way to denote this type of 'independent' relationships is to call the parent object ```options```:
+
+	scripts: {
+		"scriptid.script": {
+			scriptRef: "scriptid.script",  // Dependency
+			sortValue: 0,
+			name: "My Script",
+			options: {
+				entity: {
+					entityRef: "theentity.entity" // Not a dependency, because options
+				}
+			}
+		}
+	}
+
+For future similar parametric data type, use the key ```options``` to have references that are not considered dependencies.
+ 
+
+
 #### Access Control
 A JSON object contains its own access control list: 
 
@@ -240,6 +260,3 @@ For arrays:
 Run 
 
     grunt
-
-
-
