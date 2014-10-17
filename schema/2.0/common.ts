@@ -92,19 +92,18 @@ interface EntityRef {}
  * (case sensitive, must be lowercase)
  *
  * @type string
- * @pattern \.(mp3|wav|ogg)$
+ * @pattern \.(mp3|wav|ogg|ogv)$
  */
 interface AudioRef {}
 
 
 // REVIEW This indicates that images can be svg, which we don't support in the handlers yet
 /**
- * Matches id ending with one of .jpg, .jpeg, .gif, .png, .tga, .dds, .crn
+ * Matches id ending with one of .jpg, .jpeg, .gif, .png, .tga, .dds, .crn, .ogv, .webm
  * (case sensitive, must be lowercase)
  *
  * @type string
  * @pattern \.(jpe?g|png|gif|tga|dds|crn|mp4|ogv|webm)$
- * pattern \.([jJ][pP][eE]?[gG]|[gG][iI][fF]|[pP][nN][gG]|[tT][gG][aA]|[dD][dD][sS]|[cC][rR][nN] |[mM][pP][3]|[oO][gG][vV]|[wW][eE][bB][mM])$
  */
 interface ImageRef {}
 
