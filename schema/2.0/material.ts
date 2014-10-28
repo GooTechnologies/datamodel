@@ -5,7 +5,8 @@ enum Blending {
 	AdditiveBlending,
 	SubtractiveBlending,
 	MultiplyBlending, 
-	CustomBlending
+	CustomBlending,
+	TransparencyBlending
 }
 
 enum BlendEquation {
