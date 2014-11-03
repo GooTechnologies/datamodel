@@ -7,6 +7,15 @@ interface AnnouncementSettings {
 	};
 }
 
+interface BinSettings {
+	timestamp: int;
+	data: {
+		filters?: {
+			[listId: string]: boolean;
+		};
+	};
+}
+
 interface CanvasSettings {
 	timestamp: int;
 	data: {
@@ -23,15 +32,6 @@ interface ExportSettings {
 		includeShareButtons?: boolean;
 		includeLogo?: boolean;
 		transparentBackground?: boolean;
-	};
-}
-
-interface BinSettings {
-	timestamp: int;
-	data: {
-		filters?: {
-			[listId: string]: boolean;
-		};
 	};
 }
 

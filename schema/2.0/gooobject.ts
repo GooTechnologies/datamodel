@@ -1,7 +1,7 @@
 /// <reference path="common.ts"/>
 
 enum LicenseType {
-	'CC0', 
+	'CC0',
 	'CC BY',
 	'CC BY-SA',
 	'CC BY-NC',
@@ -23,7 +23,12 @@ interface GooObject {
 	description?: string;
 	thumbnailRef?: ImageRef;
 
-	deleted: boolean; 
+	originalAsset?: {
+		id: string;
+		version: string;
+	};
+
+	deleted: boolean;
 
 	/**
 	 * @default 2
