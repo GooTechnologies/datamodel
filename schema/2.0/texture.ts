@@ -35,6 +35,7 @@ interface texture extends GooObject {
 	repeat: Vector2;
 	lodBias?: number;
 	loop?: boolean;
+	lazy?: boolean;
 	generateMipmaps?: boolean;
 
 	imageRef?: ImageRef;
