@@ -190,6 +190,25 @@ interface QuadComponent {
 	materialRef?: MaterialRef;
 }
 
+interface TextComponent {
+    text: string;
+    font: {
+        name: string;
+        fontRef: FontRef;
+        license: string;
+    };
+
+    /**
+     * @default 0.2
+     */
+    extrusion: number;
+
+    /**
+     * @default 0.5
+     */
+    smoothness: number;
+}
+
 interface ScriptComponent {
 	scripts: {
 		// listId is the ScriptRef's id
@@ -354,6 +373,7 @@ interface entity extends GooObject {
 		meshData?: MeshDataComponent;
 		meshRenderer?: MeshRendererComponent;
 		quad?: QuadComponent;
+		text?: TextComponent;
 		script?: ScriptComponent;
 		stateMachine?: StateMachineComponent;
 		sound?: SoundComponent;
