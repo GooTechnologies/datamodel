@@ -1,10 +1,10 @@
 /// <reference path="gooobject.ts"/>
 
 enum Blending {
-	NoBlending, 
+	NoBlending,
 	AdditiveBlending,
 	SubtractiveBlending,
-	MultiplyBlending, 
+	MultiplyBlending,
 	CustomBlending,
 	TransparencyBlending
 }
@@ -94,7 +94,7 @@ interface material extends GooObject {
 			enabled: boolean;
 			textureRef: TextureRef;
 		}
-	}	
+	}
 
 	// TODO: How hard/easy should it be to add new uniforms? We could just leave it unvalidated
 	/**
@@ -117,8 +117,8 @@ interface material extends GooObject {
 		opacity?: {
 			enabled: boolean;
 			/**
-			 * @minValue: 0
-			 * @maxValue: 1
+			 * @minimum: 0
+			 * @maximum: 1
 			 */
 			value: number;
 		}
