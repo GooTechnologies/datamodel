@@ -11,7 +11,7 @@ module.exports = function (grunt) {
 						'!common.ts'
 					],
 					dest: 'schema_json',
-					ext: '.json',
+					ext: '.json'
 				}]
 			}
 		},
@@ -20,22 +20,21 @@ module.exports = function (grunt) {
 				'schema_json/'
 			]
 		},
-
 		shell: {
-      validate: {
-        options: {
-            stdout: true
-        },
-        command: 'python validation/validate.py'
-      }
+			validate: {
+				options: {
+					stdout: true
+				},
+				command: 'python validation/validate.py'
+			}
 		}
 	});
 
 	grunt.loadTasks('tools');
-	grunt.loadNpmTasks('grunt-shell')	
+	grunt.loadNpmTasks('grunt-shell');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 
 	grunt.registerTask('compile', ['typson']);
 	grunt.registerTask('validate', ['shell:validate']);
 	grunt.registerTask('default', ['typson', 'shell:validate']);
-}
+};
