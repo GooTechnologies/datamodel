@@ -452,7 +452,7 @@ interface entity extends GooObject {
 		timeline?: TimelineComponent;
 		transform?: TransformComponent;
 		html?: HtmlComponent;
-		rigidBody?: PhysicsComponent;
+		rigidBody?: RigidBodyComponent;
 		collider?: ColliderComponent;
 	}
 }
