@@ -237,3 +237,11 @@ interface SkyboxRef {}
  */
 interface SceneRef {}
 
+/**
+ * Matches id ending with .ttf or .otyf
+ * (case sensitive, must be lowercase)
+ *
+ * @type string
+ * @pattern \.(ttf|otf)$
+ */
+interface FontRef {}
