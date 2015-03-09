@@ -8,7 +8,7 @@ enum BlendType {
 enum ClipType {
 	Joint,
 	Transform,
-	Trigger, 
+	Trigger,
 	FloatLERP
 }
 

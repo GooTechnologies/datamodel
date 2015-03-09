@@ -2,8 +2,8 @@
 
 
 enum ClipType {
-	Clip, 
-	Managed, 
+	Clip,
+	Managed,
 	Lerp,
 	Frozen
 }
@@ -14,14 +14,14 @@ enum ClipFilter {
 }
 
 enum TransitionType {
-	Fade, 
-	SyncFade, 
+	Fade,
+	SyncFade,
 	Frozen
 }
 
 interface AnimationTransition {
 	type: TransitionType;
-	fadeTime: number; 
+	fadeTime: number;
 }
 
 
@@ -29,8 +29,8 @@ interface ClipSource {
 	type: ClipType;
 	/**
 	 * Type Lerp only
-	 * @minValue: 0
-	 * @maxValue: 1
+	 * @minimum: 0
+	 * @maximum: 1
 	 */
 	blendWeight?: number;
 
@@ -81,10 +81,10 @@ interface ClipSource {
 
 interface animstate extends GooObject {
 	clipSource: ClipSource;
-	
+
 	transitions?: {
 		// ref is id to a stateRef
 		// '*' is special case for catch-all
 		[ref: string]: AnimationTransition
-	}	
+	}
 }

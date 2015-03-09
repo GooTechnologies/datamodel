@@ -9,6 +9,8 @@ interface AnimationComponent {
 	poseRef?: PoseRef;
 }
 
+/*----------------------------------------------------------------------------*/
+
 enum CameraProjectionType {
 	Perspective,
 	Parallel
@@ -48,18 +50,53 @@ interface CameraComponent {
 	followEditorCam?:boolean;
 }
 
-enum LightType {
-	PointLight,
-	DirectionalLight,
-	SpotLight
+/*----------------------------------------------------------------------------*/
+
+enum ColliderShape {
+	Box,
+	Cylinder,
+	Plane,
+	Sphere
 }
 
-enum ShadowType {
-	Basic,
-	PCF,
-	VSM
+interface ColliderComponent {
+	/**
+	 * @default Box
+	 */
+	shape: ColliderShape;
+	/**
+	 * @default false
+	 */
+	isTrigger: boolean;
+	/**
+	 * @default 0.3
+	 * @minimum 0
+	 */
+	friction: number;
+	/**
+	 * @default 0.0
+	 * @minimum 0
+	 */
+	restitution: number;
+	shapeOptions: {
+		/**
+		 * @default [1,1,1]
+		 */
+		halfExtents?: Vector3;
+		/**
+		 * @default 1
+		 * @minimum 0
+		 */
+		height?: number;
+		/**
+		 * @default 0.5
+		 * @minimum 0
+		 */
+		radius?: number;
+	};
 }
 
+/*----------------------------------------------------------------------------*/
 
 interface HtmlComponent {
 	innerHtml: string;
@@ -75,6 +112,20 @@ interface HtmlComponent {
 	 * the screenspace coordinate of the entity.
 	 */
 	useTransformComponent: boolean;
+}
+
+/*----------------------------------------------------------------------------*/
+
+enum LightType {
+	PointLight,
+	DirectionalLight,
+	SpotLight
+}
+
+enum ShadowType {
+	Basic,
+	PCF,
+	VSM
 }
 
 /**
@@ -143,6 +194,7 @@ interface LightComponent {
 	}
 }
 
+/*----------------------------------------------------------------------------*/
 
 enum ShapeName {
 	Box,
@@ -162,6 +214,8 @@ interface MeshDataComponent {
 		[optName: string]: any;
 	}
 }
+
+/*----------------------------------------------------------------------------*/
 
 enum CullMode {
 	Dynamic,
@@ -186,9 +240,82 @@ interface MeshRendererComponent {
 	reflectable: boolean;
 }
 
+/*----------------------------------------------------------------------------*/
+
 interface QuadComponent {
 	materialRef?: MaterialRef;
 }
+
+/*----------------------------------------------------------------------------*/
+
+interface RigidBodyComponent {
+	/**
+	 * @minimum: 0
+	 * @default: 1
+	 */
+	mass: number;
+	isKinematic: boolean;
+	/**
+	 * @default [0,0,0]
+	 */
+	velocity: Vector3;
+	/**
+	 * @default [0,0,0]
+	 */
+	angularVelocity: Vector3;
+	/**
+	 * @minimum: 0
+	 * @default 0
+	 */
+	linearDrag: number;
+	/**
+	 * @minimum: 0
+	 * @default 0
+	 */
+	angularDrag: number;
+}
+
+/*----------------------------------------------------------------------------*/
+
+interface ScriptComponent {
+	scripts: {
+		// listId is the ScriptRef's id
+		[listId: string]: {
+			scriptRef: ScriptRef;
+			sortValue: number;
+			name?: string;
+			options?: {
+				[optname: string]: any;
+			}
+		}
+	}
+}
+
+/*----------------------------------------------------------------------------*/
+
+interface StateMachineComponent {
+	machines: {
+		[listId: string]: {
+			machineRef: MachineRef;
+			sortValue: number;
+		}
+	}
+}
+
+/*----------------------------------------------------------------------------*/
+
+interface SoundComponent {
+	sounds?: {
+		[listId: string]: {
+			soundRef: SoundRef;
+			sortValue: number;
+		}
+	}
+	volume?: number;
+	reverb?: number;
+}
+
+/*----------------------------------------------------------------------------*/
 
 interface TextComponent {
     text: string;
@@ -209,40 +336,7 @@ interface TextComponent {
     smoothness: number;
 }
 
-interface ScriptComponent {
-	scripts: {
-		// listId is the ScriptRef's id
-		[listId: string]: {
-			scriptRef: ScriptRef;
-			sortValue: number;
-			name?: string;
-			options?: {
-				[optname: string]: any;
-			}
-		}
-	}
-}
-
-interface StateMachineComponent {
-	machines: {
-		[listId: string]: {
-			machineRef: MachineRef;
-			sortValue: number;
-		}
-	}
-}
-
-interface SoundComponent {
-	sounds?: {
-		[listId: string]: {
-			soundRef: SoundRef;
-			sortValue: number;
-		}
-	}
-	volume?: number;
-	reverb?: number;
-}
-
+/*----------------------------------------------------------------------------*/
 
 enum EasingFunction {
 	'Linear.None',
@@ -270,7 +364,6 @@ enum EasingFunction {
 }
 
 interface TimelineComponent {
-
 	/**
 	 * Duration in seconds
 	 */
@@ -330,8 +423,9 @@ interface TimelineComponent {
 			}
 		}
 	}
-
 }
+
+/*----------------------------------------------------------------------------*/
 
 /**
  * Migration notes:
@@ -350,9 +444,9 @@ interface TransformComponent {
 	}
 }
 
+/*----------------------------------------------------------------------------*/
 
 interface entity extends GooObject {
-
 	/**
 	* @default false
 	*/
@@ -380,5 +474,7 @@ interface entity extends GooObject {
 		timeline?: TimelineComponent;
 		transform?: TransformComponent;
 		html?: HtmlComponent;
+		rigidBody?: RigidBodyComponent;
+		collider?: ColliderComponent;
 	}
 }
