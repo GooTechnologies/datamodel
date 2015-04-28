@@ -87,7 +87,7 @@ interface ViewConfigSettings {
 	}
 }
 
-interface WelcomeScreenSettings {
+interface WelcomeDialogSettings {
 	timestamp: int;
 	data: {
 		dismissed?: boolean;
@@ -102,5 +102,5 @@ interface usersettings {
 	inspector?: InspectorSettings;
 	timeline?: TimelineSettings;
 	viewConfig?: ViewConfigSettings;
-	welcomeScreen?: WelcomeScreenSettings;
+	welcomeDialog?: WelcomeDialogSettings;
 }
