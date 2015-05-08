@@ -6,7 +6,7 @@
 
 
 interface pack extends GooObject {
-	objects?: {
+	objects: {
 		// listId is object id
 		[listId: string]: {
 			sortValue: number;
