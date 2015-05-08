@@ -32,6 +32,7 @@ interface scene extends GooObject {
 
 	/**
 	* All references not in scene.entities
+	* DEPRECATED: use bundle storage and packs instead
 	*/
 	assets?: {
 		[listId: string]: {
