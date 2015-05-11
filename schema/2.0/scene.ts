@@ -44,6 +44,9 @@ interface scene extends GooObject {
 	// Contains the stable url for the latest published project.
 	publishedUrl?: URI;
 
+	// Contains the date the stable url was published
+	published?: DateTime;
+
 	/**
 	*	A set with published URI with it's date of publish.
 	*/
