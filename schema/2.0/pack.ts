@@ -4,7 +4,6 @@
  * A pack of objects, used in a scene
  */
 
-
 interface pack extends GooObject {
 	isDefault?: boolean;
 	objects: {
