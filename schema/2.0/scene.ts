@@ -23,7 +23,6 @@ interface SceneType {}
  * A scene in create (what was previously called a project)
  */
 interface scene extends GooObject {
-
 	type?: SceneType;
 
 	tags?: {
