@@ -29,6 +29,8 @@ interface scene extends GooObject {
 	    [tagName: string]: string;
 	}
 
+	defaultPackRef?: PackRef;
+
 	/**
 	* All references not in scene.entities
 	* DEPRECATED: use bundle storage and packs instead

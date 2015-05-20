@@ -5,7 +5,6 @@
  */
 
 interface pack extends GooObject {
-	isDefault?: boolean;
 	objects: {
 		// listId is object id
 		[listId: string]: {

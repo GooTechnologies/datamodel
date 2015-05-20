@@ -80,6 +80,15 @@ interface BinaryPointer {}
 
 
 /**
+ * Matches id ending with .pack
+ *
+ * @type string
+ * @pattern \.pack$
+ */
+interface PackRef {}
+
+
+/**
  * Matches id ending with .entity
  *
  * @type string
