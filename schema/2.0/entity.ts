@@ -279,7 +279,8 @@ interface RigidBodyComponent {
 
 interface ScriptComponent {
 	scripts: {
-		// listId is the ScriptRef's id
+		// listId is a generated string on the frontend side.
+		// "<uuid>.scriptInstance"
 		[listId: string]: {
 			scriptRef: ScriptRef;
 			sortValue: number;
