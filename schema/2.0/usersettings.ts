@@ -32,6 +32,7 @@ interface ExportSettings {
 		includeShareButtons?: boolean;
 		includeLogo?: boolean;
 		transparentBackground?: boolean;
+		transientUrl?: boolean;
 	};
 }
 
