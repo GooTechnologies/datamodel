@@ -5,6 +5,8 @@
  */
 
 interface pack extends GooObject {
+	type?: string;
+
 	tags?: {
 		[tagName: string]: string;
 	}
