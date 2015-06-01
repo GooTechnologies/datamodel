@@ -14,6 +14,14 @@ interface BinSettings {
 			[listId: string]: boolean;
 		};
 	};
+	collapsedPacks?: {
+		[packId: string]: {
+			timestamp: int;
+			data: {
+				collapsed: boolean;
+			};
+		};
+	};
 }
 
 interface CanvasSettings {
