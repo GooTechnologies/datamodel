@@ -31,6 +31,13 @@ interface scene extends GooObject {
 
 	defaultPackRef?: PackRef;
 
+	packs?: {
+		[listId: string]: {
+			packRef: PackRef;
+			sortValue: number;
+		}
+	}
+
 	/**
 	* All references not in scene.entities
 	* DEPRECATED: use bundle storage and packs instead
