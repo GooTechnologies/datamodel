@@ -18,7 +18,7 @@ interface BinSettings {
 		[packId: string]: {
 			timestamp: int;
 			data: {
-				collapsed: boolean;
+				collapsed?: boolean;
 			};
 		};
 	};
