@@ -5,6 +5,12 @@
  */
 
 interface pack extends GooObject {
+	type?: string;
+
+	tags?: {
+		[tagName: string]: string;
+	}
+
 	objects: {
 		// listId is object id
 		[listId: string]: {
