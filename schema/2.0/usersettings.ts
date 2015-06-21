@@ -103,6 +103,13 @@ interface WelcomeDialogSettings {
 	}
 }
 
+interface PublishWarningDialogSettings {
+	timestamp: int;
+	data: {
+		dismissed?: boolean;
+	}
+}
+
 interface usersettings {
 	announcements?: AnnouncementSettings;
 	bin?: BinSettings;
@@ -112,4 +119,5 @@ interface usersettings {
 	timeline?: TimelineSettings;
 	viewConfig?: ViewConfigSettings;
 	welcomeDialog?: WelcomeDialogSettings;
+	publishWarningDialog?: PublishWarningDialogSettings;
 }
