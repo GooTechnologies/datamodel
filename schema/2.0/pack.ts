@@ -18,4 +18,12 @@ interface pack extends GooObject {
 			objectRef: string;
 		}
 	}
+
+	dependencies: {
+		// listId is object id
+		[listId: string]: {
+			sortValue: number;
+			objectRef: string;
+		}
+	}
 }
