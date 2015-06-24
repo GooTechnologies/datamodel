@@ -19,7 +19,7 @@ interface pack extends GooObject {
 		}
 	}
 
-	dependencies: {
+	dependencies?: {
 		// listId is object id
 		[listId: string]: {
 			sortValue: number;
