@@ -27,8 +27,21 @@ interface BinSettings {
 interface CanvasSettings {
 	timestamp: int;
 	data: {
+		grid?: {
+			gridColor?: {
+				value: Vector4;
+				enabled: boolean;
+			};
+			surfaceColor?: {
+				value: Vector4;
+				enabled: boolean;
+			};
+			opacity?: number;
+		};
 		viewFilters?: {
-			[listId: string]: boolean;
+			environment?: boolean;
+			grid?: boolean;
+			postfx?: boolean;
 		};
 		shadingMode?: string;
 	};
