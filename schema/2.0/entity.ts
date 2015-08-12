@@ -237,6 +237,10 @@ interface MeshRendererComponent {
 	/**
 	 * @default true
 	 */
+	isPickable: boolean;
+	/**
+	 * @default true
+	 */
 	reflectable: boolean;
 }
 
