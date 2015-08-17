@@ -50,10 +50,12 @@ interface CanvasSettings {
 interface ExportSettings {
 	timestamp: int;
 	data: {
+		antialias?: boolean;
 		includeShareButtons?: boolean;
 		includeLogo?: boolean;
 		transparentBackground?: boolean;
 		transientUrl?: boolean;
+		useDevicePixelRatio?: boolean;
 	};
 }
 
