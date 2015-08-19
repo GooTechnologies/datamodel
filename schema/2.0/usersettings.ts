@@ -31,10 +31,12 @@ interface CanvasSettings {
 }
 
 interface ExportSettings {
+	antialias?: boolean;
 	includeShareButtons?: boolean;
 	includeLogo?: boolean;
 	transparentBackground?: boolean;
 	transientUrl?: boolean;
+	useDevicePixelRatio?: boolean;
 }
 
 interface InspectorSettings {
