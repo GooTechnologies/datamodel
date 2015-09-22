@@ -282,6 +282,7 @@ interface ScriptComponent {
 		// listId is a generated string on the frontend side.
 		// "<uuid>.scriptInstance"
 		[listId: string]: {
+			id?: ScriptInstanceRef;
 			scriptRef: ScriptRef;
 			sortValue: number;
 			name?: string;
