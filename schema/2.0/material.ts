@@ -25,7 +25,8 @@ enum BlendSrc {
 	SrcColorFactor,
 	OneMinusSrcColorFactor,
 	DstColorFactor,
-	OneMinusDstColorFactor
+	OneMinusDstColorFactor,
+	SrcAlphaSaturateFactor
 }
 
 enum BlendDst {

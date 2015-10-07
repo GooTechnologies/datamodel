@@ -23,6 +23,10 @@ interface GooObject {
 	description?: string;
 	thumbnailRef?: ImageRef;
 
+	tags?: {
+		[tagName: string]: string;
+	}
+
 	originalAsset?: {
 		id: string;
 		version: string;

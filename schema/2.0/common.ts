@@ -158,13 +158,20 @@ interface MaterialRef {}
 interface ScriptRef {}
 
 /**
+ * Matches id ending with .scriptInstance
+ *
+ * @type string
+ * @pattern \.scriptInstance$
+ */
+interface ScriptInstanceRef {}
+
+/**
  * Matches id ending with .mesh
  *
  * @type string
  * @pattern \.mesh$
  */
 interface MeshRef {}
-
 
 /**
  * Matches id ending with .machine
