@@ -1,79 +1,51 @@
 /// <reference path="common.ts"/>
 
-interface AnnouncementSettings {
-	timestamp: int;
-	data: {
-		[announcementId: string]: boolean;
-	};
-}
 
 interface BinSettings {
-	timestamp: int;
-	data: {
-		filters?: {
-			[listId: string]: boolean;
-		};
+	filters?: {
+		[listId: string]: boolean;
 	};
 	collapsedPacks?: {
-		[packId: string]: {
-			timestamp: int;
-			data: {
-				collapsed?: boolean;
-			};
-		};
+		[packId: string]: boolean;
 	};
 }
 
 interface CanvasSettings {
-	timestamp: int;
-	data: {
-		grid?: {
-			gridColor?: {
-				value: Vector4;
-				enabled: boolean;
-			};
-			surfaceColor?: {
-				value: Vector4;
-				enabled: boolean;
-			};
-			opacity?: number;
+	grid?: {
+		gridColor?: {
+			value: Vector4;
+			enabled: boolean;
 		};
-		viewFilters?: {
-			environment?: boolean;
-			grid?: boolean;
-			postfx?: boolean;
+		surfaceColor?: {
+			value: Vector4;
+			enabled: boolean;
 		};
-		shadingMode?: string;
+		opacity?: number;
 	};
+	viewFilters?: {
+		environment?: boolean;
+		grid?: boolean;
+		postfx?: boolean;
+	};
+	shadingMode?: string;
 }
 
 interface ExportSettings {
-	timestamp: int;
-	data: {
-		antialias?: boolean;
-		includeShareButtons?: boolean;
-		includeLogo?: boolean;
-		transparentBackground?: boolean;
-		transientUrl?: boolean;
-		useDevicePixelRatio?: boolean;
-	};
+	antialias?: boolean;
+	includeShareButtons?: boolean;
+	includeLogo?: boolean;
+	transparentBackground?: boolean;
+	transientUrl?: boolean;
+	useDevicePixelRatio?: boolean;
 }
 
 interface InspectorSettings {
-	// Stores which scripts are collapsed for each entity.
-	collapsedScripts?: {
-		[entityId: string]: {
-			timestamp: int;
-			data: {
+	collapsed?: {
+		[id: string]: {
+			scripts?: {
 				[scriptId: string]: boolean;
 			};
-		};
-	};
-	// Stores which panels are collapsed for each entity.
-	collapsedPanels?: {
-		[entityId: string]: {
-			timestamp: int;
-			data: {
+			panels?: {
 				[panelId: string]: boolean;
 			};
 		};
@@ -81,12 +53,7 @@ interface InspectorSettings {
 }
 
 interface TimelineSettings {
-	settings?: {
-		timestamp: int;
-		data: {
-			autoKey?: boolean;
-		};
-	};
+	autoKey?: boolean;
 }
 
 enum ShortCutMode {
@@ -100,33 +67,26 @@ enum UITheme {
 }
 
 interface ViewConfigSettings {
-	timestamp: int;
-	data: {
-		leftPanelWidth?: int;
-		rightPanelWidth?: int;
-		binHeight?: int;
-		keyboardShortcutsMode?: ShortCutMode;
-		timelineHeight?: int;
-		theme?: UITheme;
-	}
+	leftPanelWidth?: int;
+	rightPanelWidth?: int;
+	binHeight?: int;
+	keyboardShortcutsMode?: ShortCutMode;
+	timelineHeight?: int;
+	theme?: UITheme;
 }
 
 interface WelcomeDialogSettings {
-	timestamp: int;
-	data: {
-		dismissed?: boolean;
-	}
+	dismissed?: boolean;
 }
 
 interface PublishWarningDialogSettings {
-	timestamp: int;
-	data: {
-		dismissed?: boolean;
-	}
+	dismissed?: boolean;
 }
 
 interface usersettings {
-	announcements?: AnnouncementSettings;
+	announcements?: {
+		[announcementId: string]: boolean;
+	};
 	bin?: BinSettings;
 	canvas?: CanvasSettings;
 	export?: ExportSettings;
