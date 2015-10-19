@@ -495,6 +495,7 @@ interface entity extends GooObject {
 		timeline?: TimelineComponent;
 		transform?: TransformComponent;
 		html?: HtmlComponent;
+		dom3d?: Dom3dComponent;
 		rigidBody?: RigidBodyComponent;
 		collider?: ColliderComponent;
 	}
