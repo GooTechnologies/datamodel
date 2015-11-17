@@ -475,7 +475,7 @@ interface entity extends GooObject {
 	/**
 	* @default false
 	*/
-	hidden: boolean;
+	hidden?: boolean;
 	/**
 	* @default false
 	*/

@@ -50,6 +50,10 @@ interface InspectorSettings {
 			};
 		};
 	};
+
+	collapsedPanels?: {
+		[panelId: string]: boolean;
+	};
 }
 
 interface TimelineSettings {
