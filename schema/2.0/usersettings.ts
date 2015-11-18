@@ -1,6 +1,5 @@
 /// <reference path="common.ts"/>
 
-
 interface BinSettings {
 	filters?: {
 		[listId: string]: boolean;
@@ -56,6 +55,16 @@ interface InspectorSettings {
 	};
 }
 
+interface OnboardingSettings {
+	tours?: {
+		[tourName: string]: boolean
+	};
+}
+
+interface PublishWarningDialogSettings {
+	dismissed?: boolean;
+}
+
 interface TimelineSettings {
 	autoKey?: boolean;
 }
@@ -83,10 +92,6 @@ interface WelcomeDialogSettings {
 	dismissed?: boolean;
 }
 
-interface PublishWarningDialogSettings {
-	dismissed?: boolean;
-}
-
 interface usersettings {
 	announcements?: {
 		[announcementId: string]: boolean;
@@ -95,8 +100,9 @@ interface usersettings {
 	canvas?: CanvasSettings;
 	export?: ExportSettings;
 	inspector?: InspectorSettings;
+	onboarding?: OnboardingSettings;
+	publishWarningDialog?: PublishWarningDialogSettings;
 	timeline?: TimelineSettings;
 	viewConfig?: ViewConfigSettings;
 	welcomeDialog?: WelcomeDialogSettings;
-	publishWarningDialog?: PublishWarningDialogSettings;
 }
