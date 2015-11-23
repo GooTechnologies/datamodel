@@ -467,10 +467,6 @@ interface TransformComponent {
 			sortValue: number;
 		}
 	};
-	/**
-	 * @default false
-	 */
-	uniformScale?: boolean;
 }
 
 /*----------------------------------------------------------------------------*/
