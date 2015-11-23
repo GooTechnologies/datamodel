@@ -53,6 +53,8 @@ interface InspectorSettings {
 	collapsedPanels?: {
 		[panelId: string]: boolean;
 	};
+
+	uniformScale?: boolean;
 }
 
 interface OnboardingSettings {
