@@ -466,19 +466,23 @@ interface TransformComponent {
 			entityRef: EntityRef;
 			sortValue: number;
 		}
-	}
+	};
+	/**
+	 * @default false
+	 */
+	uniformScale?: boolean;
 }
 
 /*----------------------------------------------------------------------------*/
 
 interface entity extends GooObject {
 	/**
-	* @default false
-	*/
+	 * @default false
+	 */
 	hidden?: boolean;
 	/**
-	* @default false
-	*/
+	 * @default false
+	 */
 	static: boolean;
 
 	components: {
