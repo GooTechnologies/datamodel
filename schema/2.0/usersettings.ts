@@ -32,6 +32,8 @@ interface CanvasSettings {
 interface ExportSettings {
 	antialias?: boolean;
 	includeShareButtons?: boolean;
+	includeDuplicateButton?: boolean;
+	includeMaximizeButton?: boolean;
 	includeLogo?: boolean;
 	transparentBackground?: boolean;
 	transientUrl?: boolean;
