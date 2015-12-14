@@ -158,10 +158,10 @@ interface MaterialRef {}
 interface ScriptRef {}
 
 /**
- * Matches id ending with .scriptInstance
+ * Matches id ending with .scriptinstance
  *
  * @type string
- * @pattern \.scriptInstance$
+ * @pattern \.(scriptinstance|scriptInstance)$
  */
 interface ScriptInstanceRef {}
 
