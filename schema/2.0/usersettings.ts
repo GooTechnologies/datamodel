@@ -35,6 +35,7 @@ interface ExportSettings {
 	includeDuplicateButton?: boolean;
 	includeMaximizeButton?: boolean;
 	includeLogo?: boolean;
+	includeBottomBar?: boolean;
 	transparentBackground?: boolean;
 	transientUrl?: boolean;
 	useDevicePixelRatio?: boolean;
