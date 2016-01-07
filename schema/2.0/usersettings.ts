@@ -39,6 +39,7 @@ interface ExportSettings {
 	transparentBackground?: boolean;
 	transientUrl?: boolean;
 	useDevicePixelRatio?: boolean;
+	noIndex?: boolean;
 	templateId?: string;
 	customCSS?: string;
 	customJS?: string;
