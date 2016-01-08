@@ -1,4 +1,5 @@
 /// <reference path="gooobject.ts"/>
+/// <reference path="material.ts"/>
 
 interface AnimationComponent {
 
@@ -471,6 +472,85 @@ interface TransformComponent {
 
 /*----------------------------------------------------------------------------*/
 
+enum ParticleConeEmitFrom {
+	'base',
+	'volume',
+	'volumeshell'
+}
+
+enum ParticleSortModes {
+	'none',
+	'camera_distance'
+}
+
+interface ParticleCurveSegment {
+	type: string;
+	offset: number;
+	options: {
+		[optName: string]: any;
+	}
+}
+
+/**
+ * @type array
+ * @items.type ParticleCurveSegment
+ * @minItems 1
+ */
+interface ParticleCurveSegmentArray {}
+
+/**
+ */
+interface ParticleComponent {
+	seed: int;
+	shapeType: string;
+	sphereRadius: number;
+	sphereEmitFromShell: boolean;
+	randomDirection: boolean;
+	coneEmitFrom: ParticleConeEmitFrom;
+	boxExtents: Vector3;
+	coneRadius: number;
+	coneAngle: number;
+	coneLength: number;
+	startColorR: ParticleCurveSegmentArray;
+	startColorG: ParticleCurveSegmentArray;
+	startColorB: ParticleCurveSegmentArray;
+	startColorA: ParticleCurveSegmentArray;
+	colorR: ParticleCurveSegmentArray;
+	colorG: ParticleCurveSegmentArray;
+	colorB: ParticleCurveSegmentArray;
+	colorA: ParticleCurveSegmentArray;
+	duration: number;
+	localSpace: boolean;
+	startSpeed: ParticleCurveSegmentArray;
+	localVelocityX: ParticleCurveSegmentArray;
+	localVelocityY: ParticleCurveSegmentArray;
+	localVelocityZ: ParticleCurveSegmentArray;
+	worldVelocityX: ParticleCurveSegmentArray;
+	worldVelocityY: ParticleCurveSegmentArray;
+	worldVelocityZ: ParticleCurveSegmentArray;
+	maxParticles: number;
+	emissionRate: ParticleCurveSegmentArray;
+	startLifeTime: number;
+	renderQueue: number;
+	alphakill: number;
+	loop: boolean;
+	blending: Blending;
+	depthWrite: boolean;
+	depthTest: boolean;
+	textureTilesX: number;
+	textureTilesY: number;
+	textureAnimationSpeed: number;
+	startSize: ParticleCurveSegmentArray;
+	sortMode: ParticleSortModes;
+	billboard: boolean;
+	sizeCurve: ParticleCurveSegmentArray;
+	startAngle: ParticleCurveSegmentArray;
+	rotationSpeed: ParticleCurveSegmentArray;
+	textureRef: TextureRef;
+}
+
+/*----------------------------------------------------------------------------*/
+
 interface entity extends GooObject {
 	/**
 	 * @default false
@@ -498,5 +578,6 @@ interface entity extends GooObject {
 		dom3d?: Dom3dComponent;
 		rigidBody?: RigidBodyComponent;
 		collider?: ColliderComponent;
+		particle?: ParticleComponent;
 	}
 }
