@@ -493,7 +493,7 @@ interface ParticleCurveSegment {
 
 /**
  * @type array
- * @items.type ParticleCurveSegment
+ * @items.$ref ParticleCurveSegment
  * @minItems 1
  */
 interface ParticleCurveSegmentArray {}
@@ -530,7 +530,7 @@ interface ParticleComponent {
 	worldVelocityZ: ParticleCurveSegmentArray;
 	maxParticles: number;
 	emissionRate: ParticleCurveSegmentArray;
-	startLifeTime: number;
+	startLifeTime: ParticleCurveSegmentArray;
 	renderQueue: number;
 	alphakill: number;
 	loop: boolean;
@@ -546,7 +546,10 @@ interface ParticleComponent {
 	sizeCurve: ParticleCurveSegmentArray;
 	startAngle: ParticleCurveSegmentArray;
 	rotationSpeed: ParticleCurveSegmentArray;
-	textureRef: TextureRef;
+	texture?: {
+		enabled: boolean;
+		textureRef: TextureRef;
+	};
 }
 
 /*----------------------------------------------------------------------------*/
