@@ -501,6 +501,7 @@ interface ParticleCurveSegmentArray {}
 /**
  */
 interface ParticleComponent {
+	gravity: Vector3;
 	seed: int;
 	shapeType: string;
 	sphereRadius: number;
@@ -543,7 +544,7 @@ interface ParticleComponent {
 	startSize: ParticleCurveSegmentArray;
 	sortMode: ParticleSortModes;
 	billboard: boolean;
-	sizeCurve: ParticleCurveSegmentArray;
+	size: ParticleCurveSegmentArray;
 	startAngle: ParticleCurveSegmentArray;
 	rotationSpeed: ParticleCurveSegmentArray;
 	texture?: {
