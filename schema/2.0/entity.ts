@@ -554,6 +554,7 @@ interface ParticleComponent {
 	renderQueue: number;
 	alphakill: number;
 	loop: boolean;
+	preWarm: boolean;
 	blending: Blending;
 	depthWrite: boolean;
 	depthTest: boolean;
