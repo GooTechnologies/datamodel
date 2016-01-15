@@ -487,7 +487,20 @@ interface ParticleCurveSegment {
 	type: string;
 	offset: number;
 	options: {
-		[optName: string]: any;
+		// linear
+		k?: number;
+		m?: number;
+
+		// constant
+		value?: number;
+
+		// Random between two curves
+		valueA?: number;
+		valueB?: number;
+
+		// Random between two curves
+		curveA?: ParticleCurveSegmentArray;
+		curveB?: ParticleCurveSegmentArray;
 	}
 }
 
@@ -496,8 +509,24 @@ interface ParticleCurveSegment {
  * @items.$ref ParticleCurveSegment
  * @minItems 1
  */
-interface ParticleCurveSegmentArray {}
+interface ParticleCurveSegmentArray { }
 
+/**
+ * @type array
+ * @items.$ref ParticleCurveSegment
+ * @minItems 4
+ * @maxItems 4
+ */
+interface ParticleCurveSegmentArrayVector4 { }
+
+/**
+ * @type array
+ * @items.$ref ParticleCurveSegment
+ * @minItems 3
+ * @maxItems 3
+ */
+interface ParticleCurveSegmentArrayVector3 { }
+	
 /**
  */
 interface ParticleComponent {
@@ -512,23 +541,13 @@ interface ParticleComponent {
 	coneRadius: number;
 	coneAngle: number;
 	coneLength: number;
-	startColorR: ParticleCurveSegmentArray;
-	startColorG: ParticleCurveSegmentArray;
-	startColorB: ParticleCurveSegmentArray;
-	startColorA: ParticleCurveSegmentArray;
-	colorR: ParticleCurveSegmentArray;
-	colorG: ParticleCurveSegmentArray;
-	colorB: ParticleCurveSegmentArray;
-	colorA: ParticleCurveSegmentArray;
+	startColor: ParticleCurveSegmentArrayVector4;
+	color: ParticleCurveSegmentArrayVector4;
 	duration: number;
 	localSpace: boolean;
 	startSpeed: ParticleCurveSegmentArray;
-	localVelocityX: ParticleCurveSegmentArray;
-	localVelocityY: ParticleCurveSegmentArray;
-	localVelocityZ: ParticleCurveSegmentArray;
-	worldVelocityX: ParticleCurveSegmentArray;
-	worldVelocityY: ParticleCurveSegmentArray;
-	worldVelocityZ: ParticleCurveSegmentArray;
+	localVelocity: ParticleCurveSegmentArrayVector3;
+	worldVelocity: ParticleCurveSegmentArrayVector3;
 	maxParticles: number;
 	emissionRate: ParticleCurveSegmentArray;
 	startLifeTime: ParticleCurveSegmentArray;
