@@ -561,6 +561,7 @@ interface ParticleComponent {
 	textureTilesX: number;
 	textureTilesY: number;
 	textureAnimationSpeed: number;
+	textureFrame: ParticleCurveSegmentArray;
 	startSize: ParticleCurveSegmentArray;
 	sortMode: ParticleSortModes;
 	billboard: boolean;
