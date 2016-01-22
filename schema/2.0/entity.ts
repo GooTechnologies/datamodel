@@ -529,7 +529,7 @@ interface ParticleCurveSegmentArrayVector3 { }
 	
 /**
  */
-interface ParticleComponent {
+interface ParticleSystemComponent {
 	gravity: Vector3;
 	seed: int;
 	shapeType: string;
@@ -542,17 +542,17 @@ interface ParticleComponent {
 	coneAngle: number;
 	coneLength: number;
 	startColor: ParticleCurveSegmentArrayVector4;
-	color: ParticleCurveSegmentArrayVector4;
+	colorOverLifetime: ParticleCurveSegmentArrayVector4;
 	duration: number;
 	localSpace: boolean;
 	startSpeed: ParticleCurveSegmentArray;
-	localVelocity: ParticleCurveSegmentArrayVector3;
-	worldVelocity: ParticleCurveSegmentArrayVector3;
+	localVelocityOverLifetime: ParticleCurveSegmentArrayVector3;
+	worldVelocityOverLifetime: ParticleCurveSegmentArrayVector3;
 	maxParticles: number;
 	emissionRate: ParticleCurveSegmentArray;
-	startLifeTime: ParticleCurveSegmentArray;
+	startLifetime: ParticleCurveSegmentArray;
 	renderQueue: number;
-	alphakill: number;
+	discardThreshold: number;
 	loop: boolean;
 	preWarm: boolean;
 	blending: Blending;
@@ -561,13 +561,13 @@ interface ParticleComponent {
 	textureTilesX: number;
 	textureTilesY: number;
 	textureAnimationSpeed: number;
-	textureFrame: ParticleCurveSegmentArray;
+	textureFrameOverLifetime: ParticleCurveSegmentArray;
 	startSize: ParticleCurveSegmentArray;
 	sortMode: ParticleSortModes;
 	billboard: boolean;
-	size: ParticleCurveSegmentArray;
+	sizeOverLifetime: ParticleCurveSegmentArray;
 	startAngle: ParticleCurveSegmentArray;
-	rotationSpeed: ParticleCurveSegmentArray;
+	rotationSpeedOverLifetime: ParticleCurveSegmentArray;
 	texture?: {
 		enabled: boolean;
 		textureRef: TextureRef;
@@ -603,6 +603,6 @@ interface entity extends GooObject {
 		dom3d?: Dom3dComponent;
 		rigidBody?: RigidBodyComponent;
 		collider?: ColliderComponent;
-		particle?: ParticleComponent;
+		particleSystem?: ParticleSystemComponent;
 	}
 }
