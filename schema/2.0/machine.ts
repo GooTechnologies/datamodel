@@ -7,10 +7,10 @@ interface Transition {
 	sortValue: number;
 
 	/**
-	 * If this property is not present, the transition is not connected 
-	 * to another state. 
+	 * If this property is not present, the transition is not connected
+	 * to another state.
 	 */
-	targetState?: string; 
+	targetState?: string;
 }
 
 interface Action {
@@ -27,7 +27,7 @@ interface Action {
 	options?: {
 		transitions?: {
 			[key: string]: string
-		} 
+		}
 	}
 }
 
@@ -35,6 +35,9 @@ interface State {
 	id: string;
 	name: string;
 	sortValue: number;
+
+	// The position of the state in the graph.
+	position?: Vector2;
 
 	actions?: {
 		// listId is Action's id
@@ -57,9 +60,11 @@ interface State {
 }
 
 interface machine extends GooObject {
-
 	// id to State
 	initialState: string;
+
+	// The position of the state graph for this machine.
+	position?: Vector2;
 
 	states: {
 		// listId is id from State
