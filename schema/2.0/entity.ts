@@ -526,52 +526,88 @@ interface ParticleCurveSegmentArrayVector4 { }
  * @maxItems 3
  */
 interface ParticleCurveSegmentArrayVector3 { }
-	
+
+/**
+ * @type number
+ * @minimum 0
+ */
+interface PositiveNumber { }
+
+enum ParticleShape {
+	cone,
+	box,
+	sphere
+}
+
 /**
  */
 interface ParticleSystemComponent {
-	gravity: Vector3;
-	seed: int;
-	shapeType: string;
-	sphereRadius: number;
-	sphereEmitFromShell: boolean;
-	randomDirection: boolean;
-	coneEmitFrom: ParticleConeEmitFrom;
-	boxExtents: Vector3;
-	coneRadius: number;
-	coneAngle: number;
-	coneLength: number;
-	startColor: ParticleCurveSegmentArrayVector4;
-	colorOverLifetime: ParticleCurveSegmentArrayVector4;
-	duration: number;
-	localSpace: boolean;
-	startSpeed: ParticleCurveSegmentArray;
-	localVelocityOverLifetime: ParticleCurveSegmentArrayVector3;
-	worldVelocityOverLifetime: ParticleCurveSegmentArrayVector3;
-	maxParticles: number;
-	emissionRate: ParticleCurveSegmentArray;
-	startLifetime: ParticleCurveSegmentArray;
-	renderQueue: number;
-	discardThreshold: number;
-	loop: boolean;
-	preWarm: boolean;
-	blending: Blending;
-	depthWrite: boolean;
-	depthTest: boolean;
-	textureTilesX: number;
-	textureTilesY: number;
-	textureAnimationSpeed: number;
-	textureFrameOverLifetime: ParticleCurveSegmentArray;
-	startSize: ParticleCurveSegmentArray;
-	sortMode: ParticleSortModes;
+
 	billboard: boolean;
-	sizeOverLifetime: ParticleCurveSegmentArray;
-	startAngle: ParticleCurveSegmentArray;
+	blending: Blending;
+	
+	/**
+	 * @minItems 3
+	 * @maxItems 3
+	 */
+	boxExtents: PositiveNumber[];
+
+	colorOverLifetime: ParticleCurveSegmentArrayVector4;
+	coneAngle: number;
+	coneEmitFrom: ParticleConeEmitFrom;
+	coneLength: number;
+	coneRadius: number;
+	depthTest: boolean;
+	depthWrite: boolean;
+	discardThreshold: number;
+	duration: number;
+	emissionRate: ParticleCurveSegmentArray;
+	gravity: Vector3;
+	localSpace: boolean;
+	localVelocityOverLifetime: ParticleCurveSegmentArrayVector3;
+	loop: boolean;
+	
+	/**
+	 * @multipleOf 1
+	 * @minimum 1
+	 */
+	maxParticles: number;
+
+	preWarm: boolean;
+	randomDirection: boolean;
+	renderQueue: int;
 	rotationSpeedOverLifetime: ParticleCurveSegmentArray;
+
+	/**
+	 * @multipleOf 1
+	 * @minimum -1
+	 */
+	seed: number;
+	
+	shapeType: ParticleShape;
+	sizeOverLifetime: ParticleCurveSegmentArray;
+	sortMode: ParticleSortModes;
+	sphereEmitFromShell: boolean;
+
+	/**
+	 * @minimum 0
+	 */
+	sphereRadius: number;
+
+	startAngle: ParticleCurveSegmentArray;
+	startColor: ParticleCurveSegmentArrayVector4;
+	startLifetime: ParticleCurveSegmentArray;
+	startSize: ParticleCurveSegmentArray;
+	startSpeed: ParticleCurveSegmentArray;
 	texture?: {
 		enabled: boolean;
 		textureRef: TextureRef;
 	};
+	textureAnimationCycles: int;
+	textureFrameOverLifetime: ParticleCurveSegmentArray;
+	textureTilesX: int;
+	textureTilesY: int;
+	worldVelocityOverLifetime: ParticleCurveSegmentArrayVector3;
 }
 
 /*----------------------------------------------------------------------------*/
