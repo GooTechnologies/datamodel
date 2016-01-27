@@ -594,6 +594,8 @@ interface ParticleSystemComponent {
 	 */
 	sphereRadius: number;
 
+	autoPlay: boolean;
+
 	startAngle: ParticleCurveSegmentArray;
 	startColor: ParticleCurveSegmentArrayVector4;
 	startLifetime: ParticleCurveSegmentArray;
