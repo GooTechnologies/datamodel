@@ -539,6 +539,14 @@ enum ParticleShape {
 	sphere
 }
 
+enum ParticleTexturePreset {
+	Flare,
+	Splash,
+	Plankton,
+	Snowflake,
+	Custom
+}
+
 /**
  */
 interface ParticleSystemComponent {
@@ -601,6 +609,7 @@ interface ParticleSystemComponent {
 	startLifetime: ParticleCurveSegmentArray;
 	startSize: ParticleCurveSegmentArray;
 	startSpeed: ParticleCurveSegmentArray;
+	texturePreset: ParticleTexturePreset;
 	texture?: {
 		enabled: boolean;
 		textureRef: TextureRef;
