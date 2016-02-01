@@ -17,4 +17,5 @@ interface sound extends GooObject {
 	offset?: number;
 	duration?: number;
 	timeScale?: number;
+	spatialize?: boolean;
 }
