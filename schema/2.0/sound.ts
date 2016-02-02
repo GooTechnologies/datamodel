@@ -17,5 +17,15 @@ interface sound extends GooObject {
 	offset?: number;
 	duration?: number;
 	timeScale?: number;
+
+	/**
+	 * True means 3D audio, else 2D
+	 * @default true
+	 */
 	spatialize?: boolean;
+
+	/**
+	 * @default false
+	 */
+	autoPlay?: boolean;
 }
