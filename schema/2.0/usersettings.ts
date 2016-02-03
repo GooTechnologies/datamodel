@@ -43,6 +43,11 @@ interface ExportSettings {
 	templateId?: string;
 	customCSS?: string;
 	customJS?: string;
+	
+	/**
+	 * @default true
+	 */
+	startFocused?: boolean;
 }
 
 interface InspectorSettings {
