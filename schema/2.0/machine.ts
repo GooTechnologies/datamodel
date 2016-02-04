@@ -63,8 +63,8 @@ interface machine extends GooObject {
 	// id to State
 	initialState: string;
 
-	// The position of the state graph for this machine.
 	position?: Vector2;
+	zoom: number;
 
 	states: {
 		// listId is id from State
