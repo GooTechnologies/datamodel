@@ -34,8 +34,8 @@ interface CurveSegment {
 	valueB?: number;
 
 	// Random between two curves
-	curveA?: CurveSegmentArray;
-	curveB?: CurveSegmentArray;
+	curveA?: CurveSegment;
+	curveB?: CurveSegment;
 }
 
 /**
@@ -102,7 +102,7 @@ interface ParticleSystemComponent {
 	depthWrite: boolean;
 	discardThreshold: number;
 	duration: number;
-	emissionRate: ParticleCurve;
+	emissionRate: Curve;
 	gravity: Vector3;
 	localSpace: boolean;
 	localVelocityOverLifetime: CurveVector3;
