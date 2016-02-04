@@ -18,49 +18,48 @@ enum ParticleSortModes {
 	'camera_distance'
 }
 
-interface ParticleCurveSegment {
+interface CurveSegment {
 	type: CurveType;
 	offset: number;
-	options: {
-		// linear
-		k?: number;
-		m?: number;
 
-		// constant
-		value?: number;
+	// linear
+	k?: number;
+	m?: number;
 
-		// Random between two curves
-		valueA?: number;
-		valueB?: number;
+	// constant
+	value?: number;
 
-		// Random between two curves
-		curveA?: ParticleCurveSegmentArray;
-		curveB?: ParticleCurveSegmentArray;
-	}
+	// Random between two curves
+	valueA?: number;
+	valueB?: number;
+
+	// Random between two curves
+	curveA?: CurveSegmentArray;
+	curveB?: CurveSegmentArray;
 }
 
 /**
  * @type array
- * @items.$ref ParticleCurveSegment
+ * @items.$ref CurveSegment
  * @minItems 1
  */
-interface ParticleCurveSegmentArray { }
+interface Curve { }
 
 /**
  * @type array
- * @items.$ref ParticleCurveSegment
+ * @items.$ref Curve
  * @minItems 4
  * @maxItems 4
  */
-interface ParticleCurveSegmentArrayVector4 { }
+interface CurveVector4 { }
 
 /**
  * @type array
- * @items.$ref ParticleCurveSegment
+ * @items.$ref Curve
  * @minItems 3
  * @maxItems 3
  */
-interface ParticleCurveSegmentArrayVector3 { }
+interface CurveVector3 { }
 
 /**
  * @type number
@@ -94,7 +93,7 @@ interface ParticleSystemComponent {
 	 */
 	boxExtents: PositiveNumber[];
 
-	colorOverLifetime: ParticleCurveSegmentArrayVector4;
+	colorOverLifetime: CurveVector4;
 	coneAngle: number;
 	coneEmitFrom: ParticleConeEmitFrom;
 	coneLength: number;
@@ -103,10 +102,10 @@ interface ParticleSystemComponent {
 	depthWrite: boolean;
 	discardThreshold: number;
 	duration: number;
-	emissionRate: ParticleCurveSegmentArray;
+	emissionRate: ParticleCurve;
 	gravity: Vector3;
 	localSpace: boolean;
-	localVelocityOverLifetime: ParticleCurveSegmentArrayVector3;
+	localVelocityOverLifetime: CurveVector3;
 	loop: boolean;
 
 	/**
@@ -118,7 +117,7 @@ interface ParticleSystemComponent {
 	preWarm: boolean;
 	randomDirection: boolean;
 	renderQueue: int;
-	rotationSpeedOverLifetime: ParticleCurveSegmentArray;
+	rotationSpeedOverLifetime: Curve;
 
 	/**
 	 * @multipleOf 1
@@ -127,7 +126,7 @@ interface ParticleSystemComponent {
 	seed: number;
 
 	shapeType: ParticleShape;
-	sizeOverLifetime: ParticleCurveSegmentArray;
+	sizeOverLifetime: Curve;
 	sortMode: ParticleSortModes;
 	sphereEmitFromShell: boolean;
 
@@ -138,19 +137,19 @@ interface ParticleSystemComponent {
 
 	autoPlay: boolean;
 
-	startAngle: ParticleCurveSegmentArray;
-	startColor: ParticleCurveSegmentArrayVector4;
-	startLifetime: ParticleCurveSegmentArray;
-	startSize: ParticleCurveSegmentArray;
-	startSpeed: ParticleCurveSegmentArray;
+	startAngle: Curve;
+	startColor: CurveVector4;
+	startLifetime: Curve;
+	startSize: Curve;
+	startSpeed: Curve;
 	texturePreset: ParticleTexturePreset;
 	texture?: {
 		enabled: boolean;
 		textureRef: TextureRef;
 	};
 	textureAnimationCycles: int;
-	textureFrameOverLifetime: ParticleCurveSegmentArray;
+	textureFrameOverLifetime: Curve;
 	textureTilesX: int;
 	textureTilesY: int;
-	worldVelocityOverLifetime: ParticleCurveSegmentArrayVector3;
+	worldVelocityOverLifetime: CurveVector3;
 }
