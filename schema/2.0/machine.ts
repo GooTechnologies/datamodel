@@ -64,7 +64,7 @@ interface machine extends GooObject {
 	initialState: string;
 
 	position?: Vector2;
-	zoom: number;
+	zoom?: number;
 
 	states: {
 		// listId is id from State

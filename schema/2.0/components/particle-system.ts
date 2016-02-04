@@ -34,20 +34,20 @@ interface CurveSegment {
 	valueB?: number;
 
 	// Random between two curves
-	curveA?: CurveSegment;
-	curveB?: CurveSegment;
+	curveA?: Curve;
+	curveB?: Curve;
 }
 
 /**
  * @type array
- * @items.$ref CurveSegment
+ * @items.type CurveSegment
  * @minItems 1
  */
 interface Curve { }
 
 /**
  * @type array
- * @items.$ref Curve
+ * @items.type Curve
  * @minItems 4
  * @maxItems 4
  */
@@ -55,7 +55,7 @@ interface CurveVector4 { }
 
 /**
  * @type array
- * @items.$ref Curve
+ * @items.type Curve
  * @minItems 3
  * @maxItems 3
  */
