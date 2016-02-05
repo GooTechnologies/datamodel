@@ -1,6 +1,6 @@
 /*
  * grunt-typson
- * 
+ *
  *
  * Copyright (c) 2014 Martin Berg
  * Licensed under the MIT license.
@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 			punctuation: '.',
 			separator: ', '
 		});
-	
+
 		var typson = require('typson/lib/typson-schema');
 		var done = this.async();
 		// Iterate over all specified file groups.
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
 					done();
 				}
 			})
-			
+
 			.catch(function(e){
 				grunt.fail.warn("Error compiling schema: " + e);
 			})

@@ -18,6 +18,13 @@ enum ParticleSortModes {
 	'camera_distance'
 }
 
+/**
+ * @type array
+ * @items.$ref CurveSegment
+ * @minItems 1
+ */
+interface Curve { }
+
 interface CurveSegment {
 	type: CurveType;
 	offset: number;
@@ -40,14 +47,7 @@ interface CurveSegment {
 
 /**
  * @type array
- * @items.type CurveSegment
- * @minItems 1
- */
-interface Curve { }
-
-/**
- * @type array
- * @items.type Curve
+ * @items.$ref Curve
  * @minItems 4
  * @maxItems 4
  */
@@ -55,7 +55,7 @@ interface CurveVector4 { }
 
 /**
  * @type array
- * @items.type Curve
+ * @items.$ref Curve
  * @minItems 3
  * @maxItems 3
  */

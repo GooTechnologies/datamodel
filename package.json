@@ -5,10 +5,10 @@
   "description": "Data model documentation & validation for Goo Engine",
   "devDependencies": {
     "grunt": "~0.4.1",
-    "grunt-shell": "~0.6.1",
-    "grunt-contrib-clean": "~0.5.0",
+    "grunt-shell": "~1.1.2",
+    "grunt-contrib-clean": "~0.7.0",
     "glob": ">= 3.1.20",
-    "typson": "git://github.com/hmartinberg/typson.git"
+    "typson": "git://github.com/GooTechnologies/typson.git"
   },
   "engines": {
     "node": ">=0.8.2"
