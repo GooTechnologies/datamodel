@@ -43,7 +43,7 @@ interface ExportSettings {
 	templateId?: string;
 	customCSS?: string;
 	customJS?: string;
-	
+
 	/**
 	 * @default true
 	 */
@@ -99,6 +99,7 @@ interface ViewConfigSettings {
 	binHeight?: int;
 	keyboardShortcutsMode?: ShortCutMode;
 	timelineHeight?: int;
+	stateGraphHeight?: int;
 	theme?: UITheme;
 }
 
