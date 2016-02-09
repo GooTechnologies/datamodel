@@ -99,7 +99,7 @@ interface ViewConfigSettings {
 	binHeight?: int;
 	keyboardShortcutsMode?: ShortCutMode;
 	timelineHeight?: int;
-	stateGraphHeight?: int;
+	fsmEditorHeight?: int;
 	theme?: UITheme;
 }
 
