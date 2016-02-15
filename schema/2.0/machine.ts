@@ -21,17 +21,6 @@ interface Action {
 	type: string;
 
 	/**
-	 * Maximum transition recursion/loop depth during a single frame
-	 * @default 100
-	 */
-	maxLoopDepth?: number;
-	/**
-	 * True means using the old async way, False the new synchronized transition model
-	 * @default false
-	 */
-	asyncMode?: boolean;
-
-	/**
 	 * @additionalProperties true
 	 */
 	options?: {
@@ -72,6 +61,17 @@ interface State {
 interface machine extends GooObject {
 	// id to State
 	initialState: string;
+
+	/**
+	 * Maximum transition recursion/loop depth during a single frame
+	 * @default 100
+	 */
+	maxLoopDepth?: number;
+	/**
+	 * True means using the old async way, False the new synchronized transition model
+	 * @default false
+	 */
+	asyncMode?: boolean;
 
 	position?: Vector2;
 	zoom?: number;
