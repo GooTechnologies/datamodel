@@ -55,5 +55,6 @@ interface environment extends GooObject {
 		volume?: number;
 		reverb?: number;
 		reverbRef?: SoundRef;
+		muted?: boolean;
 	}
 }
