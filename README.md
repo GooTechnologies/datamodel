@@ -255,6 +255,13 @@ For arrays:
     maxItems 
     uniqueItems
 
+
+### Install
+
+```sh
+npm install && pip install -r requirements.txt
+```
+
 ### Validating
 
 Run 
