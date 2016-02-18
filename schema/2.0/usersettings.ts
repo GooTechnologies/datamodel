@@ -108,6 +108,9 @@ interface WelcomeDialogSettings {
 }
 
 interface usersettings {
+	collapsed?: {
+		[id: string]: boolean;
+	};
 	announcements?: {
 		[announcementId: string]: boolean;
 	};
