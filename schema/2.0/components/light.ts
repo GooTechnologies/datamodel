@@ -63,6 +63,10 @@ interface LightComponent {
 
 	shadowSettings?: {
 		darkness: number;
+		/**
+		 * Shadow acne offset
+		 */
+		offset?: number;
 		far: number;
 		/**
 		 * Mandatory if LightType is other than DirectionalLight
