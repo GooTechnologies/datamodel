@@ -66,7 +66,7 @@ interface LightComponent {
 		/**
 		 * Shadow acne offset
 		 */
-		offset?: number;
+		shadowOffset?: number;
 		far: number;
 		/**
 		 * Mandatory if LightType is other than DirectionalLight
