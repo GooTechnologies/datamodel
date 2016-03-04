@@ -3,7 +3,7 @@
 
 interface Transition {
 	id: string;
-	name: string;
+	name?: string;
 	sortValue: number;
 
 	/**
@@ -15,7 +15,7 @@ interface Transition {
 
 interface Action {
 	id: string;
-	name: string;
+	name?: string;
 	sortValue: number;
 
 	type: string;
@@ -32,7 +32,7 @@ interface Action {
 
 interface State {
 	id: string;
-	name: string;
+	name?: string;
 	sortValue: number;
 
 	// The position of the state in the graph.
