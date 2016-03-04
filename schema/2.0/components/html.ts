@@ -14,4 +14,10 @@ interface HtmlComponent {
 	 * the screenspace coordinate of the entity.
 	 */
 	useTransformComponent: boolean;
+
+	/**
+	 * If true, the screen positioning will be rounded to pixels. Default is true to be backwards compatible
+	 * @default true
+	 */
+	pixelPerfect?: boolean;
 }
