@@ -3,6 +3,7 @@
 
 interface Transition {
 	id: string;
+	key?: string;
 	name?: string;
 	sortValue: number;
 
