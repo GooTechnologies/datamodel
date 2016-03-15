@@ -27,8 +27,8 @@ interface GooObject {
 		[tagName: string]: string;
 	}
 
-	meta?: {
-		[propName: string]: string;
+	attributes?: {
+		[key: string]: string;
 	}
 
 	originalAsset?: {
