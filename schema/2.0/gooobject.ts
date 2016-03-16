@@ -27,7 +27,7 @@ interface GooObject {
 		[tagName: string]: string;
 	}
 
-	attributes?: {
+	customAttributes?: {
 		[key: string]: string;
 	}
 

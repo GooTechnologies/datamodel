@@ -94,8 +94,10 @@ enum UITheme {
 }
 
 interface ViewConfigSettings {
+	// TODO: Clean these so that they are not width or height... just size.
 	leftPanelWidth?: int;
 	rightPanelWidth?: int;
+	tutorialPanelSize?: int;
 	binHeight?: int;
 	keyboardShortcutsMode?: ShortCutMode;
 	timelineHeight?: int;
