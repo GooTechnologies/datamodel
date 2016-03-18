@@ -5,6 +5,13 @@ interface HtmlComponent {
 
     style?: string;
 
+	/**
+	 * Attributes which will be added to the dom node.
+	 */
+	attributes?: {
+		[key: string]: string;
+	}
+
 	imageRefs?: {
 		[ref: string]: ImageRef
 	};
