@@ -34,7 +34,7 @@ interface TimelineComponent {
 	 * Whether the timeline starts playing right after the scene is loaded.
 	 * @default true
 	 */
-	autoStart: boolean;
+	autoStart?: boolean;
 	loop: {
 		/**
 		 * If true, loop entire timeline. Additional properties to be added in
