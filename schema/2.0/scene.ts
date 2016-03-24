@@ -19,6 +19,11 @@ enum CanvasSizingMode {
  */
 interface SceneType {}
 
+interface EditorCameraSettings {
+	lookAtPoint: Vector3;
+	spherical: Vector3;
+}
+
 /**
  * A scene in create (what was previously called a project)
  */
@@ -73,7 +78,13 @@ interface scene extends GooObject {
 			sortValue: number;
 		}
 	}
+
 	initialCameraRef: EntityRef;
+
+	editorCameraSettings?: {
+		camera3d?: EditorCameraSettings;
+		camera2d?: EditorCameraSettings;
+	}
 
 	posteffectsRef?: PosteffectsRef;
 
