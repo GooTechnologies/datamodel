@@ -25,4 +25,11 @@ interface RigidBodyComponent {
 	 * @default 0
 	 */
 	angularDrag: number;
+
+	freezePositionX?: boolean;
+	freezePositionY?: boolean;
+	freezePositionZ?: boolean;
+	freezeRotationX?: boolean;
+	freezeRotationY?: boolean;
+	freezeRotationZ?: boolean;
 }
