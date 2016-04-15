@@ -56,7 +56,6 @@ interface State {
 			sortValue: number;
 		}
 	}
-
 }
 
 interface machine extends GooObject {

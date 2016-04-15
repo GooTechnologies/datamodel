@@ -70,6 +70,8 @@ interface TimelineComponent {
 
 			keyframes: {
 				[keyFrameId: string]: {
+					id: string;
+
 					/**
 					 * Position in the timeline, in seconds counted from the start.
 					 */
