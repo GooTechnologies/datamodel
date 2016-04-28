@@ -23,10 +23,16 @@ interface entity extends GooObject {
 	 * @default false
 	 */
 	hidden?: boolean;
+
 	/**
 	 * @default false
 	 */
 	static: boolean;
+
+	/**
+	 * @default 1
+	 */
+	layer: int;
 
 	components: {
 		animation?: AnimationComponent;
