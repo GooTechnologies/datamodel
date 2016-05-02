@@ -32,7 +32,7 @@ interface entity extends GooObject {
 	/**
 	 * @default 1
 	 */
-	layer: int;
+	layer?: int;
 
 	components: {
 		animation?: AnimationComponent;
