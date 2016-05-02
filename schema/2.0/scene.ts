@@ -37,13 +37,6 @@ interface PhysicsSettings {
 	ignoredLayerCollisions: {
 		[layer: number]: Layer
 	};
-
-	/**
-	 * The name of each layer.
-	 */
-	layerNames: {
-		[layer: number]: string;
-	};
 }
 
 interface TimeSettings {
@@ -70,6 +63,13 @@ interface scene extends GooObject {
 	tags?: {
 	    [tagName: string]: string;
 	}
+
+	/**
+	 * The name of each entity layer.
+	 */
+	layers?: {
+		[layer: number]: string;
+	};
 
 	defaultPackRef?: PackRef;
 
