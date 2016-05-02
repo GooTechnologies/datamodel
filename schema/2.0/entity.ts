@@ -31,8 +31,10 @@ interface entity extends GooObject {
 
 	/**
 	 * @default 1
+	 * @min 0
+	 * @max 31
 	 */
-	layer?: int;
+	layer?: Layer;
 
 	components: {
 		animation?: AnimationComponent;

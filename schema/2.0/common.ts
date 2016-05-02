@@ -261,3 +261,10 @@ interface SceneRef {}
  * @pattern \.(ttf|otf)$
  */
 interface FontRef {}
+
+/**
+ * @type int
+ * @min 0
+ * @max 31
+ */
+interface Layer {}

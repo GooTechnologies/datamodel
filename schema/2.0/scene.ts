@@ -24,6 +24,43 @@ interface EditorCameraSettings {
 	spherical: Vector3;
 }
 
+interface PhysicsSettings {
+
+	/**
+	 * Global gravity vector.
+	 */
+	gravity: Vector3;
+
+	/**
+	 * What layer/layer collisions are turned off?
+	 */
+	ignoredLayerCollisions: {
+		[layer: number]: Layer
+	};
+
+	/**
+	 * The name of each layer.
+	 */
+	layerNames: {
+		[layer: number]: string;
+	};
+}
+
+interface TimeSettings {
+
+	/**
+	 * A framerate-independent interval that dictates when physics calculations and fixedUpdate() are performed.
+	 * @min 0.0001
+	 */
+	fixedTimeStep: number;
+
+	/**
+	 * A framerate-independent interval that caps the worst case scenario when frame-rate is low. Physics calculations and fixedUpdate() will not be performed for longer time than specified.
+	 * @min 0.0001
+	 */
+	maxTimeStep: number;
+}
+
 /**
  * A scene in create (what was previously called a project)
  */
@@ -103,4 +140,6 @@ interface scene extends GooObject {
 	}
 
 	timeline?: TimelineComponent;
+
+	physics?: PhysicsSettings;
 }
