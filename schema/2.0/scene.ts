@@ -142,4 +142,6 @@ interface scene extends GooObject {
 	timeline?: TimelineComponent;
 
 	physics?: PhysicsSettings;
+
+	time?: TimeSettings;
 }
